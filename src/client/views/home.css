@@ -1,0 +1,187 @@
+.home-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  max-height: 100vh;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container1 {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 3vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: rgb(255, 40, 144);
+}
+.home-text {
+  color: #ffffff;
+  font-size: 14px;
+  align-self: center;
+  font-style: normal;
+  text-align: center;
+  font-family: "Noto Sans";
+  font-weight: 600;
+  line-height: 0.1;
+  text-transform: capitalize;
+}
+.home-topbar {
+  flex: initial;
+  width: 100%;
+  height: 12vh;
+  display: flex;
+  align-self: center;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: #ffffff;
+}
+.home-searchbar {
+  width: 35%;
+  height: 50%;
+  align-self: center;
+  border-style: hidden;
+  border-width: 0px;
+  border-radius: 8px;
+  background-color: #c4c4c4;
+}
+.home-filter {
+  height: 50%;
+  align-self: center;
+  font-style: normal;
+  font-weight: 600;
+  margin-left: var(--dl-space-space-halfunit);
+  background-color: rgb(255, 40, 144);
+}
+.home-notification {
+  height: 50%;
+  align-self: center;
+  margin-left: var(--dl-space-space-halfunit);
+}
+.home-main {
+  flex: 0;
+  width: 100%;
+  height: 85vh;
+  display: flex;
+  align-self: flex-start;
+  align-items: flex-start;
+  background-color: #ffffff;
+}
+.home-navbar-container {
+  flex: initial;
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-self: stretch;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+}
+.home-navbar {
+  flex: 0 0 auto;
+  width: 100px;
+  height: 60%;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  margin-left: 0px;
+  padding-top: var(--dl-space-space-twounits);
+  border-color: rgba(120, 120, 120, 0.4);
+  border-style: dashed;
+  border-width: 0px;
+  border-radius: 70px;
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-twounits);
+  background-color: #D9D9D9;
+}
+.home-home {
+  flex: 1;
+  margin-top: var(--dl-space-space-oneandhalfunits);
+  border-width: 0px;
+  margin-bottom: var(--dl-space-space-oneandhalfunits);
+  background-color: transparent;
+}
+.home-ideal-match {
+  flex: 1;
+  margin-top: var(--dl-space-space-oneandhalfunits);
+  border-width: 0px;
+  margin-bottom: var(--dl-space-space-oneandhalfunits);
+  background-color: transparent;
+}
+.home-message {
+  flex: 1;
+  margin-top: var(--dl-space-space-oneandhalfunits);
+  border-width: 0px;
+  margin-bottom: var(--dl-space-space-oneandhalfunits);
+  background-color: transparent;
+}
+.home-friendlist {
+  flex: 1;
+  margin-top: var(--dl-space-space-oneandhalfunits);
+  border-width: 0px;
+  margin-bottom: var(--dl-space-space-oneandhalfunits);
+  background-color: transparent;
+}
+.home-profile {
+  flex: 1;
+  margin-top: var(--dl-space-space-oneandhalfunits);
+  border-width: 0px;
+  margin-bottom: var(--dl-space-space-oneandhalfunits);
+  background-color: transparent;
+}
+.home-main-area {
+  flex: initial;
+  width: 90%;
+  display: flex;
+  align-self: stretch;
+  align-items: flex-start;
+  background-color: #ffffff;
+}
+.home-image {
+  flex: 4;
+  width: 200px;
+  height: 100%;
+  padding: var(--dl-space-space-unit);
+  align-self: center;
+  object-fit: cover;
+  border-radius: var(--dl-radius-radius-radius8);
+}
+.home-container2 {
+  flex: 3;
+  width: 200px;
+  height: 100%;
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  flex-direction: column;
+}
+.home-image1 {
+  width: 80%;
+  height: 75%;
+  object-fit: cover;
+}
+.home-button {
+  color: rgb(255, 255, 255);
+  font-size: 36px;
+  align-self: center;
+  box-shadow: 5px 5px 10px 0px #a7a7a7;
+  font-style: normal;
+  margin-top: var(--dl-space-space-unit);
+  font-family: "Noto Sans";
+  font-weight: 800;
+  padding-top: var(--dl-space-space-oneandhalfunits);
+  border-width: 0px;
+  padding-left: 140px;
+  border-radius: 16px;
+  padding-right: 140px;
+  padding-bottom: var(--dl-space-space-oneandhalfunits);
+  background-color: rgb(255, 40, 144);
+}
+.home-text4 {
+  font-style: normal;
+  font-family: "Noto Sans";
+  font-weight: 700;
+  text-transform: capitalize;
+}
