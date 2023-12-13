@@ -4,9 +4,10 @@ const app = express();
 const port = 3000;
 const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'your-username',
-    password: 'your-password',
-    database: 'your-database-name',
+    user: 'root',
+    port: 3307,
+    password: '123456',
+    database: 'datingapp',
 });
 connection.connect((err) => {
     if (err) {
