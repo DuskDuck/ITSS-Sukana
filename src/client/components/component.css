@@ -1,0 +1,74 @@
+@font-face {
+  font-family: "RobotoMedium";
+  src: local("RobotoMedium"),
+   url("../assets/font/Roboto/Roboto-Medium.ttf") format("truetype");
+  font-weight: medium;
+}
+
+.app-component-container {
+  width: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: column;
+}
+.app-component-container1 {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 3vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: rgb(255, 40, 144);
+}
+.app-component-text {
+  font-family: 'Roboto';
+  color: #ffffff;
+  font-size: 14px;
+  align-self: center;
+  font-style: normal;
+  text-align: center;
+  font-weight: 600;
+  line-height: 0.1;
+  text-transform: capitalize;
+}
+.app-component-topbar {
+  flex: initial;
+  width: 100%;
+  height: 12vh;
+  display: flex;
+  align-self: center;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: #ffffff;
+}
+.app-component-searchbar {
+  width: 35%;
+  height: 40%;
+  align-self: center;
+  border-style: hidden;
+  border-width: 0px;
+  border-radius: 12px;
+  background-color: #eaeaea;
+}
+.app-component-filter {
+  height: 50%;
+  align-self: center;
+  font-style: normal;
+  font-weight: 600;
+  color: #ffffff;
+  margin-left: var(--dl-space-space-halfunit);
+  background-color: rgb(255, 40, 144);
+}
+.app-component-notification {
+  height: 50%;
+  align-self: center;
+  margin-left: var(--dl-space-space-halfunit);
+  background-color: #eaeaea;
+}
+.app-component-topbar .button {
+  font-size: 30px;
+  height: 60px;
+  border: 0;
+  border-radius: 12px;
+}
