@@ -54,26 +54,26 @@ class User {
 
   static async getRandomUserNotInFriends(userId) {
     try {
-        const [rows] = await db.query(`
-            SELECT u.*
-            FROM users u
-            WHERE u.id NOT IN (
-                SELECT f.receiver_id
-                FROM friends f
-                WHERE f.requester_id = ?
-                UNION
-                SELECT f.requester_id
-                FROM friends f
-                WHERE f.receiver_id = ?
-            )
-            AND u.id <> ?
-            ORDER BY RAND()
-            LIMIT 1;
-        `, [userId, userId, userId]);
+      const [rows] = await db.query(`
+        SELECT u.*
+        FROM users u
+        WHERE u.id NOT IN (
+          SELECT f.receiver_id
+            FROM friends f
+            WHERE f.requester_id = ? AND f.status = 'ACCEPTED'
+            UNION
+            SELECT f.requester_id
+            FROM friends f
+            WHERE f.receiver_id = ? AND f.status = 'ACCEPTED'
+        )
+        AND u.id <> ?
+        ORDER BY RAND()
+        LIMIT 1;
+      `, [userId, userId, userId]);
 
-        return rows.length > 0 ? rows[0] : null;
+      return rows.length > 0 ? rows[0] : null;
     } catch (error) {
-        throw error;
+      throw error;
     }
   }
 }
