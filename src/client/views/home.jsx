@@ -1,64 +1,37 @@
 import React from 'react'
 
+import { Helmet } from 'react-helmet'
+
+import AppComponent from '../components/component'
+import NavbarContainer from '../components/navbar-container'
 import './home.css'
+import page1 from './page1.PNG'
+import page2 from './page2.PNG'
 
 const Home = (props) => {
   return (
     <div className="home-container">
-      <div className="home-container1">
-        <span className="home-text">
-          <span>My heart skip a beat when i meet you</span>
-          <br></br>
-          <br></br>
-        </span>
-      </div>
-      <div className="home-topbar">
-        <input
-          type="text"
-          placeholder="Search"
-          className="home-searchbar input"
-        />
-        <button type="button" className="home-filter button">
-          Button
-        </button>
-        <button type="button" className="home-notification button">
-          Button
-        </button>
-      </div>
+      <Helmet>
+        <title>Dating App</title>
+        <meta property="og:title" content="Dating App" />
+      </Helmet>
+      <AppComponent></AppComponent>
       <div className="home-main">
-        <div className="home-navbar-container">
-          <div className="home-navbar">
-            <button type="button" className="home-home button">
-              Button
-            </button>
-            <button type="button" className="home-ideal-match button">
-              Button
-            </button>
-            <button type="button" className="home-message button">
-              Button
-            </button>
-            <button type="button" className="home-friendlist button">
-              Button
-            </button>
-            <button type="button" className="home-profile button">
-              Button
-            </button>
-          </div>
-        </div>
+        <NavbarContainer></NavbarContainer>
         <div className="home-main-area">
           <img
             alt="image"
-            src="/image_2023-12-12_144825574-1500h.png"
+            src= { page1 }
             className="home-image"
           />
-          <div className="home-container2">
+          <div className="home-container1">
             <img
               alt="image"
-              src="/image_2023-12-12_145509559-1200h.png"
+              src= { page2 }
               className="home-image1"
             />
             <button type="button" className="home-button button">
-              <span className="home-text4">
+              <span className="home-text">
                 <span>Continue</span>
                 <br></br>
               </span>

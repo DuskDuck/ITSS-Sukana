@@ -33,7 +33,7 @@
   --dl-space-space-fourunits: 64px;
   --dl-space-space-threeunits: 48px;
   --dl-space-space-oneandhalfunits: 24px;
-}
+} 
 .button {
   color: var(--dl-color-gray-black);
   display: inline-block;
@@ -91,7 +91,4 @@
   line-height: 1.15;
   text-transform: none;
   text-decoration: none;
-}
-.body {
-  display: block;
 }

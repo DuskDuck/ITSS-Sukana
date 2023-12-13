@@ -1,20 +1,31 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import './style.css'
-import Home from './views/home'
+import React from 'react'
 import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  Redirect,
-} from 'react-dom'
+  Routes,
+  Navigate,
+} from 'react-router-dom'
 
-function App() {
+import './style.css'
+import Home from './views/home'
+import NotFound from './views/not-found'
+
+const App = () => {
   return (
-        <Home></Home>
-  );
+    <Home></Home>
+    // <Router>
+    //   <Routes>
+    //     <Route component={Home} exact path="/" />
+    //     <Route component={NotFound} path="**" />
+    //     <Navigate to="**" />
+    //   </Routes>
+    // </Router>
+  )
 }
-
+// const container = document.getElementById('app');
+// const root = createRoot(container);
+// root.render(<App />)
 export default App;
 

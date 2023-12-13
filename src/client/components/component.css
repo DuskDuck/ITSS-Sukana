@@ -1,0 +1,59 @@
+.app-component-container {
+  width: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: column;
+}
+.app-component-container1 {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 3vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: rgb(255, 40, 144);
+}
+.app-component-text {
+  color: #ffffff;
+  font-size: 14px;
+  align-self: center;
+  font-style: normal;
+  text-align: center;
+  font-family: "Noto Sans";
+  font-weight: 600;
+  line-height: 0.1;
+  text-transform: capitalize;
+}
+.app-component-topbar {
+  flex: initial;
+  width: 100%;
+  height: 12vh;
+  display: flex;
+  align-self: center;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: #ffffff;
+}
+.app-component-searchbar {
+  width: 35%;
+  height: 50%;
+  align-self: center;
+  border-style: hidden;
+  border-width: 0px;
+  border-radius: 8px;
+  background-color: #c4c4c4;
+}
+.app-component-filter {
+  height: 50%;
+  align-self: center;
+  font-style: normal;
+  font-weight: 600;
+  margin-left: var(--dl-space-space-halfunit);
+  background-color: rgb(255, 40, 144);
+}
+.app-component-notification {
+  height: 50%;
+  align-self: center;
+  margin-left: var(--dl-space-space-halfunit);
+}
