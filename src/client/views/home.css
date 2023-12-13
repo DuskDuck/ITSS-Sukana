@@ -54,7 +54,7 @@
   box-shadow: 5px 5px 10px 0px #a7a7a7;
   font-style: normal;
   margin-top: var(--dl-space-space-unit);
-  font-family: "Noto Sans";
+  font-family: "Roboto";
   font-weight: 800;
   padding-top: var(--dl-space-space-oneandhalfunits);
   border-width: 0px;
@@ -66,7 +66,5 @@
 }
 .home-text {
   font-style: normal;
-  font-family: "Noto Sans";
-  font-weight: 700;
   text-transform: capitalize;
 }

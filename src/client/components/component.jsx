@@ -1,10 +1,24 @@
-import React from 'react'
-
+import React, { useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 
 import './component.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+//ICON import Section
+import { faSliders } from '@fortawesome/free-solid-svg-icons'
+import { faBell } from '@fortawesome/free-solid-svg-icons'
+//Import Font
+import '../assets/font/Roboto/Roboto-Medium.ttf';
+import WebFont from 'webfontloader';
 
 const AppComponent = (props) => {
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: ['Roboto']
+      }
+    });
+   }, []);
   return (
     <div className="app-component-container">
       <div className="app-component-container1">
@@ -21,10 +35,10 @@ const AppComponent = (props) => {
           className="app-component-searchbar input"
         />
         <button type="button" className="app-component-filter button">
-          {props.filter}
+          <FontAwesomeIcon icon={faSliders} />
         </button>
         <button type="button" className="app-component-notification button">
-          {props.notification}
+          <FontAwesomeIcon icon={faBell} />
         </button>
       </div>
     </div>
@@ -33,14 +47,10 @@ const AppComponent = (props) => {
 
 AppComponent.defaultProps = {
   searchbar_placeholder: 'Search',
-  filter: 'Button',
-  notification: 'Button',
 }
 
 AppComponent.propTypes = {
   searchbar_placeholder: PropTypes.string,
-  filter: PropTypes.string,
-  notification: PropTypes.string,
 }
 
 export default AppComponent

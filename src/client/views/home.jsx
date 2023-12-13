@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState} from 'react'
 
 import { Helmet } from 'react-helmet'
 
@@ -8,7 +8,17 @@ import './home.css'
 import page1 from './page1.PNG'
 import page2 from './page2.PNG'
 
+//Import Font
+import WebFont from 'webfontloader';
+
 const Home = (props) => {
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: ['Roboto']
+      }
+    });
+   }, []);
   return (
     <div className="home-container">
       <Helmet>
