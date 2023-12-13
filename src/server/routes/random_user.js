@@ -1,8 +1,9 @@
-const express = require('express');
-const mysql = require('mysql2/promise');
-const app = express();
+import express from 'express';
+import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
+
+const router = express.Router();
 
 const connection = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -11,17 +12,9 @@ const connection = mysql.createConnection({
     database: process.env.DB_NAME,
 });
 
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL database:', err);
-        throw err;
-    }
-    console.log('Connected to MySQL database');
-});
-app.get('/api/random-user/:userId', async (req, res) => {
+router.get('/api/match/:userId', async (req, res) => {
     try {
         const userId = parseInt(req.params.userId);
-        // Query random user from the database
         const [rows] = await connection.execute(`
             SELECT u.*
             FROM users u
@@ -55,3 +48,5 @@ try {
 } catch (error) {
     console.error('Error starting the server:', error);
 }
+
+export default router;

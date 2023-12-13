@@ -2,7 +2,7 @@ import express from 'express';
 import ViteExpress from 'vite-express';
 import db from './db/db.js';
 import userRoutes from './routes/users.js';
-import randomUserRoutes from './routes/random_users.js';
+import matchRoutes from './routes/random_user.js';
 
 const app = express();
 
@@ -15,7 +15,7 @@ db.getConnection((err, connection) => {
   }
 });
 
-app.use('/api/match', randomUserRoutes);
+app.use(matchRoutes);
 app.use('/api/users', userRoutes);
 
 ViteExpress.listen(app, 3000, () =>
