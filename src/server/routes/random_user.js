@@ -1,14 +1,16 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
 const app = express();
-const port = 3000;
+import dotenv from 'dotenv';
+dotenv.config();
+
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    port: 3307,
-    password: '123456',
-    database: 'datingapp',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
+
 connection.connect((err) => {
     if (err) {
         console.error('Error connecting to MySQL database:', err);
