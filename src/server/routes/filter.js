@@ -16,9 +16,7 @@ router.get('/api/filter', async (req, res) => {
             maxAge,
         });
 
-        const firstUserWithHobbies = usersWithHobbies[0];
-
-        res.json(firstUserWithHobbies);
+        res.json(usersWithHobbies);
     } catch (error) {
         console.error('Error querying users with hobbies:', error);
         res.status(500).json({ error: 'Internal Server Error' });
