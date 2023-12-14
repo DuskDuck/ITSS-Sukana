@@ -5,12 +5,12 @@ import Divider from "@mui/material/Divider";
 
 const Filter = () => {
   const defaultDistantValue = 0;
-  const defaultAgeRange = [0, 0];
+  const defaultAgeRange = [0, 20];
 
   const [selectedGender, setSelectedGender] = useState([]);
   const [selectedInterested, setSelectedInterested] = useState([]);
   const [distantValue, setDistantValue] = useState(defaultDistantValue);
-  const [ageRange, setAgeRange] = React.useState([20, 37]);
+  const [ageRange, setAgeRange] = React.useState([0, 20]);
 
   const handleGenderClick = (gender) => {
     setSelectedGender((prevSelected) =>

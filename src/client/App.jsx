@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
+  Link,
   Navigate,
 } from "react-router-dom";
 
@@ -15,18 +16,17 @@ import Filter from "./views/filter";
 
 const App = () => {
   return (
-    // <Home></Home>
-    <Filter></Filter>
-    // <Router>
-    //   <Routes>
-    //     <Route component={Home} exact path="/" />
-    //     <Route component={NotFound} path="**" />
-    //     <Navigate to="**" />
-    //   </Routes>
-    // </Router>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/filter" element={<Filter />} />
+        <Route path="/not-found" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 };
-// const container = document.getElementById('app');
+
+// const container = document.getElementById("app");
 // const root = createRoot(container);
-// root.render(<App />)
+// root.render(<App />);
 export default App;
