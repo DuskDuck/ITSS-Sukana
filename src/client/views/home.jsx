@@ -21,7 +21,7 @@ const Home = (props) => {
   useEffect(() => {
     WebFont.load({
       google: {
-        families: ["Roboto"],
+        families: ["Roboto", "Inria Sans"],
       },
     });
   }, []);
