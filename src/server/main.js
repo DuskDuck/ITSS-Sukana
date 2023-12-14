@@ -17,7 +17,6 @@ db.getConnection((err, connection) => {
 });
 
 app.use(matchRoutes);
-app.use('/api/users', userRoutes);
 app.use(filterRoutes);
 
 ViteExpress.listen(app, 3000, () =>
