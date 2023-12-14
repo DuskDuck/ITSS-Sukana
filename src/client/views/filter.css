@@ -7,13 +7,13 @@
 .filter-container {
   box-sizing: border-box;
   position: relative;
-  width: 1000px;
-  height: 700px;
+  width: 1100px;
+  height: 720px;
   background: #f7f9f9;
   border: 0.5px solid #eee0fb;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 25px;
-  padding: 20px;
+  padding: 40px;
   flex-direction: column;
   align-items: center;
 }
@@ -54,6 +54,7 @@
   height: 60px;
   background: #ffffff;
   font-size: 16px;
+  margin: 0 10px 10px 0;
 }
 
 .filter-button.selected {
@@ -83,7 +84,6 @@
 .filter-buttons {
   display: flex;
   justify-content: end;
-  margin-top: 10px;
   flex-direction: row;
 }
 

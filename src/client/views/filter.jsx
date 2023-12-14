@@ -13,11 +13,7 @@ const Filter = () => {
   const [ageRange, setAgeRange] = React.useState([0, 20]);
 
   const handleGenderClick = (gender) => {
-    setSelectedGender((prevSelected) =>
-      prevSelected.includes(gender)
-        ? prevSelected.filter((item) => item !== gender)
-        : [...prevSelected, gender]
-    );
+    setSelectedGender([gender]);
   };
 
   const handleInterestedClick = (interest) => {
@@ -135,6 +131,54 @@ const Filter = () => {
             onClick={() => handleInterestedClick("interest3")}
           >
             Interest 3
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest4") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest4")}
+          >
+            Interest 4
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest5") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest5")}
+          >
+            Interest 5
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest6") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest6")}
+          >
+            Interest 6
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest7") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest7")}
+          >
+            Interest 7
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest8") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest8")}
+          >
+            Interest 8
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest9") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest9")}
+          >
+            Interest 9
           </button>
         </div>
       </div>
