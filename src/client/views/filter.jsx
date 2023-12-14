@@ -71,11 +71,11 @@ const Filter = () => {
           <button
             style={{ borderTopRightRadius: 4, borderBottomRightRadius: 4 }}
             className={`gender-button ${
-              selectedGender.includes("both") ? "selected" : ""
+              selectedGender.includes("others") ? "selected" : ""
             }`}
-            onClick={() => handleGenderClick("both")}
+            onClick={() => handleGenderClick("others")}
           >
-            Both
+            Others
           </button>
         </div>
       </div>
