@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link, useNavigate } from "react-router-dom";
 import "./component.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -10,9 +9,7 @@ import { faBell } from "@fortawesome/free-solid-svg-icons";
 //Import Font
 import "../assets/font/Roboto/Roboto-Medium.ttf";
 import WebFont from "webfontloader";
-const handleFilterClick = () => {
-  navigate("/filter");
-};
+
 const AppComponent = (props) => {
   useEffect(() => {
     WebFont.load({
