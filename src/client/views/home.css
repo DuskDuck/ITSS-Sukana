@@ -28,7 +28,7 @@
 .home-image {
   flex: 4;
   width: 200px;
-  height: 100%;
+  height: 95%;
   padding: var(--dl-space-space-unit);
   align-self: center;
   object-fit: cover;
