@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
@@ -6,7 +6,9 @@ import Divider from "@mui/material/Divider";
 const Filter = () => {
   const defaultDistantValue = 0;
   const defaultAgeRange = [0, 20];
+  const defaultLocation = "location1";
 
+  const [locationValue, setLocationValue] = useState(defaultLocation);
   const [selectedGender, setSelectedGender] = useState([]);
   const [selectedInterested, setSelectedInterested] = useState([]);
   const [distantValue, setDistantValue] = useState(defaultDistantValue);
@@ -28,6 +30,10 @@ const Filter = () => {
     setDistantValue(event.target.value);
   };
 
+  const handleLocationChange = (event) => {
+    setLocationValue(event.target.value);
+  };
+
   const handleAgeChange = (event, newValue) => {
     setAgeRange(newValue);
   };
@@ -37,6 +43,7 @@ const Filter = () => {
     setSelectedInterested([]);
     setDistantValue(defaultDistantValue);
     setAgeRange(defaultAgeRange);
+    setLocationValue(defaultLocation);
   };
 
   return (
@@ -77,7 +84,11 @@ const Filter = () => {
       </div>
       <div className="location-section">
         <div className="filter-subtitle">Location</div>
-        <select className="filter-dropdown">
+        <select
+          value={locationValue}
+          onChange={handleLocationChange}
+          className="filter-dropdown"
+        >
           <option value="location1">Location 1</option>
           <option value="location2">Location 2</option>
           <option value="location3">Location 3</option>
