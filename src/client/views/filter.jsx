@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
+import { useNavigate } from "react-router-dom";
 
 const Filter = () => {
   const defaultDistantValue = 0;
   const defaultAgeRange = [0, 20];
+  const defaultLocation = "location1";
 
+  const [locationValue, setLocationValue] = useState(defaultLocation);
   const [selectedGender, setSelectedGender] = useState([]);
   const [selectedInterested, setSelectedInterested] = useState([]);
   const [distantValue, setDistantValue] = useState(defaultDistantValue);
   const [ageRange, setAgeRange] = React.useState([0, 20]);
+  const navigate = useNavigate();
 
+  const handleClose = () => {
+    navigate(0);
+  };
   const handleGenderClick = (gender) => {
-    setSelectedGender((prevSelected) =>
-      prevSelected.includes(gender)
-        ? prevSelected.filter((item) => item !== gender)
-        : [...prevSelected, gender]
-    );
+    setSelectedGender([gender]);
   };
 
   const handleInterestedClick = (interest) => {
@@ -32,6 +35,10 @@ const Filter = () => {
     setDistantValue(event.target.value);
   };
 
+  const handleLocationChange = (event) => {
+    setLocationValue(event.target.value);
+  };
+
   const handleAgeChange = (event, newValue) => {
     setAgeRange(newValue);
   };
@@ -41,10 +48,14 @@ const Filter = () => {
     setSelectedInterested([]);
     setDistantValue(defaultDistantValue);
     setAgeRange(defaultAgeRange);
+    setLocationValue(defaultLocation);
   };
 
   return (
     <div className="filter-container">
+      <button className="close-button" onClick={handleClose}>
+        X
+      </button>
       <div className="filter-title">Filter</div>
       <div className="gender-section">
         <div className="filter-subtitle">Gender</div>
@@ -71,17 +82,21 @@ const Filter = () => {
           <button
             style={{ borderTopRightRadius: 4, borderBottomRightRadius: 4 }}
             className={`gender-button ${
-              selectedGender.includes("both") ? "selected" : ""
+              selectedGender.includes("others") ? "selected" : ""
             }`}
-            onClick={() => handleGenderClick("both")}
+            onClick={() => handleGenderClick("others")}
           >
-            Both
+            Others
           </button>
         </div>
       </div>
       <div className="location-section">
         <div className="filter-subtitle">Location</div>
-        <select className="filter-dropdown">
+        <select
+          value={locationValue}
+          onChange={handleLocationChange}
+          className="filter-dropdown"
+        >
           <option value="location1">Location 1</option>
           <option value="location2">Location 2</option>
           <option value="location3">Location 3</option>
@@ -135,6 +150,54 @@ const Filter = () => {
             onClick={() => handleInterestedClick("interest3")}
           >
             Interest 3
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest4") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest4")}
+          >
+            Interest 4
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest5") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest5")}
+          >
+            Interest 5
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest6") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest6")}
+          >
+            Interest 6
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest7") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest7")}
+          >
+            Interest 7
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest8") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest8")}
+          >
+            Interest 8
+          </button>
+          <button
+            className={`filter-button ${
+              selectedInterested.includes("interest9") ? "selected" : ""
+            }`}
+            onClick={() => handleInterestedClick("interest9")}
+          >
+            Interest 9
           </button>
         </div>
       </div>
