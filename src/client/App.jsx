@@ -1,31 +1,32 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { createRoot } from 'react-dom/client';
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
-} from 'react-router-dom'
+} from "react-router-dom";
 
-import './style.css'
-import Home from './views/home'
-import NotFound from './views/not-found'
+import "./style.css";
+import Home from "./views/home";
+import NotFound from "./views/not-found";
+import Filter from "./views/filter";
+import Homepage from "./views/homepage";
+import Idealmatch from "./views/idealmatch";
 
 const App = () => {
   return (
-    <Home></Home>
-    // <Router>
-    //   <Routes>
-    //     <Route component={Home} exact path="/" />
-    //     <Route component={NotFound} path="**" />
-    //     <Navigate to="**" />
-    //   </Routes>
-    // </Router>
-  )
-}
-// const container = document.getElementById('app');
-// const root = createRoot(container);
-// root.render(<App />)
-export default App;
+    <Router>
+      <Routes>
+        <Route path="/idealmatch" element={<Home />} />
+        <Route path="/idealmatch-result" element={<Idealmatch />} />
+        <Route path="/filter" element={<Filter />} />
+        <Route path="/not-found" element={<NotFound />} />
+        <Route path="/" element={<Homepage />} />
+      </Routes>
+    </Router>
+  );
+};
 
+// const container = document.getElementById("app");
+// const root = createRoot(container);
+// root.render(<App />);
+export default App;
