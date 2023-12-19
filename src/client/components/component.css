@@ -1,10 +1,3 @@
-@font-face {
-  font-family: "RobotoMedium";
-  src: local("RobotoMedium"),
-    url("../assets/font/Roboto/Roboto-Medium.ttf") format("truetype");
-  font-weight: medium;
-}
-
 .app-component-container {
   width: 100%;
   display: flex;
@@ -22,12 +15,12 @@
   background-color: rgb(255, 40, 144);
 }
 .app-component-text {
-  font-family: "Roboto";
   color: #ffffff;
   font-size: 14px;
   align-self: center;
   font-style: normal;
   text-align: center;
+  font-family: "Roboto";
   font-weight: 600;
   line-height: 0.1;
   text-transform: capitalize;
@@ -37,10 +30,44 @@
   width: 100%;
   height: 12vh;
   display: flex;
+  position: relative;
   align-self: center;
   align-items: flex-start;
   justify-content: center;
   background-color: #ffffff;
+}
+.app-component-container2 {
+  top: 0px;
+  flex: 0 0 auto;
+  left: 0px;
+  width: 300px;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  align-items: center;
+}
+.app-component-image {
+  width: 60px;
+  object-fit: cover;
+  margin-left: var(--dl-space-space-oneandhalfunits);
+  border-radius: 12px;
+  filter: drop-shadow( 0 0 4px rgba(40, 40, 40, 0.611) );
+}
+.app-component-container3 {
+  flex: 0 0 auto;
+  width: 200px;
+  display: flex;
+  align-items: flex-start;
+  margin-left: var(--dl-space-space-unit);
+  flex-direction: column;
+}
+.app-component-text4 {
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+}
+.app-component-text5 {
+  font-size: 18px;
 }
 .app-component-searchbar {
   width: 35%;

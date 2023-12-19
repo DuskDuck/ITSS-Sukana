@@ -18,6 +18,10 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 
+//Static Image Import Section
+import bg1 from '../assets/image/sect-gate-view.png'
+import bg2 from '../assets/image/somewhere.png'
+
 
 const Homepage = (props) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -54,12 +58,12 @@ const Homepage = (props) => {
           <div className="main-container">
             <div className="image-container">
               <img
-                src="https://play.teleporthq.io/static/svg/default-img.svg"
+                src={bg1}
                 alt="image"
                 className="homepage-image"
               />
               <img
-                src="https://play.teleporthq.io/static/svg/default-img.svg"
+                src={bg2}
                 alt="image"
                 className="homepage-image1"
               />

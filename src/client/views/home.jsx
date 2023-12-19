@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import { Helmet } from "react-helmet";
 
@@ -17,6 +18,11 @@ const Home = (props) => {
   const showFilter = () => {
     setIsFilterVisible(true);
   };
+  const navigate = useNavigate();
+
+  const handleClick = (route) => {
+    navigate(route);
+  };
 
   useEffect(() => {
     WebFont.load({
@@ -28,8 +34,8 @@ const Home = (props) => {
   return (
     <div className="home-container">
       <Helmet>
-        <title>Dating App</title>
-        <meta property="og:title" content="Dating App" />
+        <title>Teender - Ideal Match</title>
+        <meta property="og:title" content="Teender - Ideal Match" />
       </Helmet>
       {isFilterVisible && (
         <div className="overlay">
@@ -44,7 +50,7 @@ const Home = (props) => {
           <img alt="image" src={page1} className="home-image" />
           <div className="home-container1">
             <img alt="image" src={page2} className="home-image1" />
-            <button type="button" className="home-button button">
+            <button onClick={() => handleClick('/idealmatch-result')} type="button" className="home-button button">
               <span className="home-text">
                 <span>Continue</span>
                 <br></br>
