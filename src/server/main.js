@@ -3,6 +3,7 @@ import ViteExpress from 'vite-express';
 import db from './db/db.js';
 import matchRoutes from './routes/random_user.js';
 import filterRoutes from './routes/filter.js';
+import friendRoutes from './routes/friendRequests.js';
 
 const app = express();
 
@@ -15,6 +16,8 @@ db.getConnection((err, connection) => {
   }
 });
 
+app.use(express.json());
+app.use(friendRoutes);
 app.use(matchRoutes);
 app.use(filterRoutes);
 
