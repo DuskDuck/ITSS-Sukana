@@ -64,7 +64,7 @@
 }
 
 .friend-buttons {
-  background: rgba(35, 35, 35, 0.7); /* Màu nền của friend-buttons */
+  background: rgba(35, 35, 35, 0.7);
   display: flex;
   justify-content: space-evenly;
   padding: 0;
