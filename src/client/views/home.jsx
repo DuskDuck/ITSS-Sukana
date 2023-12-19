@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
 
@@ -50,7 +50,11 @@ const Home = (props) => {
           <img alt="image" src={page1} className="home-image" />
           <div className="home-container1">
             <img alt="image" src={page2} className="home-image1" />
-            <button onClick={() => handleClick('/idealmatch-result')} type="button" className="home-button button">
+            <button
+              onClick={() => handleClick("/idealmatch-result")}
+              type="button"
+              className="home-button button"
+            >
               <span className="home-text">
                 <span>Continue</span>
                 <br></br>

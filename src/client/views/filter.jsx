@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
+import { useNavigate } from "react-router-dom";
 
 const Filter = () => {
   const defaultDistantValue = 0;
@@ -13,7 +14,11 @@ const Filter = () => {
   const [selectedInterested, setSelectedInterested] = useState([]);
   const [distantValue, setDistantValue] = useState(defaultDistantValue);
   const [ageRange, setAgeRange] = React.useState([0, 20]);
+  const navigate = useNavigate();
 
+  const handleClose = () => {
+    navigate(0);
+  };
   const handleGenderClick = (gender) => {
     setSelectedGender([gender]);
   };
@@ -48,6 +53,9 @@ const Filter = () => {
 
   return (
     <div className="filter-container">
+      <button className="close-button" onClick={handleClose}>
+        X
+      </button>
       <div className="filter-title">Filter</div>
       <div className="gender-section">
         <div className="filter-subtitle">Gender</div>

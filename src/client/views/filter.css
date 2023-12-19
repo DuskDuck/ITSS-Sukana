@@ -158,3 +158,18 @@ body {
   padding-right: 10px;
   display: inline-block;
 }
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555; /* Màu sắc tùy chọn */
+}
+
+.close-button:hover {
+  color: #e03368; /* Màu sắc khi hover tùy chọn */
+}
