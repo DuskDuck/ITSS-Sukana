@@ -9,6 +9,7 @@
   flex-direction: column;
   justify-content: center;
   background-color: #ffffff;
+  margin-top: 45px;
 }
 .navbar-container-navbar {
   flex: 0 0 auto;

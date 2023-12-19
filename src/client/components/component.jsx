@@ -4,6 +4,7 @@ import "./component.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //ICON import Section
+import locationIcon from '../assets/image/location-pin.png'
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 //Import Font
@@ -28,6 +29,17 @@ const AppComponent = (props) => {
         </span>
       </div>
       <div className="app-component-topbar">
+      <div className="app-component-container2">
+          <img
+            src={locationIcon}
+            alt={props.image_alt}
+            className="app-component-image"
+          />
+          <div className="app-component-container3">
+            <span className="app-component-text4">{props.text}</span>
+            <span className="app-component-text5">{props.text1}</span>
+          </div>
+        </div>
         <input
           type="text"
           placeholder={props.searchbar_placeholder}
@@ -50,10 +62,14 @@ const AppComponent = (props) => {
 
 AppComponent.defaultProps = {
   searchbar_placeholder: "Search",
+  text: 'Location',
+  text1: 'Hanoi, Vietnam',
 };
 
 AppComponent.propTypes = {
   searchbar_placeholder: PropTypes.string,
+  text: PropTypes.string,
+  text1: PropTypes.string,
 };
 
 export default AppComponent;

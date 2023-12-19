@@ -10,12 +10,14 @@ import Home from "./views/home";
 import NotFound from "./views/not-found";
 import Filter from "./views/filter";
 import Homepage from "./views/homepage";
+import Idealmatch from "./views/idealmatch";
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/idealmatch" element={<Home />} />
+        <Route path="/idealmatch-result" element={<Idealmatch />} />
         <Route path="/filter" element={<Filter />} />
         <Route path="/not-found" element={<NotFound />} />
         <Route path="/" element={<Homepage />} />

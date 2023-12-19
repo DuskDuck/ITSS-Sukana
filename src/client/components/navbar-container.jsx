@@ -10,6 +10,8 @@ import { faMessage } from '@fortawesome/free-solid-svg-icons'
 import { faUserGroup } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 
+import locationIcon from '../assets/image/location-pin.png'
+
 const NavbarContainer = (props) => {
   const navigate = useNavigate();
 
