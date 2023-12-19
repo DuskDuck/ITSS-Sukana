@@ -39,7 +39,11 @@ const NavbarContainer = (props) => {
         <button type="button" className="navbar-container-message button">
           <FontAwesomeIcon icon={faMessage} />
         </button>
-        <button type="button" className="navbar-container-friendlist button">
+        <button
+          onClick={() => handleClick("/friend")}
+          type="button"
+          className="navbar-container-friendlist button"
+        >
           <FontAwesomeIcon icon={faUserGroup} />
         </button>
         <button

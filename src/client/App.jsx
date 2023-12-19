@@ -7,6 +7,7 @@ import NotFound from "./views/not-found";
 import Profile from "./views/profile";
 import Homepage from "./views/homepage";
 import Idealmatch from "./views/idealmatch";
+import Friend from "./views/friend";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/idealmatch" element={<Home />} />
         <Route path="/idealmatch-result" element={<Idealmatch />} />
         <Route path="/not-found" element={<NotFound />} />
+        <Route path="/friend" element={<Friend />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/" element={<Homepage />} />
       </Routes>
