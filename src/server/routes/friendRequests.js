@@ -1,5 +1,6 @@
 import express from 'express';
 import db from '../db/db.js';
+import { getImageURL } from '../config/firebaseConfig.js';
 
 const router = express.Router();
 
@@ -80,14 +81,22 @@ router.get('/api/friends/recieved/:user_id', async (req, res) => {
     try {
         const [friendRequests] = await db.execute(
             `SELECT f.id, f.requester_id, f.receiver_id, f.status, f.created_at, 
-             u.first_name AS requester_first_name, u.last_name AS requester_last_name
+             u.first_name AS requester_first_name, u.last_name AS requester_last_name, i.url AS requester_filename
              FROM friends f
              JOIN users u ON f.requester_id = u.id
+             JOIN images i ON u.default_image_id = i.id
              WHERE f.receiver_id = ? AND f.status = 'SENT'`,
             [user_id]
         );
+        
+        const friendRequestsWithImages = await Promise.all(friendRequests.map(async friend => {
+          if (friend.requester_filename) {
+            friend.requester_image_url = await getImageURL(friend.requester_filename);
+          }
+          return friend;
+        }));
 
-        res.status(200).json({ friendRequests });
+        res.status(200).json({ friendRequestsWithImages });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch friend requests' });
