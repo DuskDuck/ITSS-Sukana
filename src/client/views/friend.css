@@ -25,7 +25,7 @@
   align-items: center;
   background-color: #ffffff;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 50px;
   justify-content: center;
 }
 .friend-avatar {
@@ -37,6 +37,7 @@
 .friend-item {
   position: relative;
   overflow: hidden;
+  border-radius: 15px;
 }
 
 .friend-avatar-container {
