@@ -3,7 +3,7 @@ import axios from "axios";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import API_ENDPOINT from "./apiConfig";
 
@@ -22,7 +22,7 @@ const Filter = () => {
   const [cities, setCities] = useState([]);
 
   const navigate = useNavigate();
-
+  const location = useLocation();
   const handleClose = () => {
     navigate(0);
   };
@@ -61,6 +61,11 @@ const Filter = () => {
 
   const handleApply = () => {
     setIsFilterApplied(true);
+    if (location.pathname === "/") {
+      window.location.reload({ state: { apiURL: filteredUrl } });
+    } else {
+      navigate("/", { state: { apiURL: filteredUrl } });
+    }
   };
 
   useEffect(() => {
