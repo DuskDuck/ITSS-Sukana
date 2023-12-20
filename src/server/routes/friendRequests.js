@@ -12,6 +12,17 @@ router.post("/api/friends/send", async (req, res) => {
     connection = await db.getConnection();
     await connection.beginTransaction();
 
+    const [existingUsers] = await db.query(
+      `
+      SELECT * FROM users WHERE id = ? OR id = ?
+    `,
+      [requester_id, receiver_id]
+    );
+
+    if (existingUsers.length !== 2) {
+      return res.status(400).json({ error: "Users do not exist!" });
+    }
+
     const [existingRequests] = await connection.execute(
       "SELECT * FROM friends WHERE requester_id = ? AND receiver_id = ?",
       [requester_id, receiver_id]
@@ -52,6 +63,19 @@ router.put("/api/friends/respond", async (req, res) => {
     connection = await db.getConnection();
     await connection.beginTransaction();
 
+    if (status !== "ACCEPTED" && status !== "CANCELED") {
+      return res.status(400).json({ error: "Unknown friend request status" });
+    }
+
+    const [existingRequests] = await connection.execute(
+      "SELECT * FROM friends WHERE requester_id = ? AND receiver_id = ?",
+      [requester_id, receiver_id]
+    );
+
+    if (existingRequests.length === 0) {
+      return res.status(400).json({ error: "Friend request does not exist" });
+    }
+
     const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
 
     await connection.execute(
@@ -79,6 +103,17 @@ router.get("/api/friends/recieved/:user_id", async (req, res) => {
   const { user_id } = req.params;
 
   try {
+    const [existingUsers] = await db.query(
+      `
+          SELECT * FROM users WHERE id = ?
+        `,
+      [user_id]
+    );
+
+    if (existingUsers.length === 0) {
+      return res.status(400).json({ error: "User does not exist!" });
+    }
+
     const [friendRequests] = await db.execute(
       `SELECT f.id, f.requester_id, f.receiver_id, f.status, f.created_at, 
              u.first_name AS requester_first_name, u.last_name AS requester_last_name, i.url AS requester_filename
