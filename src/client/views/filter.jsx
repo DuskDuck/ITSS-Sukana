@@ -84,10 +84,12 @@ const Filter = () => {
       });
 
       console.log("API Response:", response.data);
-
-      dispatch(setFilteredData(response.data));
-
-      navigate("/");
+      if (response.data.length === 0) {
+        alert("Không tìm thấy người dùng phù hợp");
+      } else {
+        dispatch(setFilteredData(response.data));
+        navigate("/");
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
