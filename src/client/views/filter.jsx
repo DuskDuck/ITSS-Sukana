@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
@@ -10,7 +10,7 @@ import API_ENDPOINT from "./apiConfig";
 const Filter = () => {
   const defaultDistantValue = 0;
   const defaultAgeRange = [0, 20];
-  const defaultLocation = "location1";
+  const defaultLocation = "Hanoi";
 
   const [locationValue, setLocationValue] = useState(defaultLocation);
   const [selectedGender, setSelectedGender] = useState([]);
@@ -19,6 +19,7 @@ const Filter = () => {
   const [ageRange, setAgeRange] = useState(defaultAgeRange);
   const [users, setUsers] = useState([]);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [cities, setCities] = useState([]);
 
   const navigate = useNavigate();
 
@@ -63,15 +64,29 @@ const Filter = () => {
   };
 
   useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const citiesApiUrl = API_ENDPOINT + "/api/cities";
+        const citiesResponse = await axios.get(citiesApiUrl);
+        setCities(citiesResponse.data);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    };
+
+    fetchCities();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const apiUrl =
           API_ENDPOINT +
           `/api/filter?gender=${selectedGender.join(
             ","
-          )}&hobbies=${selectedInterested.join(",")}&minAge=${
-            ageRange[0]
-          }&maxAge=${ageRange[1]}`;
+          )}&hobbies=${selectedInterested.join(",")}&city=${encodeURIComponent(
+            locationValue
+          )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
 
         console.log("API URL:", apiUrl);
 
@@ -79,6 +94,7 @@ const Filter = () => {
 
         console.log("Filtered Users:", {
           selectedGender,
+          locationValue,
           selectedInterested,
           ageRange,
         });
@@ -143,9 +159,11 @@ const Filter = () => {
           onChange={handleLocationChange}
           className="filter-dropdown"
         >
-          <option value="location1">Location 1</option>
-          <option value="location2">Location 2</option>
-          <option value="location3">Location 3</option>
+          {cities.map((city) => (
+            <option key={city.city} value={city.city}>
+              {city.city}
+            </option>
+          ))}
         </select>
       </div>
       <div className="filter-section">
