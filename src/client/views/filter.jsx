@@ -61,7 +61,6 @@ const Filter = () => {
   };
 
   useEffect(() => {
-    // Gọi API khi bộ lọc thay đổi và nút Apply được bấm
     const fetchData = async () => {
       try {
         const apiUrl = `http://localhost:3000/api/filter?gender=${selectedGender.join(
