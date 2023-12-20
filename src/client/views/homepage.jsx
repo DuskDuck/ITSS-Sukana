@@ -30,6 +30,7 @@ const Homepage = (props) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [matchData, setUserData] = useState([]);
+  const [responseMessage, setResponseMessage] = useState('');
 
   const showFilter = () => {
     setIsFilterVisible(true);
@@ -41,6 +42,34 @@ const Homepage = (props) => {
 
   const handleListButtonClickDes = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 < matchData.length ? 0 : prevIndex - 1));
+  };
+
+  const handleSendFriendRequest = async () => {
+    const requestData = {
+      requester_id: 1,
+      receiver_id: matchData[currentIndex].id
+    };
+    console.log(requestData);
+    try {
+      const response = await fetch(API_ENDPOINT + '/api/friends/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+
+      const responseData = await response.json();
+      // Handle the response data if needed
+      setResponseMessage('Friend request sent successfully!');
+    } catch (error) {
+      console.error('Error sending friend request:', error);
+      setResponseMessage('Failed to send friend request.');
+    }
   };
 
   console.log(process.env.REACT_APP_ONLINE_API);
@@ -104,7 +133,7 @@ const Homepage = (props) => {
               <button type="button" className="homepage-love button">
                 <FontAwesomeIcon icon={faHeart} />
               </button>
-              <button type="button" className="homepage-button2 button">
+              <button onClick={handleSendFriendRequest} type="button" className="homepage-button2 button">
                 <FontAwesomeIcon icon={faUserPlus} />
               </button>
             </div>
