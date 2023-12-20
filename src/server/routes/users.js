@@ -1,6 +1,4 @@
 import express from "express";
-import User from "../models/user.js";
-import express from "express";
 import db from "../db/db.js";
 import User from "../models/user.js";
 
@@ -54,6 +52,19 @@ router.get("/api/users/:userId", async (req, res) => {
     }
 
     res.json(userInformations);
+  } catch (error) {
+    console.error("Error", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/api/cities", async (req, res) => {
+  try {
+    const [cities] = await db.query(`
+      SELECT DISTINCT city FROM users 
+    `);
+
+    res.json(cities);
   } catch (error) {
     console.error("Error", error);
     res.status(500).json({ error: "Internal Server Error" });
