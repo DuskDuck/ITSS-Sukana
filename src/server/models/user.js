@@ -2,19 +2,47 @@ import db from '../db/db.js';
 import { getImageURL } from '../config/firebaseConfig.js';
 
 class User {
-  static async getUserInfomations({userId}) {
-    try {
-      let sql = `
-      SELECT Users.name, Users.age, Users.address, Users.city,Users.about, user_Images.image_id, Hobbies.name AS hobby_name
-      FROM Users
-      LEFT JOIN user_Images ON Users.id = user_Images.user_id
-      LEFT JOIN Users_Hobbies ON Users.id = Users_Hobbies.user_id
-      LEFT JOIN Hobbies ON Users_Hobbies.hobby_id = Hobbies.id
-      WHERE Users.id = :'${useId}';      
-      `
-      const [userInformations] = db.query(sql);
+  static async getUserInformation(userId) {
+    const [userRows] = await db.query(`
+      SELECT * FROM users WHERE id = ?
+    `, [userId]);
 
-      return userInformations;
+    if (userRows.length === 0) {
+      return null;
+    }
+
+    try {
+      const [rows] = await db.query(`
+        SELECT 
+          u.*,
+          GROUP_CONCAT(hobbies.name) as hobbies, 
+          images.url as default_image_url,
+          GROUP_CONCAT(DISTINCT user_images.image_id) as image_ids,
+          GROUP_CONCAT(DISTINCT images2.url) as image_urls
+        FROM users u
+        LEFT JOIN user_hobbies ON u.id = user_hobbies.user_id
+        LEFT JOIN hobbies ON user_hobbies.hobby_id = hobbies.id
+        LEFT JOIN images ON u.default_image_id = images.id
+        LEFT JOIN user_images ON u.id = user_images.user_id
+        LEFT JOIN images as images2 ON user_images.image_id = images2.id
+        WHERE u.id = ?
+      `, [userId]);
+  
+      if (rows.length > 0) {
+        const user = rows[0];
+        if (user.default_image_url) {
+          user.default_image_url = await getImageURL(user.default_image_url);
+        }
+        if (user.image_urls) {
+          user.image_urls = user.image_urls.split(',');
+          for (let i = 0; i < user.image_urls.length; i++) {
+            user.image_urls[i] = await getImageURL(user.image_urls[i]);
+          }
+        }
+        return user;
+      } else {
+        return null;
+      }
     } catch (error) {
       throw error;
     }
@@ -84,6 +112,14 @@ class User {
 
   static async getRandomUserNotInFriends(userId) {
     try {
+      const [userRows] = await db.query(`
+        SELECT * FROM users WHERE id = ?
+      `, [userId]);
+
+      if (userRows.length === 0) {
+        return null;
+      }
+
       const [rows] = await db.query(`
         SELECT 
           u.*,
