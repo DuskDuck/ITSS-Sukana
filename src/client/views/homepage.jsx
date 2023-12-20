@@ -35,9 +35,14 @@ const Homepage = (props) => {
     setIsFilterVisible(true);
   };
 
-  const handleListButtonClick = () => {
+  const handleListButtonClickAsc = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1 < matchData.length ? prevIndex + 1 : 0));
   };
+
+  const handleListButtonClickDes = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 < matchData.length ? 0 : prevIndex - 1));
+  };
+
   console.log(process.env.REACT_APP_ONLINE_API);
   useEffect(() => {
     const fetchUserData = async () => {
@@ -69,7 +74,7 @@ const Homepage = (props) => {
       <div className="homepage-main">
         <NavbarContainer></NavbarContainer>
         <div className="homepage-main-area">
-          <button type="button" className="homepage-button3 button swipe-button">
+          <button onClick={handleListButtonClickDes} type="button" className="homepage-button3 button swipe-button">
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           <div className="main-container">
@@ -104,7 +109,7 @@ const Homepage = (props) => {
               </button>
             </div>
           </div>
-          <button onClick={handleListButtonClick} type="button" className="homepage-button3 button swipe-button">
+          <button onClick={handleListButtonClickAsc} type="button" className="homepage-button3 button swipe-button">
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>

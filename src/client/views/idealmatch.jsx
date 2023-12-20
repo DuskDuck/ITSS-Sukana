@@ -5,6 +5,8 @@ import { Helmet } from 'react-helmet'
 import AppComponent from '../components/component'
 import NavbarContainer from '../components/navbar-container'
 import './idealmatch.css'
+import sukana from '../assets/image/download.png'
+
 
 //API Endpoint Import
 import API_ENDPOINT from './apiConfig';
@@ -58,7 +60,7 @@ const Idealmatch = (props) => {
             />
             <img
               alt="image"
-              src={matchData.default_image_url}
+              src={sukana}
               className="idealmatch-image1"
             />
             <button type="button" className="idealmatch-button button">
