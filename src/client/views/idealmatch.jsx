@@ -14,12 +14,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 const Idealmatch = (props) => {
+  const [matchData, setUserData] = useState([]);
   useEffect(() => {
     WebFont.load({
       google: {
         families: ["Roboto", "Inria Sans", "Indie Flower"],
       },
     });
+  }, []);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/match/1');
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
   }, []);
   return (
     <div className="idealmatch-container">
@@ -34,12 +50,12 @@ const Idealmatch = (props) => {
           <div className="idealmatch-container1">
             <img
               alt="image"
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
+              src={matchData.default_image_url}
               className="idealmatch-image"
             />
             <img
               alt="image"
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
+              src={matchData.default_image_url}
               className="idealmatch-image1"
             />
             <button type="button" className="idealmatch-button button">

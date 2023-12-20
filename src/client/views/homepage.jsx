@@ -25,17 +25,31 @@ import bg2 from '../assets/image/somewhere.png'
 
 const Homepage = (props) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [matchData, setUserData] = useState([]);
 
   const showFilter = () => {
     setIsFilterVisible(true);
   };
 
+  const handleListButtonClick = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1 < matchData.length ? prevIndex + 1 : 0));
+  };
+
   useEffect(() => {
-    WebFont.load({
-      google: {
-        families: ["Roboto", "Inria Sans"],
-      },
-    });
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/filter');
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
   }, []);
   return (
     <div className="homepage-container">
@@ -67,11 +81,13 @@ const Homepage = (props) => {
                 alt="image"
                 className="homepage-image1"
               />
+              {matchData.length > 0 && (
               <img
-                src="https://play.teleporthq.io/static/svg/default-img.svg"
+                src={matchData[currentIndex].default_image_url}
                 alt="image"
                 className="homepage-image2"
               />
+              )}
             </div>
             <div className="button-container">
               <button type="button" className="homepage-button1 button">
@@ -85,7 +101,7 @@ const Homepage = (props) => {
               </button>
             </div>
           </div>
-          <button type="button" className="homepage-button3 button swipe-button">
+          <button onClick={handleListButtonClick} type="button" className="homepage-button3 button swipe-button">
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
