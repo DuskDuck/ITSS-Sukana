@@ -5,6 +5,8 @@ import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
 
+import API_ENDPOINT from "./apiConfig";
+
 const Filter = () => {
   const defaultDistantValue = 0;
   const defaultAgeRange = [0, 20];
@@ -63,11 +65,13 @@ const Filter = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = `http://localhost:3000/api/filter?gender=${selectedGender.join(
-          ","
-        )}&hobbies=${selectedInterested.join(",")}&minAge=${
-          ageRange[0]
-        }&maxAge=${ageRange[1]}`;
+        const apiUrl =
+          API_ENDPOINT +
+          `/api/filter?gender=${selectedGender.join(
+            ","
+          )}&hobbies=${selectedInterested.join(",")}&minAge=${
+            ageRange[0]
+          }&maxAge=${ageRange[1]}`;
 
         console.log("API URL:", apiUrl);
 
