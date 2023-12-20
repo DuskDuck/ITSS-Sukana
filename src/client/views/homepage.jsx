@@ -7,6 +7,9 @@ import NavbarContainer from '../components/navbar-container'
 import './homepage.css'
 import Filter from "../views/filter";
 
+//API Endpoint Import
+import API_ENDPOINT from './apiConfig';
+
 //Import Font
 import WebFont from "webfontloader";
 
@@ -35,11 +38,11 @@ const Homepage = (props) => {
   const handleListButtonClick = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1 < matchData.length ? prevIndex + 1 : 0));
   };
-
+  console.log(API_ENDPOINT);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/filter');
+        const response = await fetch( API_ENDPOINT + '/api/filter');
         if (!response.ok) {
           throw new Error('Network response was not ok.');
         }

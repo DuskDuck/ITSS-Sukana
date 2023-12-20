@@ -6,6 +6,9 @@ import AppComponent from '../components/component'
 import NavbarContainer from '../components/navbar-container'
 import './idealmatch.css'
 
+//API Endpoint Import
+import API_ENDPOINT from './apiConfig';
+
 //import font
 import WebFont from "webfontloader";
 
@@ -25,7 +28,7 @@ const Idealmatch = (props) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/match/1');
+        const response = await fetch( API_ENDPOINT + '/api/match/1');
         if (!response.ok) {
           throw new Error('Network response was not ok.');
         }
