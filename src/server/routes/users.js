@@ -13,5 +13,20 @@ router.get('/', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+// route get du lieu thong tin user
+router.get('/:userId,', async (req, res) => {
+  try {
+    const userId = parseInt(req.query.id);
+    if(isNaN(userId)){
+      return res.status(400).json({error:'Invalid user id.'});
+    }
+    const userInformations = await User.getUserInfomations();
+    res.json(userInformations);
+    res.status(200).json('Success');
+  } catch (error) {
+    console.error('Error', error);
+    res.status(500).json({error:'Internal Server Error'});
+  }
+}) 
   
   export default router;
