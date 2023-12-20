@@ -33,6 +33,7 @@
 .profile-details {
   flex-grow: 1;
   justify-self: center;
+  max-width: 60%;
   margin-left: 20px;
 }
 
