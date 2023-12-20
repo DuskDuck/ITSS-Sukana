@@ -4,6 +4,8 @@ import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setFilteredData } from "../../redux/action";
 
 import API_ENDPOINT from "./apiConfig";
 
@@ -23,6 +25,7 @@ const Filter = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const handleClose = () => {
     navigate(0);
   };
@@ -59,12 +62,34 @@ const Filter = () => {
     setLocationValue(defaultLocation);
   };
 
-  const handleApply = () => {
+  const handleApply = async () => {
     setIsFilterApplied(true);
-    if (location.pathname === "/") {
-      window.location.reload();
-    } else {
+
+    try {
+      const apiUrl =
+        API_ENDPOINT +
+        `/api/filter?gender=${selectedGender.join(
+          ","
+        )}&hobbies=${selectedInterested.join(",")}&city=${encodeURIComponent(
+          locationValue
+        )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
+
+      const response = await axios.get(apiUrl);
+
+      console.log("Filtered Users:", {
+        selectedGender,
+        locationValue,
+        selectedInterested,
+        ageRange,
+      });
+
+      console.log("API Response:", response.data);
+
+      dispatch(setFilteredData(response.data));
+
       navigate("/");
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
