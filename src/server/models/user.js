@@ -1,6 +1,21 @@
 import db from '../db/db.js';
 
 class User {
+  static async getUserInfomations({userId}) {
+    try {
+      let sql = `
+      SELECT Users.name, Users.age, Users.address, Users.city,Users.about, user_Images.image_id, Hobbies.name AS hobby_name
+      FROM Users
+      LEFT JOIN user_Images ON Users.id = user_Images.user_id
+      LEFT JOIN Users_Hobbies ON Users.id = Users_Hobbies.user_id
+      LEFT JOIN Hobbies ON Users_Hobbies.hobby_id = Hobbies.id
+      WHERE Users.id = :'${useId}';      
+      `
+      const [userInformations] = db.query(sql);
+    } catch (error) {
+      throw error;
+    }
+  }
   static async getAllUsersWithHobbies({ gender, hobbies, city, minAge, maxAge }) {
     try {
       let sql = `
