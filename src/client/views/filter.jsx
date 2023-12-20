@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
@@ -13,12 +14,16 @@ const Filter = () => {
   const [selectedGender, setSelectedGender] = useState([]);
   const [selectedInterested, setSelectedInterested] = useState([]);
   const [distantValue, setDistantValue] = useState(defaultDistantValue);
-  const [ageRange, setAgeRange] = React.useState([0, 20]);
+  const [ageRange, setAgeRange] = useState(defaultAgeRange);
+  const [users, setUsers] = useState([]);
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
+
   const navigate = useNavigate();
 
   const handleClose = () => {
     navigate(0);
   };
+
   const handleGenderClick = (gender) => {
     setSelectedGender([gender]);
   };
@@ -51,6 +56,44 @@ const Filter = () => {
     setLocationValue(defaultLocation);
   };
 
+  const handleApply = () => {
+    setIsFilterApplied(true);
+  };
+
+  useEffect(() => {
+    // Gọi API khi bộ lọc thay đổi và nút Apply được bấm
+    const fetchData = async () => {
+      try {
+        const apiUrl = `http://localhost:3000/api/filter?gender=${selectedGender.join(
+          ","
+        )}&hobbies=${selectedInterested.join(",")}&minAge=${
+          ageRange[0]
+        }&maxAge=${ageRange[1]}`;
+
+        console.log("API URL:", apiUrl);
+
+        const response = await axios.get(apiUrl);
+
+        console.log("Filtered Users:", {
+          selectedGender,
+          selectedInterested,
+          ageRange,
+        });
+
+        console.log("API Response:", response.data);
+
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (isFilterApplied) {
+      fetchData();
+      setIsFilterApplied(false);
+    }
+  }, [selectedGender, selectedInterested, ageRange, isFilterApplied]);
+
   return (
     <div className="filter-container">
       <button className="close-button" onClick={handleClose}>
@@ -63,30 +106,30 @@ const Filter = () => {
           <button
             style={{ borderTopLeftRadius: 4, borderBottomLeftRadius: 4 }}
             className={`gender-button ${
-              selectedGender.includes("boys") ? "selected" : ""
+              selectedGender.includes("Male") ? "selected" : ""
             }`}
-            onClick={() => handleGenderClick("boys")}
+            onClick={() => handleGenderClick("Male")}
           >
-            Boys
+            Male
           </button>
           <Divider orientation="vertical" variant="middle" flexItem />
           <button
             className={`gender-button ${
-              selectedGender.includes("girls") ? "selected" : ""
+              selectedGender.includes("Female") ? "selected" : ""
             }`}
-            onClick={() => handleGenderClick("girls")}
+            onClick={() => handleGenderClick("Female")}
           >
-            Girls
+            Female
           </button>
           <Divider orientation="vertical" variant="middle" flexItem />
           <button
             style={{ borderTopRightRadius: 4, borderBottomRightRadius: 4 }}
             className={`gender-button ${
-              selectedGender.includes("others") ? "selected" : ""
+              selectedGender.includes("other") ? "selected" : ""
             }`}
-            onClick={() => handleGenderClick("others")}
+            onClick={() => handleGenderClick("other")}
           >
-            Others
+            Other
           </button>
         </div>
       </div>
@@ -129,73 +172,73 @@ const Filter = () => {
         <div className="filter-options">
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest1") ? "selected" : ""
+              selectedInterested.includes("1") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest1")}
+            onClick={() => handleInterestedClick("1")}
           >
             Interest 1
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest2") ? "selected" : ""
+              selectedInterested.includes("2") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest2")}
+            onClick={() => handleInterestedClick("2")}
           >
             Interest 2
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest3") ? "selected" : ""
+              selectedInterested.includes("3") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest3")}
+            onClick={() => handleInterestedClick("3")}
           >
             Interest 3
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest4") ? "selected" : ""
+              selectedInterested.includes("4") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest4")}
+            onClick={() => handleInterestedClick("4")}
           >
             Interest 4
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest5") ? "selected" : ""
+              selectedInterested.includes("5") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest5")}
+            onClick={() => handleInterestedClick("5")}
           >
             Interest 5
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest6") ? "selected" : ""
+              selectedInterested.includes("6") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest6")}
+            onClick={() => handleInterestedClick("6")}
           >
             Interest 6
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest7") ? "selected" : ""
+              selectedInterested.includes("7") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest7")}
+            onClick={() => handleInterestedClick("7")}
           >
             Interest 7
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest8") ? "selected" : ""
+              selectedInterested.includes("8") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest8")}
+            onClick={() => handleInterestedClick("8")}
           >
             Interest 8
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest9") ? "selected" : ""
+              selectedInterested.includes("9") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest9")}
+            onClick={() => handleInterestedClick("9")}
           >
             Interest 9
           </button>
@@ -205,7 +248,9 @@ const Filter = () => {
         <button className="clear" onClick={handleClear}>
           Clear
         </button>
-        <button className="submit">Apply</button>
+        <button className="submit" onClick={handleApply}>
+          Apply
+        </button>
       </div>
     </div>
   );
