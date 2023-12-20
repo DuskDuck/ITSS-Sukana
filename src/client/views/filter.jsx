@@ -62,9 +62,9 @@ const Filter = () => {
   const handleApply = () => {
     setIsFilterApplied(true);
     if (location.pathname === "/") {
-      window.location.reload({ state: { apiURL: filteredUrl } });
+      window.location.reload();
     } else {
-      navigate("/", { state: { apiURL: filteredUrl } });
+      navigate("/");
     }
   };
 
