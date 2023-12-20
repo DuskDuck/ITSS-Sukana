@@ -38,7 +38,7 @@ const Homepage = (props) => {
   const handleListButtonClick = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1 < matchData.length ? prevIndex + 1 : 0));
   };
-  console.log(API_ENDPOINT);
+  console.log(process.env.REACT_APP_ONLINE_API);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
