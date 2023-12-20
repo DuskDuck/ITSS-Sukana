@@ -1,4 +1,5 @@
 import db from '../db/db.js';
+import { getImageURL } from '../config/firebaseConfig.js';
 
 class User {
   static async getUserInfomations({userId}) {
@@ -12,21 +13,28 @@ class User {
       WHERE Users.id = :'${useId}';      
       `
       const [userInformations] = db.query(sql);
+
+      return userInformations;
     } catch (error) {
       throw error;
     }
   }
+
   static async getAllUsersWithHobbies({ gender, hobbies, city, minAge, maxAge }) {
     try {
       let sql = `
-        SELECT users.*, GROUP_CONCAT(hobbies.name) as hobbies
+        SELECT 
+          users.*, 
+          GROUP_CONCAT(hobbies.name) as hobbies, 
+          images.url as filename
         FROM users
         LEFT JOIN user_hobbies ON users.id = user_hobbies.user_id
         LEFT JOIN hobbies ON user_hobbies.hobby_id = hobbies.id
+        LEFT JOIN images ON users.default_image_id = images.id
       `;
 
       const whereConditions = [];
-      let hobbiesConditions; // Declare the variable here
+      let hobbiesConditions;
 
       if (gender) {
         whereConditions.push(`gender = '${gender}'`);
@@ -61,7 +69,50 @@ class User {
 
       const [usersWithHobbies] = await db.query(sql);
 
-      return usersWithHobbies;
+      const usersWithUrl = await Promise.all(usersWithHobbies.map(async user => {
+        if (user.filename) {
+          user.default_image_url = await getImageURL(user.filename);
+        }
+        return user;
+      }));
+
+      return usersWithUrl;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getRandomUserNotInFriends(userId) {
+    try {
+      const [rows] = await db.query(`
+        SELECT 
+          u.*,
+          images.url as filename
+        FROM users u
+        LEFT JOIN images ON u.default_image_id = images.id
+        WHERE u.id NOT IN (
+          SELECT f.receiver_id
+            FROM friends f
+            WHERE f.requester_id = ? AND f.status = 'ACCEPTED'
+            UNION
+            SELECT f.requester_id
+            FROM friends f
+            WHERE f.receiver_id = ? AND f.status = 'ACCEPTED'
+        )
+        AND u.id <> ?
+        ORDER BY RAND()
+        LIMIT 1;
+      `, [userId, userId, userId]);
+
+      if (rows.length > 0) {
+        const user = rows[0];
+        if (user.filename) {
+          user.default_image_url = await getImageURL(user.filename);
+        }
+        return user;
+      } else {
+        return null;
+      }
     } catch (error) {
       throw error;
     }
