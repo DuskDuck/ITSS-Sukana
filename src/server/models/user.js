@@ -14,7 +14,7 @@ class User {
     try {
       const [rows] = await db.query(`
         SELECT 
-          u.*,
+          u.id, u. email, u.first_name, u.last_name, u.age, u.birthday, u.gender, u.address, u.city, u.phone, u.about,
           GROUP_CONCAT(hobbies.name) as hobbies, 
           images.url as default_image_url,
           GROUP_CONCAT(DISTINCT user_images.image_id) as image_ids,
@@ -52,7 +52,7 @@ class User {
     try {
       let sql = `
         SELECT 
-          users.*, 
+          users.id, users. email, users.first_name, users.last_name, users.age, users.birthday, users.gender, users.address, users.city, users.phone, users.about, 
           GROUP_CONCAT(hobbies.name) as hobbies, 
           images.url as filename
         FROM users
@@ -122,7 +122,7 @@ class User {
 
       const [rows] = await db.query(`
         SELECT 
-          u.*,
+          u.id, u. email, u.first_name, u.last_name, u.age, u.birthday, u.gender, u.address, u.city, u.phone, u.about,
           images.url as filename
         FROM users u
         LEFT JOIN images ON u.default_image_id = images.id
