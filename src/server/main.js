@@ -18,8 +18,7 @@ db.getConnection((err, connection) => {
 
 app.use(express.json());
 app.use(friendRoutes);
-app.use(matchRoutes);
-app.use(filterRoutes);
+app.use(userRoutes);
 
 ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000...")
