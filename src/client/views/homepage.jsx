@@ -7,6 +7,9 @@ import NavbarContainer from '../components/navbar-container'
 import './homepage.css'
 import Filter from "../views/filter";
 
+//API Endpoint Import
+import API_ENDPOINT from './apiConfig';
+
 //Import Font
 import WebFont from "webfontloader";
 
@@ -25,17 +28,65 @@ import bg2 from '../assets/image/somewhere.png'
 
 const Homepage = (props) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [matchData, setUserData] = useState([]);
+  const [responseMessage, setResponseMessage] = useState('');
 
   const showFilter = () => {
     setIsFilterVisible(true);
   };
 
+  const handleListButtonClickAsc = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1 < matchData.length ? prevIndex + 1 : 0));
+  };
+
+  const handleListButtonClickDes = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 < matchData.length ? 0 : prevIndex - 1));
+  };
+
+  const handleSendFriendRequest = async () => {
+    const requestData = {
+      requester_id: 1,
+      receiver_id: matchData[currentIndex].id
+    };
+    console.log(requestData);
+    try {
+      const response = await fetch(API_ENDPOINT + '/api/friends/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+
+      const responseData = await response.json();
+      // Handle the response data if needed
+      setResponseMessage('Friend request sent successfully!');
+    } catch (error) {
+      console.error('Error sending friend request:', error);
+      setResponseMessage('Failed to send friend request.');
+    }
+  };
+
+  console.log(process.env.REACT_APP_ONLINE_API);
   useEffect(() => {
-    WebFont.load({
-      google: {
-        families: ["Roboto", "Inria Sans"],
-      },
-    });
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch( API_ENDPOINT + '/api/filter');
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
   }, []);
   return (
     <div className="homepage-container">
@@ -52,7 +103,7 @@ const Homepage = (props) => {
       <div className="homepage-main">
         <NavbarContainer></NavbarContainer>
         <div className="homepage-main-area">
-          <button type="button" className="homepage-button3 button swipe-button">
+          <button onClick={handleListButtonClickDes} type="button" className="homepage-button3 button swipe-button">
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           <div className="main-container">
@@ -67,11 +118,13 @@ const Homepage = (props) => {
                 alt="image"
                 className="homepage-image1"
               />
+              {matchData.length > 0 && (
               <img
-                src="https://play.teleporthq.io/static/svg/default-img.svg"
+                src={matchData[currentIndex].default_image_url}
                 alt="image"
                 className="homepage-image2"
               />
+              )}
             </div>
             <div className="button-container">
               <button type="button" className="homepage-button1 button">
@@ -80,12 +133,12 @@ const Homepage = (props) => {
               <button type="button" className="homepage-love button">
                 <FontAwesomeIcon icon={faHeart} />
               </button>
-              <button type="button" className="homepage-button2 button">
+              <button onClick={handleSendFriendRequest} type="button" className="homepage-button2 button">
                 <FontAwesomeIcon icon={faUserPlus} />
               </button>
             </div>
           </div>
-          <button type="button" className="homepage-button3 button swipe-button">
+          <button onClick={handleListButtonClickAsc} type="button" className="homepage-button3 button swipe-button">
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
