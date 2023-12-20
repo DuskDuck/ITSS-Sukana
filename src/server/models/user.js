@@ -1,18 +1,22 @@
-import db from '../db/db.js';
-import { getImageURL } from '../config/firebaseConfig.js';
+import db from "../db/db.js";
+import { getImageURL } from "../config/firebaseConfig.js";
 
 class User {
   static async getUserInformation(userId) {
-    const [userRows] = await db.query(`
+    const [userRows] = await db.query(
+      `
       SELECT * FROM users WHERE id = ?
-    `, [userId]);
+    `,
+      [userId]
+    );
 
     if (userRows.length === 0) {
       return null;
     }
 
     try {
-      const [rows] = await db.query(`
+      const [rows] = await db.query(
+        `
         SELECT 
           u.id, u. email, u.first_name, u.last_name, u.age, u.birthday, u.gender, u.address, u.city, u.phone, u.about,
           GROUP_CONCAT(hobbies.name) as hobbies, 
@@ -26,15 +30,17 @@ class User {
         LEFT JOIN user_images ON u.id = user_images.user_id
         LEFT JOIN images as images2 ON user_images.image_id = images2.id
         WHERE u.id = ?
-      `, [userId]);
-  
+      `,
+        [userId]
+      );
+
       if (rows.length > 0) {
         const user = rows[0];
         if (user.default_image_url) {
           user.default_image_url = await getImageURL(user.default_image_url);
         }
         if (user.image_urls) {
-          user.image_urls = user.image_urls.split(',');
+          user.image_urls = user.image_urls.split(",");
           for (let i = 0; i < user.image_urls.length; i++) {
             user.image_urls[i] = await getImageURL(user.image_urls[i]);
           }
@@ -48,7 +54,13 @@ class User {
     }
   }
 
-  static async getAllUsersWithHobbies({ gender, hobbies, city, minAge, maxAge }) {
+  static async getAllUsersWithHobbies({
+    gender,
+    hobbies,
+    city,
+    minAge,
+    maxAge,
+  }) {
     try {
       let sql = `
         SELECT 
@@ -69,12 +81,12 @@ class User {
       }
 
       if (hobbies) {
-        const hobbiesArray = hobbies.split(',').map(Number);
+        const hobbiesArray = hobbies.split(",").map(Number);
         hobbiesConditions = hobbiesArray.map(
-          hobbyId => `EXISTS (SELECT 1 FROM user_hobbies 
+          (hobbyId) => `EXISTS (SELECT 1 FROM user_hobbies 
             WHERE user_hobbies.user_id = users.id AND user_hobbies.hobby_id = ${hobbyId})`
         );
-        whereConditions.push(`(${hobbiesConditions.join(' OR ')})`);
+        whereConditions.push(`(${hobbiesConditions.join(" OR ")})`);
       }
 
       if (city) {
@@ -86,23 +98,25 @@ class User {
       }
 
       if (whereConditions.length > 0) {
-        sql += ' WHERE ' + whereConditions.join(' AND ');
+        sql += " WHERE " + whereConditions.join(" AND ");
       }
 
-      sql += ' GROUP BY users.id';
+      sql += " GROUP BY users.id";
 
       if (hobbies) {
-        sql += ` ORDER BY COUNT(${hobbiesConditions.join(' OR ')}) DESC`;
+        sql += ` ORDER BY COUNT(${hobbiesConditions.join(" OR ")}) DESC`;
       }
 
       const [usersWithHobbies] = await db.query(sql);
 
-      const usersWithUrl = await Promise.all(usersWithHobbies.map(async user => {
-        if (user.filename) {
-          user.default_image_url = await getImageURL(user.filename);
-        }
-        return user;
-      }));
+      const usersWithUrl = await Promise.all(
+        usersWithHobbies.map(async (user) => {
+          if (user.filename) {
+            user.default_image_url = await getImageURL(user.filename);
+          }
+          return user;
+        })
+      );
 
       return usersWithUrl;
     } catch (error) {
@@ -112,15 +126,19 @@ class User {
 
   static async getRandomUserNotInFriends(userId) {
     try {
-      const [userRows] = await db.query(`
+      const [userRows] = await db.query(
+        `
         SELECT * FROM users WHERE id = ?
-      `, [userId]);
+      `,
+        [userId]
+      );
 
       if (userRows.length === 0) {
         return null;
       }
 
-      const [rows] = await db.query(`
+      const [rows] = await db.query(
+        `
         SELECT 
           u.id, u. email, u.first_name, u.last_name, u.age, u.birthday, u.gender, u.address, u.city, u.phone, u.about,
           images.url as filename
@@ -138,7 +156,9 @@ class User {
         AND u.id <> ?
         ORDER BY RAND()
         LIMIT 1;
-      `, [userId, userId, userId]);
+      `,
+        [userId, userId, userId]
+      );
 
       if (rows.length > 0) {
         const user = rows[0];

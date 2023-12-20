@@ -1,9 +1,8 @@
 import express from "express";
 import ViteExpress from "vite-express";
 import db from "./db/db.js";
-import matchRoutes from "./routes/random_user.js";
-import filterRoutes from "./routes/filter.js";
 import friendRoutes from "./routes/friendRequests.js";
+import userRoutes from "./routes/users.js";
 
 const app = express();
 
