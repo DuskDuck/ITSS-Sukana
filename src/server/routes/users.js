@@ -1,4 +1,5 @@
 import express from 'express';
+import db from '../db/db.js';
 import User from '../models/user.js';
 
 const router = express.Router();
@@ -56,5 +57,18 @@ router.get('/api/users/:userId', async (req, res) => {
     res.status(500).json({error:'Internal Server Error'});
   }
 }) 
-  
-  export default router;
+
+router.get('/api/cities', async (req, res) => {
+  try {
+    const [cities] = await db.query(`
+      SELECT DISTINCT city FROM users 
+    `);
+    
+    res.json(cities);
+  } catch (error) {
+    console.error('Error', error);
+    res.status(500).json({error:'Internal Server Error'});
+  }
+})
+
+export default router;
