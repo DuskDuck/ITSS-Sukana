@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
@@ -75,7 +74,13 @@ const Filter = ({ setIsFilterVisible }) => {
           locationValue
         )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
 
-      const response = await axios.get(apiUrl);
+      const response = await fetch(apiUrl);
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+
+      const responseData = await response.json();
 
       console.log("Filtered Users:", {
         selectedGender,
@@ -84,11 +89,11 @@ const Filter = ({ setIsFilterVisible }) => {
         ageRange,
       });
 
-      console.log("API Response:", response.data);
-      if (response.data.length === 0) {
+      console.log("API Response:", responseData);
+      if (responseData.length === 0) {
         alert("Không tìm thấy người dùng phù hợp");
       } else {
-        dispatch(setFilteredData(response.data));
+        dispatch(setFilteredData(responseData));
         setIsFilterVisible(false);
         setFilterKey((prevKey) => prevKey + 1);
         navigate("/");
@@ -102,8 +107,14 @@ const Filter = ({ setIsFilterVisible }) => {
     const fetchCities = async () => {
       try {
         const citiesApiUrl = API_ENDPOINT + "/api/cities";
-        const citiesResponse = await axios.get(citiesApiUrl);
-        setCities(citiesResponse.data);
+        const response = await fetch(citiesApiUrl);
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok.");
+        }
+
+        const citiesData = await response.json();
+        setCities(citiesData);
       } catch (error) {
         console.error("Error fetching cities:", error);
       }
@@ -125,7 +136,13 @@ const Filter = ({ setIsFilterVisible }) => {
 
         console.log("API URL:", apiUrl);
 
-        const response = await axios.get(apiUrl);
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok.");
+        }
+
+        const responseData = await response.json();
 
         console.log("Filtered Users:", {
           selectedGender,
@@ -134,9 +151,9 @@ const Filter = ({ setIsFilterVisible }) => {
           ageRange,
         });
 
-        console.log("API Response:", response.data);
+        console.log("API Response:", responseData);
 
-        setUsers(response.data);
+        setUsers(responseData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
