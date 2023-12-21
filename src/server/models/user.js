@@ -55,6 +55,7 @@ class User {
   }
 
   static async getAllUsersWithHobbies({
+    userId,
     gender,
     hobbies,
     city,
@@ -75,6 +76,18 @@ class User {
 
       const whereConditions = [];
       let hobbiesConditions;
+
+      whereConditions.push(`users.id NOT IN (
+        SELECT f.receiver_id
+          FROM friends f
+          WHERE f.requester_id = ${userId} AND f.status = 'ACCEPTED'
+          UNION
+          SELECT f.requester_id
+          FROM friends f
+          WHERE f.receiver_id = ${userId} AND f.status = 'ACCEPTED'
+      )
+      AND users.id <> ${userId}
+      `);
 
       if (gender) {
         whereConditions.push(`gender = '${gender}'`);

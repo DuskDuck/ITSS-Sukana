@@ -5,10 +5,11 @@ import User from "../models/user.js";
 const router = express.Router();
 
 router.get("/api/filter", async (req, res) => {
-  const { gender, hobbies, city, minAge, maxAge } = req.query;
+  const { userId, gender, hobbies, city, minAge, maxAge } = req.query;
 
   try {
     const usersWithHobbies = await User.getAllUsersWithHobbies({
+      userId,
       gender,
       hobbies,
       city,
@@ -65,6 +66,19 @@ router.get("/api/cities", async (req, res) => {
     `);
 
     res.json(cities);
+  } catch (error) {
+    console.error("Error", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/api/hobbies", async (req, res) => {
+  try {
+    const [hobbies] = await db.query(`
+      SELECT * FROM hobbies 
+    `);
+
+    res.json(hobbies);
   } catch (error) {
     console.error("Error", error);
     res.status(500).json({ error: "Internal Server Error" });

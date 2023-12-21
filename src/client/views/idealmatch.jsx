@@ -20,6 +20,12 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 const Idealmatch = (props) => {
   const [matchData, setUserData] = useState([]);
+
+  const handleReloadClick = () => {
+    // Reloads the page when the button is clicked
+    window.location.reload();
+  };
+
   useEffect(() => {
     WebFont.load({
       google: {
@@ -89,7 +95,7 @@ const Idealmatch = (props) => {
                 <br></br>
               </span>
             </button>
-            <button type="button" className="idealmatch-button3 button">
+            <button onClick={handleReloadClick} type="button" className="idealmatch-button3 button">
               <span className="idealmatch-text12">
                 <span>Keep Swiping</span>
                 <br></br>
