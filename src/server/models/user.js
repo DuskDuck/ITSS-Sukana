@@ -55,6 +55,7 @@ class User {
   }
 
   static async getAllUsersWithHobbies({
+    userId,
     gender,
     hobbies,
     city,
@@ -71,6 +72,16 @@ class User {
         LEFT JOIN user_hobbies ON users.id = user_hobbies.user_id
         LEFT JOIN hobbies ON user_hobbies.hobby_id = hobbies.id
         LEFT JOIN images ON users.default_image_id = images.id
+        WHERE users.id NOT IN (
+          SELECT f.receiver_id
+            FROM friends f
+            WHERE f.requester_id = ${userId} AND f.status = 'ACCEPTED'
+            UNION
+            SELECT f.requester_id
+            FROM friends f
+            WHERE f.receiver_id = ${userId} AND f.status = 'ACCEPTED'
+        )
+        AND users.id <> ${userId}
       `;
 
       const whereConditions = [];
