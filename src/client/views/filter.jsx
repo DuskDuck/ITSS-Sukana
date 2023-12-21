@@ -1,35 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setFilteredData } from "../../redux/action";
 
-const Filter = () => {
+import API_ENDPOINT from "./apiConfig";
+
+const Filter = ({ setIsFilterVisible }) => {
   const defaultDistantValue = 0;
   const defaultAgeRange = [0, 20];
+  const defaultLocation = "Hanoi";
 
+  const [locationValue, setLocationValue] = useState(defaultLocation);
   const [selectedGender, setSelectedGender] = useState([]);
-  const [selectedInterested, setSelectedInterested] = useState([]);
+  const [selectedHobbies, setSelectedHobbies] = useState([]);
   const [distantValue, setDistantValue] = useState(defaultDistantValue);
-  const [ageRange, setAgeRange] = React.useState([0, 20]);
+  const [ageRange, setAgeRange] = useState(defaultAgeRange);
+  const [users, setUsers] = useState([]);
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [cities, setCities] = useState([]);
+  const [filterKey, setFilterKey] = useState(0); // Thêm state filterKey
 
-  const handleGenderClick = (gender) => {
-    setSelectedGender((prevSelected) =>
-      prevSelected.includes(gender)
-        ? prevSelected.filter((item) => item !== gender)
-        : [...prevSelected, gender]
-    );
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const handleClose = () => {
+    navigate(0);
   };
 
-  const handleInterestedClick = (interest) => {
-    setSelectedInterested((prevSelected) =>
-      prevSelected.includes(interest)
-        ? prevSelected.filter((item) => item !== interest)
-        : [...prevSelected, interest]
+  const handleGenderClick = (gender) => {
+    setSelectedGender([gender]);
+  };
+
+  const handleHobbiesClick = (hobby) => {
+    setSelectedHobbies((prevSelected) =>
+      prevSelected.includes(hobby)
+        ? prevSelected.filter((item) => item !== hobby)
+        : [...prevSelected, hobby]
     );
   };
 
   const handleDistantChange = (event) => {
     setDistantValue(event.target.value);
+  };
+
+  const handleLocationChange = (event) => {
+    setLocationValue(event.target.value);
   };
 
   const handleAgeChange = (event, newValue) => {
@@ -38,13 +57,109 @@ const Filter = () => {
 
   const handleClear = () => {
     setSelectedGender([]);
-    setSelectedInterested([]);
+    setSelectedHobbies([]);
     setDistantValue(defaultDistantValue);
     setAgeRange(defaultAgeRange);
+    setLocationValue(defaultLocation);
   };
+
+  const handleApply = async () => {
+    setIsFilterApplied(true);
+
+    try {
+      const apiUrl =
+        API_ENDPOINT +
+        `/api/filter?gender=${selectedGender.join(
+          ","
+        )}&hobbies=${selectedHobbies.join(",")}&city=${encodeURIComponent(
+          locationValue
+        )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
+
+      const response = await axios.get(apiUrl);
+
+      console.log("Filtered Users:", {
+        selectedGender,
+        locationValue,
+        selectedHobbies,
+        ageRange,
+      });
+
+      console.log("API Response:", response.data);
+      if (response.data.length === 0) {
+        alert("Không tìm thấy người dùng phù hợp");
+      } else {
+        dispatch(setFilteredData(response.data));
+        setIsFilterVisible(false);
+        setFilterKey((prevKey) => prevKey + 1);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const citiesApiUrl = API_ENDPOINT + "/api/cities";
+        const citiesResponse = await axios.get(citiesApiUrl);
+        setCities(citiesResponse.data);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      }
+    };
+
+    fetchCities();
+  }, [filterKey]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiUrl =
+          API_ENDPOINT +
+          `/api/filter?gender=${selectedGender.join(
+            ","
+          )}&hobbies=${selectedHobbies.join(",")}&city=${encodeURIComponent(
+            locationValue
+          )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
+
+        console.log("API URL:", apiUrl);
+
+        const response = await axios.get(apiUrl);
+
+        console.log("Filtered Users:", {
+          selectedGender,
+          locationValue,
+          selectedHobbies,
+          ageRange,
+        });
+
+        console.log("API Response:", response.data);
+
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (isFilterApplied) {
+      fetchData();
+      setIsFilterApplied(false);
+    }
+  }, [
+    selectedGender,
+    selectedHobbies,
+    ageRange,
+    isFilterApplied,
+    locationValue,
+    filterKey,
+  ]);
 
   return (
     <div className="filter-container">
+      <button className="close-button" onClick={handleClose}>
+        X
+      </button>
       <div className="filter-title">Filter</div>
       <div className="gender-section">
         <div className="filter-subtitle">Gender</div>
@@ -52,39 +167,45 @@ const Filter = () => {
           <button
             style={{ borderTopLeftRadius: 4, borderBottomLeftRadius: 4 }}
             className={`gender-button ${
-              selectedGender.includes("boys") ? "selected" : ""
+              selectedGender.includes("Male") ? "selected" : ""
             }`}
-            onClick={() => handleGenderClick("boys")}
+            onClick={() => handleGenderClick("Male")}
           >
-            Boys
+            Male
           </button>
           <Divider orientation="vertical" variant="middle" flexItem />
           <button
             className={`gender-button ${
-              selectedGender.includes("girls") ? "selected" : ""
+              selectedGender.includes("Female") ? "selected" : ""
             }`}
-            onClick={() => handleGenderClick("girls")}
+            onClick={() => handleGenderClick("Female")}
           >
-            Girls
+            Female
           </button>
           <Divider orientation="vertical" variant="middle" flexItem />
           <button
             style={{ borderTopRightRadius: 4, borderBottomRightRadius: 4 }}
             className={`gender-button ${
-              selectedGender.includes("both") ? "selected" : ""
+              selectedGender.includes("other") ? "selected" : ""
             }`}
-            onClick={() => handleGenderClick("both")}
+            onClick={() => handleGenderClick("other")}
           >
-            Both
+            Other
           </button>
         </div>
       </div>
       <div className="location-section">
         <div className="filter-subtitle">Location</div>
-        <select className="filter-dropdown">
-          <option value="location1">Location 1</option>
-          <option value="location2">Location 2</option>
-          <option value="location3">Location 3</option>
+        <select
+          value={locationValue}
+          onChange={handleLocationChange}
+          className="filter-dropdown"
+        >
+          {cities.map((city) => (
+            <option key={city.city} value={city.city}>
+              {city.city}
+            </option>
+          ))}
         </select>
       </div>
       <div className="filter-section">
@@ -110,31 +231,79 @@ const Filter = () => {
         <div className="distant-value">{`${ageRange[0]} - ${ageRange[1]} tuổi`}</div>
       </div>
       <div className="filter-section">
-        <div className="filter-subtitle">Interested in</div>
+        <div className="filter-subtitle">Hobbies</div>
         <div className="filter-options">
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest1") ? "selected" : ""
+              selectedHobbies.includes("1") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest1")}
+            onClick={() => handleHobbiesClick("1")}
           >
             Interest 1
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest2") ? "selected" : ""
+              selectedHobbies.includes("2") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest2")}
+            onClick={() => handleHobbiesClick("2")}
           >
             Interest 2
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("interest3") ? "selected" : ""
+              selectedHobbies.includes("3") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("interest3")}
+            onClick={() => handleHobbiesClick("3")}
           >
             Interest 3
+          </button>
+          <button
+            className={`filter-button ${
+              selectedHobbies.includes("4") ? "selected" : ""
+            }`}
+            onClick={() => handleHobbiesClick("4")}
+          >
+            Interest 4
+          </button>
+          <button
+            className={`filter-button ${
+              selectedHobbies.includes("5") ? "selected" : ""
+            }`}
+            onClick={() => handleHobbiesClick("5")}
+          >
+            Interest 5
+          </button>
+          <button
+            className={`filter-button ${
+              selectedHobbies.includes("6") ? "selected" : ""
+            }`}
+            onClick={() => handleHobbiesClick("6")}
+          >
+            Interest 6
+          </button>
+          <button
+            className={`filter-button ${
+              selectedHobbies.includes("7") ? "selected" : ""
+            }`}
+            onClick={() => handleHobbiesClick("7")}
+          >
+            Interest 7
+          </button>
+          <button
+            className={`filter-button ${
+              selectedHobbies.includes("8") ? "selected" : ""
+            }`}
+            onClick={() => handleHobbiesClick("8")}
+          >
+            Interest 8
+          </button>
+          <button
+            className={`filter-button ${
+              selectedHobbies.includes("9") ? "selected" : ""
+            }`}
+            onClick={() => handleHobbiesClick("9")}
+          >
+            Interest 9
           </button>
         </div>
       </div>
@@ -142,7 +311,9 @@ const Filter = () => {
         <button className="clear" onClick={handleClear}>
           Clear
         </button>
-        <button className="submit">Apply</button>
+        <button className="submit" onClick={handleApply}>
+          Apply
+        </button>
       </div>
     </div>
   );

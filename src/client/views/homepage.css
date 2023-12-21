@@ -54,6 +54,7 @@
   position: absolute;
   object-fit: cover;
   border-radius: 16px;
+  cursor: pointer;
 }
 .homepage-button1 {
   width: 120px;
@@ -74,7 +75,7 @@
   background-color: rgb(255, 40, 144);
   font-size: 80px;
   color: white;
-  filter: drop-shadow( 0 0 4px rgb(255, 40, 144, 0.6) );
+  filter: drop-shadow(0 0 4px rgb(255, 40, 144, 0.6));
 }
 .homepage-button2 {
   width: 120px;
