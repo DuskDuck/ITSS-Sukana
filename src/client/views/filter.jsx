@@ -73,7 +73,7 @@ const Filter = ({ setIsFilterVisible }) => {
           ","
         )}&hobbies=${selectedHobbies.join(",")}&city=${encodeURIComponent(
           locationValue
-        )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
+        )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=6`;
 
       const response = await axios.get(apiUrl);
 
@@ -121,7 +121,7 @@ const Filter = ({ setIsFilterVisible }) => {
             ","
           )}&hobbies=${selectedHobbies.join(",")}&city=${encodeURIComponent(
             locationValue
-          )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
+          )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=6`;
 
         console.log("API URL:", apiUrl);
 
