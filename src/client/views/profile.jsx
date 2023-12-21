@@ -52,7 +52,6 @@ const Profile = () => {
       }
 
       const responseData = await response.json();
-      // Handle the response data if needed
       setResponseMessage("Friend request sent successfully!");
     } catch (error) {
       console.error("Error sending friend request:", error);
@@ -118,10 +117,21 @@ const Profile = () => {
               <h2>Address</h2>
               <p>{userData.address}</p>
             </div>
-            <div className="profile-about">
-              <h2>About Me</h2>
-              <p>{userData.about}</p>
+            <div className="about-container">
+              <div className="profile-about">
+                <h2>About Me</h2>
+                <p>{userData.about}</p>
+              </div>
+              <div className="add-friend">
+                <button
+                  className="add-friend-button"
+                  onClick={handleSendFriendRequest}
+                >
+                  <FontAwesomeIcon icon={faPaperPlane} />
+                </button>
+              </div>
             </div>
+
             <div className="profile-interests">
               <h2>Hobbies</h2>
               <div className="interests-container">
@@ -131,14 +141,6 @@ const Profile = () => {
                   </p>
                 ))}
               </div>
-            </div>
-            <div className="add-friend">
-              <button
-                className="add-friend-button"
-                onClick={handleSendFriendRequest}
-              >
-                <FontAwesomeIcon icon={faPaperPlane} />
-              </button>
             </div>
 
             {/*// <div className="profile-gallery">
