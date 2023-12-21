@@ -29,6 +29,7 @@
     "react-helmet": "^6.1.0",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.20.1",
+    "redaxios": "^0.5.1",
     "redux": "^5.0.0",
     "vite-express": "*",
     "webfontloader": "^1.6.28"
