@@ -13,6 +13,7 @@ import API_ENDPOINT from "./apiConfig";
 const Friend = () => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [notification, setNotification] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,10 +60,11 @@ const Friend = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }
-
       setFriendRequests((prevFriendRequests) =>
         prevFriendRequests.filter((friend) => friend.id !== friendRequestId)
       );
+
+      setNotification("ACCEPTED");
     } catch (error) {
       console.error("Error accepting friend request:", error);
     }
@@ -87,10 +89,11 @@ const Friend = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }
-
       setFriendRequests((prevFriendRequests) =>
         prevFriendRequests.filter((friend) => friend.id !== friendRequestId)
       );
+
+      setNotification("CANCELED");
     } catch (error) {
       console.error("Error canceling friend request:", error);
     }
@@ -151,7 +154,13 @@ const Friend = () => {
           )}
         </div>
       </div>
-      <div></div>
+      {notification && (
+        <div className="notification">
+          {notification === "ACCEPTED"
+            ? "Friend request accepted!"
+            : "Friend request canceled!"}
+        </div>
+      )}
     </div>
   );
 };
