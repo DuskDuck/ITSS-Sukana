@@ -47,7 +47,7 @@ const NavbarContainer = (props) => {
           <FontAwesomeIcon icon={faUserGroup} />
         </button>
         <button
-          onClick={() => handleClick("/profile")}
+          // onClick={() => handleClick("/profile")}
           type="button"
           className="navbar-container-profile button"
         >

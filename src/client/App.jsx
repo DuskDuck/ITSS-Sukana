@@ -17,7 +17,7 @@ const App = () => {
         <Route path="/idealmatch-result" element={<Idealmatch />} />
         <Route path="/not-found" element={<NotFound />} />
         <Route path="/friend" element={<Friend />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/users/:id" element={<Profile />} />
         <Route path="/" element={<Homepage />} />
       </Routes>
     </Router>

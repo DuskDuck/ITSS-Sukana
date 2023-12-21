@@ -1,16 +1,34 @@
 import React, { useEffect, useState } from "react";
-
 import { Helmet } from "react-helmet";
-
+import { useParams } from "react-router-dom";
 import AppComponent from "../components/component";
 import NavbarContainer from "../components/navbar-container";
-
+import API_ENDPOINT from "./apiConfig";
 import "./profile.css";
 import Filter from "../views/filter";
 import WebFont from "webfontloader";
 
-const Profile = (props) => {
+const Profile = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const { id } = useParams();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch(API_ENDPOINT + `/api/users/${id}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok.");
+        }
+        const userData = await response.json();
+        setUserData(userData);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [id]);
 
   const showFilter = () => {
     setIsFilterVisible(true);
@@ -23,35 +41,28 @@ const Profile = (props) => {
       },
     });
   }, []);
-  const userProfile = {
-    avatar: "src/client/assets/image/avatar.jpeg",
-    name: "Hieu",
-    age: 25,
-    occupation: "Software Developer",
-    location: "Ha Noi, Viet Nam",
-    about: "I love coding and exploring new technologies.",
-    gallery: [
-      "src/client/assets/image/gallery1.jpeg",
-      "src/client/assets/image/gallery2.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-      "src/client/assets/image/gallery3.jpeg",
-    ],
-    interests: ["Reading", "Coding", "Traveling"],
+
+  if (!userData) {
+    return null;
+  }
+  const parseHobbies = (hobbiesString) => {
+    if (!hobbiesString || typeof hobbiesString !== "string") {
+      return [];
+    }
+    const hobbiesArray = hobbiesString.split(",");
+    const trimmedHobbies = hobbiesArray.map((hobby) => hobby.trim());
+
+    return trimmedHobbies;
   };
 
   return (
     <div className="profile-container">
       <Helmet>
-        <title>Teender - Homepage</title>
-        <meta property="og:title" content="Teender - Homepage" />
+        <title>Teender - {userData.first_name}'s Profile</title>
+        <meta
+          property="og:title"
+          content={`Teender - ${userData.first_name}'s Profile`}
+        />
       </Helmet>
       {isFilterVisible && (
         <div className="overlay">
@@ -64,7 +75,7 @@ const Profile = (props) => {
         <div className="profile-main-area">
           <div className="profile-avatar">
             <img
-              src={userProfile.avatar}
+              src={userData.default_image_url}
               alt="User Avatar"
               className="avatar"
             />
@@ -72,39 +83,39 @@ const Profile = (props) => {
           <div className="profile-details">
             <div className="profile-info">
               <h1>
-                {userProfile.name}, {userProfile.age}
+                {userData.first_name} {userData.last_name}, {userData.age}
               </h1>
-              <p>{userProfile.occupation}</p>
-              <h1>Location</h1>
-              <p>{userProfile.location}</p>
+              {/* <p>{userData.occupation}</p> */}
+              <h2>Address</h2>
+              <p>{userData.address}</p>
             </div>
             <div className="profile-about">
               <h2>About Me</h2>
-              <p>{userProfile.about}</p>
+              <p>{userData.about}</p>
             </div>
             <div className="profile-interests">
-              <h2>Interests</h2>
+              <h2>Hobbies</h2>
               <div className="interests-container">
-                {userProfile.interests.map((interest, index) => (
-                  <div key={index} className="interest-item">
-                    {interest}
-                  </div>
+                {parseHobbies(userData.hobbies).map((hobby, index) => (
+                  <p className="interest-item" key={index}>
+                    {hobby}
+                  </p>
                 ))}
               </div>
             </div>
-            <div className="profile-gallery">
-              <h2>Gallery</h2>
-              <div className="gallery">
-                {userProfile.gallery.map((image, index) => (
-                  <img
-                    className="gallery-images"
-                    key={index}
-                    src={image}
-                    alt={`Gallery Image ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
+            {/*// <div className="profile-gallery">
+            //   <h2>Gallery</h2>
+            //   <div className="gallery">
+            //     {userData.gallery.map((image, index) => (
+            //       <img
+            //         className="gallery-images"
+            //         key={index}
+            //         src={image}
+            //         alt={`Gallery Image ${index + 1}`}
+            //       />
+            //     ))}
+            //   </div>
+            // </div> */}
           </div>
         </div>
       </div>

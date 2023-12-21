@@ -37,6 +37,7 @@
   max-width: 60%;
   margin-left: 20px;
   padding-bottom: 20px;
+  align-self: center;
 }
 
 .avatar {
@@ -59,12 +60,15 @@
 .interests-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .interest-item {
+  display: flex;
   border: 1px solid #ddd;
   padding: 8px;
   border-radius: 5px;
   margin: 4px;
+  width: 20%;
+  justify-content: center;
 }

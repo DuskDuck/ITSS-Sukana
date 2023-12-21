@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import AppComponent from "../components/component";
@@ -29,9 +29,8 @@ const Homepage = (props) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [matchData, setUserData] = useState([]);
-  const responseMessage = useSelector((state) => state.responseMessage);
   const filteredData = useSelector((state) => state.filteredData);
-
+  const navigate = useNavigate();
   const showFilter = () => {
     setIsFilterVisible(true);
   };
@@ -41,7 +40,9 @@ const Homepage = (props) => {
       prevIndex + 1 < matchData.length ? prevIndex + 1 : 0
     );
   };
-
+  const handleAvatarClick = () => {
+    navigate(`/users/${matchData[currentIndex].id}`);
+  };
   const handleListButtonClickDes = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex - 1 < matchData.length ? 0 : prevIndex - 1
@@ -129,6 +130,7 @@ const Homepage = (props) => {
                   src={matchData[currentIndex].default_image_url}
                   alt="image"
                   className="homepage-image2"
+                  onClick={handleAvatarClick}
                 />
               )}
             </div>
