@@ -6,18 +6,13 @@ import NavbarContainer from "../components/navbar-container";
 import "./friend.css";
 import Filter from "../views/filter";
 import WebFont from "webfontloader";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faHeart } from "@fortawesome/free-solid-svg-icons";
+import API_ENDPOINT from "./apiConfig";
 
-const Friend = ({ request, onAccept, onCancel }) => {
+const Friend = () => {
+  const [friendRequests, setFriendRequests] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-
-  const showFilter = () => {
-    setIsFilterVisible(true);
-  };
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,54 +21,84 @@ const Friend = ({ request, onAccept, onCancel }) => {
         families: ["Roboto", "Inria Sans"],
       },
     });
+
+    const fetchFriendRequests = async () => {
+      try {
+        const response = await fetch(API_ENDPOINT + "/api/friends/recieved/6");
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok.");
+        }
+
+        const responseData = await response.json();
+        setFriendRequests(responseData.friendRequestsWithImages);
+      } catch (error) {
+        console.error("Error fetching friend requests:", error);
+      }
+    };
+
+    fetchFriendRequests();
   }, []);
 
-  const handleAccept = (friendRequestId) => {
-    console.log(`Accepted friend request with ID ${friendRequestId}`);
+  const handleAccept = async (friendRequestId) => {
+    try {
+      const response = await fetch(API_ENDPOINT + "/api/friends/respond", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requester_id: friendRequests.find(
+            (friend) => friend.id === friendRequestId
+          ).requester_id,
+          receiver_id: 6,
+          status: "ACCEPTED",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+
+      setFriendRequests((prevFriendRequests) =>
+        prevFriendRequests.filter((friend) => friend.id !== friendRequestId)
+      );
+    } catch (error) {
+      console.error("Error accepting friend request:", error);
+    }
   };
 
-  const handleCancel = (friendRequestId) => {
-    console.log(`Canceled friend request with ID ${friendRequestId}`);
+  const handleCancel = async (friendRequestId) => {
+    try {
+      const response = await fetch(API_ENDPOINT + "/api/friends/respond", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requester_id: friendRequests.find(
+            (friend) => friend.id === friendRequestId
+          ).requester_id,
+          receiver_id: 6,
+          status: "CANCELED",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+
+      setFriendRequests((prevFriendRequests) =>
+        prevFriendRequests.filter((friend) => friend.id !== friendRequestId)
+      );
+    } catch (error) {
+      console.error("Error canceling friend request:", error);
+    }
   };
 
-  const friendRequest = [
-    {
-      id: 1,
-      name: "John Doe",
-      age: 25,
-      avatarUrl: "src/client/assets/image/gallery1.jpeg",
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      age: 28,
-      avatarUrl: "src/client/assets/image/gallery2.jpeg",
-    },
-    {
-      id: 3,
-      name: "Jane Doe",
-      age: 28,
-      avatarUrl: "src/client/assets/image/gallery3.jpeg",
-    },
-    {
-      id: 4,
-      name: "Jane Doe",
-      age: 28,
-      avatarUrl: "src/client/assets/image/gallery1.jpeg",
-    },
-    {
-      id: 5,
-      name: "Jane Doe",
-      age: 28,
-      avatarUrl: "src/client/assets/image/gallery2.jpeg",
-    },
-    {
-      id: 6,
-      name: "Jane Doe",
-      age: 28,
-      avatarUrl: "src/client/assets/image/gallery3.jpeg",
-    },
-  ];
+  const showFilter = () => {
+    setIsFilterVisible(true);
+  };
 
   return (
     <div className="friend-container">
@@ -91,17 +116,17 @@ const Friend = ({ request, onAccept, onCancel }) => {
       <div className="friend-main">
         <NavbarContainer></NavbarContainer>
         <div className="friend-main-area">
-          {Array.isArray(friendRequest) && friendRequest.length > 0 ? (
-            friendRequest.map((friend) => (
+          {Array.isArray(friendRequests) && friendRequests.length > 0 ? (
+            friendRequests.map((friend) => (
               <div key={friend.id} className="friend-item">
                 <div className="friend-avatar-containter">
                   <img
                     className="friend-avatar"
-                    src={friend.avatarUrl}
-                    alt="Friend Avatar"
+                    src={friend.requester_image_url}
+                    alt={`${friend.requester_first_name} ${friend.requester_last_name}'s Avatar`}
                   />
                   <div className="friend-info">
-                    {friend.name}, {friend.age}
+                    {`${friend.requester_first_name} ${friend.requester_last_name}`}
                   </div>
                   <div className="friend-buttons">
                     <button
