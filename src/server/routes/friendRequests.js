@@ -24,7 +24,7 @@ router.post("/api/friends/send", async (req, res) => {
     }
 
     const [existingRequests] = await connection.execute(
-      "SELECT * FROM friends WHERE requester_id = ? AND receiver_id = ?",
+      'SELECT * FROM friends WHERE requester_id = ? AND receiver_id = ? AND (status = "ACCEPTED" OR status = "SENT")',
       [requester_id, receiver_id]
     );
 
