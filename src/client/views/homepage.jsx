@@ -80,7 +80,7 @@ const Homepage = (props) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(API_ENDPOINT + "/api/filter");
+        const response = await fetch(API_ENDPOINT + "/api/filter?userId=6");
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
