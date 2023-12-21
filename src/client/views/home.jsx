@@ -39,7 +39,7 @@ const Home = (props) => {
       </Helmet>
       {isFilterVisible && (
         <div className="overlay">
-          <Filter />
+          <Filter setIsFilterVisible={setIsFilterVisible} />
         </div>
       )}
 

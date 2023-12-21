@@ -9,19 +9,20 @@ import { setFilteredData } from "../../redux/action";
 
 import API_ENDPOINT from "./apiConfig";
 
-const Filter = () => {
+const Filter = ({ setIsFilterVisible }) => {
   const defaultDistantValue = 0;
   const defaultAgeRange = [0, 20];
   const defaultLocation = "Hanoi";
 
   const [locationValue, setLocationValue] = useState(defaultLocation);
   const [selectedGender, setSelectedGender] = useState([]);
-  const [selectedInterested, setSelectedInterested] = useState([]);
+  const [selectedHobbies, setSelectedHobbies] = useState([]);
   const [distantValue, setDistantValue] = useState(defaultDistantValue);
   const [ageRange, setAgeRange] = useState(defaultAgeRange);
   const [users, setUsers] = useState([]);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [cities, setCities] = useState([]);
+  const [filterKey, setFilterKey] = useState(0); // Thêm state filterKey
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,11 +35,11 @@ const Filter = () => {
     setSelectedGender([gender]);
   };
 
-  const handleInterestedClick = (interest) => {
-    setSelectedInterested((prevSelected) =>
-      prevSelected.includes(interest)
-        ? prevSelected.filter((item) => item !== interest)
-        : [...prevSelected, interest]
+  const handleHobbiesClick = (hobby) => {
+    setSelectedHobbies((prevSelected) =>
+      prevSelected.includes(hobby)
+        ? prevSelected.filter((item) => item !== hobby)
+        : [...prevSelected, hobby]
     );
   };
 
@@ -56,7 +57,7 @@ const Filter = () => {
 
   const handleClear = () => {
     setSelectedGender([]);
-    setSelectedInterested([]);
+    setSelectedHobbies([]);
     setDistantValue(defaultDistantValue);
     setAgeRange(defaultAgeRange);
     setLocationValue(defaultLocation);
@@ -70,7 +71,7 @@ const Filter = () => {
         API_ENDPOINT +
         `/api/filter?gender=${selectedGender.join(
           ","
-        )}&hobbies=${selectedInterested.join(",")}&city=${encodeURIComponent(
+        )}&hobbies=${selectedHobbies.join(",")}&city=${encodeURIComponent(
           locationValue
         )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
 
@@ -79,7 +80,7 @@ const Filter = () => {
       console.log("Filtered Users:", {
         selectedGender,
         locationValue,
-        selectedInterested,
+        selectedHobbies,
         ageRange,
       });
 
@@ -88,6 +89,8 @@ const Filter = () => {
         alert("Không tìm thấy người dùng phù hợp");
       } else {
         dispatch(setFilteredData(response.data));
+        setIsFilterVisible(false);
+        setFilterKey((prevKey) => prevKey + 1);
         navigate("/");
       }
     } catch (error) {
@@ -107,7 +110,7 @@ const Filter = () => {
     };
 
     fetchCities();
-  }, []);
+  }, [filterKey]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,7 +119,7 @@ const Filter = () => {
           API_ENDPOINT +
           `/api/filter?gender=${selectedGender.join(
             ","
-          )}&hobbies=${selectedInterested.join(",")}&city=${encodeURIComponent(
+          )}&hobbies=${selectedHobbies.join(",")}&city=${encodeURIComponent(
             locationValue
           )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
 
@@ -127,7 +130,7 @@ const Filter = () => {
         console.log("Filtered Users:", {
           selectedGender,
           locationValue,
-          selectedInterested,
+          selectedHobbies,
           ageRange,
         });
 
@@ -143,7 +146,14 @@ const Filter = () => {
       fetchData();
       setIsFilterApplied(false);
     }
-  }, [selectedGender, selectedInterested, ageRange, isFilterApplied]);
+  }, [
+    selectedGender,
+    selectedHobbies,
+    ageRange,
+    isFilterApplied,
+    locationValue,
+    filterKey,
+  ]);
 
   return (
     <div className="filter-container">
@@ -221,77 +231,77 @@ const Filter = () => {
         <div className="distant-value">{`${ageRange[0]} - ${ageRange[1]} tuổi`}</div>
       </div>
       <div className="filter-section">
-        <div className="filter-subtitle">Interested in</div>
+        <div className="filter-subtitle">Hobbies</div>
         <div className="filter-options">
           <button
             className={`filter-button ${
-              selectedInterested.includes("1") ? "selected" : ""
+              selectedHobbies.includes("1") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("1")}
+            onClick={() => handleHobbiesClick("1")}
           >
             Interest 1
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("2") ? "selected" : ""
+              selectedHobbies.includes("2") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("2")}
+            onClick={() => handleHobbiesClick("2")}
           >
             Interest 2
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("3") ? "selected" : ""
+              selectedHobbies.includes("3") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("3")}
+            onClick={() => handleHobbiesClick("3")}
           >
             Interest 3
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("4") ? "selected" : ""
+              selectedHobbies.includes("4") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("4")}
+            onClick={() => handleHobbiesClick("4")}
           >
             Interest 4
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("5") ? "selected" : ""
+              selectedHobbies.includes("5") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("5")}
+            onClick={() => handleHobbiesClick("5")}
           >
             Interest 5
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("6") ? "selected" : ""
+              selectedHobbies.includes("6") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("6")}
+            onClick={() => handleHobbiesClick("6")}
           >
             Interest 6
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("7") ? "selected" : ""
+              selectedHobbies.includes("7") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("7")}
+            onClick={() => handleHobbiesClick("7")}
           >
             Interest 7
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("8") ? "selected" : ""
+              selectedHobbies.includes("8") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("8")}
+            onClick={() => handleHobbiesClick("8")}
           >
             Interest 8
           </button>
           <button
             className={`filter-button ${
-              selectedInterested.includes("9") ? "selected" : ""
+              selectedHobbies.includes("9") ? "selected" : ""
             }`}
-            onClick={() => handleInterestedClick("9")}
+            onClick={() => handleHobbiesClick("9")}
           >
             Interest 9
           </button>

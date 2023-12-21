@@ -83,7 +83,7 @@ const Friend = ({ request, onAccept, onCancel }) => {
       </Helmet>
       {isFilterVisible && (
         <div className="overlay">
-          <Filter />
+          <Filter setIsFilterVisible={setIsFilterVisible} />
         </div>
       )}
 

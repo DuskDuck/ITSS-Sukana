@@ -107,7 +107,7 @@ const Homepage = (props) => {
       </Helmet>
       {isFilterVisible && (
         <div className="overlay">
-          <Filter />
+          <Filter setIsFilterVisible={setIsFilterVisible} />
         </div>
       )}
       <AppComponent onFilterClick={showFilter}></AppComponent>
