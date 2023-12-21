@@ -20,16 +20,15 @@
   flex: initial;
   width: 90%;
   display: flex;
-  align-self: stretch;
   align-items: center;
   background-color: #ffffff;
   flex-wrap: wrap;
   gap: 50px;
-  justify-content: center;
+  padding: 20px;
 }
 .friend-avatar {
   width: 200px;
-  height: auto;
+  height: 200px;
   display: block;
 }
 
@@ -42,6 +41,7 @@
 .friend-avatar-container {
   position: relative;
   overflow: hidden;
+  display: flex;
 }
 
 .friend-info {

@@ -32,33 +32,33 @@ const Profile = () => {
 
     fetchUserProfile();
   }, [id]);
-  // const handleSendFriendRequest = async () => {
-  //   const requestData = {
-  //     requester_id: 1,
-  //     receiver_id: userData.id,
-  //   };
-  //   console.log(requestData);
-  //   try {
-  //     const response = await fetch(API_ENDPOINT + "/api/friends/send", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(requestData),
-  //     });
+  const handleSendFriendRequest = async () => {
+    const requestData = {
+      requester_id: 1,
+      receiver_id: userData.id,
+    };
+    console.log(requestData);
+    try {
+      const response = await fetch(API_ENDPOINT + "/api/friends/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
 
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok.");
-  //     }
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
 
-  //     const responseData = await response.json();
-  //     // Handle the response data if needed
-  //     setResponseMessage("Friend request sent successfully!");
-  //   } catch (error) {
-  //     console.error("Error sending friend request:", error);
-  //     setResponseMessage("Failed to send friend request.");
-  //   }
-  // };
+      const responseData = await response.json();
+      // Handle the response data if needed
+      setResponseMessage("Friend request sent successfully!");
+    } catch (error) {
+      console.error("Error sending friend request:", error);
+      setResponseMessage("Failed to send friend request.");
+    }
+  };
   const showFilter = () => {
     setIsFilterVisible(true);
   };
@@ -132,14 +132,14 @@ const Profile = () => {
                 ))}
               </div>
             </div>
-            {/* <div className="add-friend">
+            <div className="add-friend">
               <button
                 className="add-friend-button"
                 onClick={handleSendFriendRequest}
               >
                 <FontAwesomeIcon icon={faPaperPlane} />
               </button>
-            </div> */}
+            </div>
 
             {/*// <div className="profile-gallery">
             //   <h2>Gallery</h2>
