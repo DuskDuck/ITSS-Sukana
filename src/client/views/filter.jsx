@@ -16,13 +16,14 @@ const Filter = ({ setIsFilterVisible }) => {
 
   const [locationValue, setLocationValue] = useState(defaultLocation);
   const [selectedGender, setSelectedGender] = useState([]);
+  const [hobbies, setHobbies] = useState([]);
   const [selectedHobbies, setSelectedHobbies] = useState([]);
   const [distantValue, setDistantValue] = useState(defaultDistantValue);
   const [ageRange, setAgeRange] = useState(defaultAgeRange);
   const [users, setUsers] = useState([]);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [cities, setCities] = useState([]);
-  const [filterKey, setFilterKey] = useState(0); // Thêm state filterKey
+  const [filterKey, setFilterKey] = useState(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -67,11 +68,14 @@ const Filter = ({ setIsFilterVisible }) => {
     setIsFilterApplied(true);
 
     try {
+      const selectedHobbiesIds = selectedHobbies.map((hobbyId) =>
+        parseInt(hobbyId)
+      );
       const apiUrl =
         API_ENDPOINT +
         `/api/filter?gender=${selectedGender.join(
           ","
-        )}&hobbies=${selectedHobbies.join(",")}&city=${encodeURIComponent(
+        )}&hobbies=${selectedHobbiesIds.join(",")}&city=${encodeURIComponent(
           locationValue
         )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=6`;
 
@@ -154,7 +158,19 @@ const Filter = ({ setIsFilterVisible }) => {
     locationValue,
     filterKey,
   ]);
+  useEffect(() => {
+    const fetchHobbies = async () => {
+      try {
+        const hobbiesApiUrl = API_ENDPOINT + "/api/hobbies";
+        const hobbiesResponse = await axios.get(hobbiesApiUrl);
+        setHobbies(hobbiesResponse.data);
+      } catch (error) {
+        console.error("Error fetching hobbies:", error);
+      }
+    };
 
+    fetchHobbies();
+  }, [filterKey]);
   return (
     <div className="filter-container">
       <button className="close-button" onClick={handleClose}>
@@ -233,78 +249,17 @@ const Filter = ({ setIsFilterVisible }) => {
       <div className="filter-section">
         <div className="filter-subtitle">Hobbies</div>
         <div className="filter-options">
-          <button
-            className={`filter-button ${
-              selectedHobbies.includes("1") ? "selected" : ""
-            }`}
-            onClick={() => handleHobbiesClick("1")}
-          >
-            Interest 1
-          </button>
-          <button
-            className={`filter-button ${
-              selectedHobbies.includes("2") ? "selected" : ""
-            }`}
-            onClick={() => handleHobbiesClick("2")}
-          >
-            Interest 2
-          </button>
-          <button
-            className={`filter-button ${
-              selectedHobbies.includes("3") ? "selected" : ""
-            }`}
-            onClick={() => handleHobbiesClick("3")}
-          >
-            Interest 3
-          </button>
-          <button
-            className={`filter-button ${
-              selectedHobbies.includes("4") ? "selected" : ""
-            }`}
-            onClick={() => handleHobbiesClick("4")}
-          >
-            Interest 4
-          </button>
-          <button
-            className={`filter-button ${
-              selectedHobbies.includes("5") ? "selected" : ""
-            }`}
-            onClick={() => handleHobbiesClick("5")}
-          >
-            Interest 5
-          </button>
-          <button
-            className={`filter-button ${
-              selectedHobbies.includes("6") ? "selected" : ""
-            }`}
-            onClick={() => handleHobbiesClick("6")}
-          >
-            Interest 6
-          </button>
-          <button
-            className={`filter-button ${
-              selectedHobbies.includes("7") ? "selected" : ""
-            }`}
-            onClick={() => handleHobbiesClick("7")}
-          >
-            Interest 7
-          </button>
-          <button
-            className={`filter-button ${
-              selectedHobbies.includes("8") ? "selected" : ""
-            }`}
-            onClick={() => handleHobbiesClick("8")}
-          >
-            Interest 8
-          </button>
-          <button
-            className={`filter-button ${
-              selectedHobbies.includes("9") ? "selected" : ""
-            }`}
-            onClick={() => handleHobbiesClick("9")}
-          >
-            Interest 9
-          </button>
+          {hobbies.map((hobby) => (
+            <button
+              key={hobby.id}
+              className={`filter-button ${
+                selectedHobbies.includes(hobby.id.toString()) ? "selected" : ""
+              }`}
+              onClick={() => handleHobbiesClick(hobby.id.toString())}
+            >
+              {hobby.name}
+            </button>
+          ))}
         </div>
       </div>
       <div className="filter-buttons">
