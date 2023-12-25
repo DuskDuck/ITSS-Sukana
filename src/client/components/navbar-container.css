@@ -73,3 +73,8 @@
 .navbar-container-navbar .button:hover {
   color: rgb(255, 40, 144);
 }
+
+.button.active {
+  background-color: #e03368;
+  color: white;
+}

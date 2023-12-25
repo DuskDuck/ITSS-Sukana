@@ -5,7 +5,7 @@ import friendRoutes from './routes/friendRequests.js';
 import userRoutes from './routes/users.js';
 import http from 'http';
 import { WebSocketServer } from 'ws';
-
+import loginRoutes from './routes/login.js';
 const app = express();
 /*
 const server = http.createServer((req, res) => {
@@ -42,6 +42,7 @@ db.getConnection((err, connection) => {
 app.use(express.json());
 app.use(friendRoutes);
 app.use(userRoutes);
+app.use(loginRoutes);
 
 ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000...")
