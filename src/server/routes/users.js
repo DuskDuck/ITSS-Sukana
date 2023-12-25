@@ -1,32 +1,88 @@
-import express from 'express';
-import User from '../models/user.js';
+import express from "express";
+import db from "../db/db.js";
+import User from "../models/user.js";
 
 const router = express.Router();
 
-//route get dữ liệu tất cả user cùng hobby
-router.get('/', async (req, res) => {
-    try {
-      const usersWithHobbies = await User.getAllUsersWithHobbies();
-      res.json(usersWithHobbies);
-    } catch (error) {
-      console.error('Error fetching users with hobbies:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
-// route get du lieu thong tin user
-router.get('/:userId,', async (req, res) => {
+router.get("/api/filter", async (req, res) => {
+  const { userId, gender, hobbies, city, minAge, maxAge } = req.query;
+
   try {
-    const userId = parseInt(req.query.id);
-    if(isNaN(userId)){
-      return res.status(400).json({error:'Invalid user id.'});
-    }
-    const userInformations = await User.getUserInfomations();
-    res.json(userInformations);
-    res.status(200).json('Success');
+    const usersWithHobbies = await User.getAllUsersWithHobbies({
+      userId,
+      gender,
+      hobbies,
+      city,
+      minAge,
+      maxAge,
+    });
+
+    res.json(usersWithHobbies);
   } catch (error) {
-    console.error('Error', error);
-    res.status(500).json({error:'Internal Server Error'});
+    console.error("Error querying users with hobbies:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-}) 
-  
-  export default router;
+});
+
+router.get("/api/match/:userId", async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+
+    // Get a random user who is not in the friend list of the given userId
+    const randomUser = await User.getRandomUserNotInFriends(userId);
+
+    if (!randomUser) {
+      return res.status(404).json({ error: "No matching user found" });
+    }
+
+    res.json(randomUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/api/users/:userId", async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+
+    const userInformations = await User.getUserInformation(userId);
+
+    if (!userInformations) {
+      return res.status(404).json({ error: "No matching user found" });
+    }
+
+    res.json(userInformations);
+  } catch (error) {
+    console.error("Error", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/api/cities", async (req, res) => {
+  try {
+    const [cities] = await db.query(`
+      SELECT DISTINCT city FROM users 
+    `);
+
+    res.json(cities);
+  } catch (error) {
+    console.error("Error", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/api/hobbies", async (req, res) => {
+  try {
+    const [hobbies] = await db.query(`
+      SELECT * FROM hobbies 
+    `);
+
+    res.json(hobbies);
+  } catch (error) {
+    console.error("Error", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+export default router;

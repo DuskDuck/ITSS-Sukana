@@ -1,103 +1,105 @@
-import db from '../db/db.js';
+import db from "../db/db.js";
+import { getImageURL } from "../config/firebaseConfig.js";
 
 class User {
-  
-  static async sendMessege({user1_id, user2_id, content}/* user 1 là người gửi user 2 là người nhận */) {
+  static async getUserInformation(userId) {
+    const [userRows] = await db.query(
+      `
+      SELECT * FROM users WHERE id = ?
+    `,
+      [userId]
+    );
+
+    if (userRows.length === 0) {
+      return null;
+    }
+
     try {
-      const checkExistenceQuery = `
-        SELECT id, updated_at
-        FROM conversations
-        WHERE (user1_id = ? AND user2_id = ?) OR (user1_id = ? AND user2_id = ?);
-      `;
+      const [rows] = await db.query(
+        `
+        SELECT 
+          u.id, u. email, u.first_name, u.last_name, u.age, u.birthday, u.gender, u.address, u.city, u.phone, u.about,
+          GROUP_CONCAT(hobbies.name) as hobbies, 
+          images.url as default_image_url,
+          GROUP_CONCAT(DISTINCT user_images.image_id) as image_ids,
+          GROUP_CONCAT(DISTINCT images2.url) as image_urls
+        FROM users u
+        LEFT JOIN user_hobbies ON u.id = user_hobbies.user_id
+        LEFT JOIN hobbies ON user_hobbies.hobby_id = hobbies.id
+        LEFT JOIN images ON u.default_image_id = images.id
+        LEFT JOIN user_images ON u.id = user_images.user_id
+        LEFT JOIN images as images2 ON user_images.image_id = images2.id
+        WHERE u.id = ?
+      `,
+        [userId]
+      );
 
-      db.query(checkExistenceQuery, [user1_id, user2_id, user2_id, user1_id], (err, result) => {
-        if (err) {
-          console.error(err);
-        } else {
-          if (result.length > 0) {
-            console.log('Bản ghi tồn tại trong bảng conversations.');
-
-            // Cập nhật trường updated_at
-            const updateQuery = `
-              UPDATE conversations
-              SET updated_at = NOW()
-              WHERE id = ?;
-            `;
-
-            db.query(updateQuery, [result[0].id], (err, updateResult) => {
-              if (err) {
-                console.error('Lỗi khi cập nhật trường updated_at:', err);
-              } else {
-                console.log('Trường updated_at đã được cập nhật thành công.');
-              }
-            });
-          } else {
-            console.log('Bản ghi không tồn tại trong bảng conversations. Tạo mới bản ghi...');
-
-            // Tạo mới bản ghi
-            const insertQuery = `
-              INSERT INTO conversations (user1_id, user2_id, created_at, updated_at)
-              VALUES (?, ?, NOW(), NOW());
-            `;
-
-            db.query(insertQuery, [user1_id, user2_id], (err, insertResult) => {
-              if (err) {
-                console.error('Lỗi khi tạo mới bản ghi:', err);
-              } else {
-                console.log('Bản ghi đã được tạo mới thành công.');
-              }
-            });
+      if (rows.length > 0) {
+        const user = rows[0];
+        if (user.default_image_url) {
+          user.default_image_url = await getImageURL(user.default_image_url);
+        }
+        if (user.image_urls) {
+          user.image_urls = user.image_urls.split(",");
+          for (let i = 0; i < user.image_urls.length; i++) {
+            user.image_urls[i] = await getImageURL(user.image_urls[i]);
           }
         }
-      });
-      const insert_record_into_messeges_table = `
-        INSERT INTO messeges ('${user1_id}',
-          (SELECT id FROM conversations
-           WHERE user1_id = '${user1_id}' AND user2_id = '${user2_id}';  
-          ),?,?,'${content}',(SELECT updated_at FROM conversations WHERE user1_id = '${user1_id}' AND  user2_id = '${user2_id}'))
-      `
-    } catch (error) {
-      throw error;
-    }
-  };
-  static async getUserInfomations({userId}) {
-    try {
-      let sql = `
-      SELECT Users.name, Users.age, Users.address, Users.city,Users.about, user_Images.image_id, Hobbies.name AS hobby_name
-      FROM Users
-      LEFT JOIN user_Images ON Users.id = user_Images.user_id
-      LEFT JOIN Users_Hobbies ON Users.id = Users_Hobbies.user_id
-      LEFT JOIN Hobbies ON Users_Hobbies.hobby_id = Hobbies.id
-      WHERE Users.id = :'${useId}';      
-      `
-      const [userInformations] = db.query(sql);
+        return user;
+      } else {
+        return null;
+      }
     } catch (error) {
       throw error;
     }
   }
-  static async getAllUsersWithHobbies({ gender, hobbies, city, minAge, maxAge }) {
+
+  static async getAllUsersWithHobbies({
+    userId,
+    gender,
+    hobbies,
+    city,
+    minAge,
+    maxAge,
+  }) {
     try {
       let sql = `
-        SELECT users.*, GROUP_CONCAT(hobbies.name) as hobbies
+        SELECT 
+          users.id, users. email, users.first_name, users.last_name, users.age, users.birthday, users.gender, users.address, users.city, users.phone, users.about, 
+          GROUP_CONCAT(hobbies.name) as hobbies, 
+          images.url as filename
         FROM users
         LEFT JOIN user_hobbies ON users.id = user_hobbies.user_id
         LEFT JOIN hobbies ON user_hobbies.hobby_id = hobbies.id
+        LEFT JOIN images ON users.default_image_id = images.id
       `;
 
       const whereConditions = [];
-      let hobbiesConditions; // Declare the variable here
+      let hobbiesConditions;
+
+      whereConditions.push(`users.id NOT IN (
+        SELECT f.receiver_id
+          FROM friends f
+          WHERE f.requester_id = ${userId} AND f.status = 'ACCEPTED'
+          UNION
+          SELECT f.requester_id
+          FROM friends f
+          WHERE f.receiver_id = ${userId} AND f.status = 'ACCEPTED'
+      )
+      AND users.id <> ${userId}
+      `);
 
       if (gender) {
         whereConditions.push(`gender = '${gender}'`);
       }
 
       if (hobbies) {
-        const hobbiesArray = hobbies.split(',').map(Number);
+        const hobbiesArray = hobbies.split(",").map(Number);
         hobbiesConditions = hobbiesArray.map(
-          hobbyId => `EXISTS (SELECT 1 FROM user_hobbies 
+          (hobbyId) => `EXISTS (SELECT 1 FROM user_hobbies 
             WHERE user_hobbies.user_id = users.id AND user_hobbies.hobby_id = ${hobbyId})`
         );
-        whereConditions.push(`(${hobbiesConditions.join(' OR ')})`);
+        whereConditions.push(`(${hobbiesConditions.join(" OR ")})`);
       }
 
       if (city) {
@@ -109,18 +111,77 @@ class User {
       }
 
       if (whereConditions.length > 0) {
-        sql += ' WHERE ' + whereConditions.join(' AND ');
+        sql += " WHERE " + whereConditions.join(" AND ");
       }
 
-      sql += ' GROUP BY users.id';
+      sql += " GROUP BY users.id";
 
       if (hobbies) {
-        sql += ` ORDER BY COUNT(${hobbiesConditions.join(' OR ')}) DESC`;
+        sql += ` ORDER BY COUNT(${hobbiesConditions.join(" OR ")}) DESC`;
       }
 
       const [usersWithHobbies] = await db.query(sql);
 
-      return usersWithHobbies;
+      const usersWithUrl = await Promise.all(
+        usersWithHobbies.map(async (user) => {
+          if (user.filename) {
+            user.default_image_url = await getImageURL(user.filename);
+          }
+          return user;
+        })
+      );
+
+      return usersWithUrl;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getRandomUserNotInFriends(userId) {
+    try {
+      const [userRows] = await db.query(
+        `
+        SELECT * FROM users WHERE id = ?
+      `,
+        [userId]
+      );
+
+      if (userRows.length === 0) {
+        return null;
+      }
+
+      const [rows] = await db.query(
+        `
+        SELECT 
+          u.id, u. email, u.first_name, u.last_name, u.age, u.birthday, u.gender, u.address, u.city, u.phone, u.about,
+          images.url as filename
+        FROM users u
+        LEFT JOIN images ON u.default_image_id = images.id
+        WHERE u.id NOT IN (
+          SELECT f.receiver_id
+            FROM friends f
+            WHERE f.requester_id = ? AND f.status = 'ACCEPTED'
+            UNION
+            SELECT f.requester_id
+            FROM friends f
+            WHERE f.receiver_id = ? AND f.status = 'ACCEPTED'
+        )
+        AND u.id <> ?
+        ORDER BY RAND()
+        LIMIT 1;
+      `,
+        [userId, userId, userId]
+      );
+
+      if (rows.length > 0) {
+        const user = rows[0];
+        if (user.filename) {
+          user.default_image_url = await getImageURL(user.filename);
+        }
+        return user;
+      } else {
+        return null;
+      }
     } catch (error) {
       throw error;
     }
