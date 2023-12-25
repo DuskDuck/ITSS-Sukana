@@ -8,6 +8,7 @@ import Profile from "./views/profile";
 import Homepage from "./views/homepage";
 import Idealmatch from "./views/idealmatch";
 import Friend from "./views/friend";
+import Chat from "./views/chat";
 
 const App = () => {
   return (
@@ -15,10 +16,12 @@ const App = () => {
       <Routes>
         <Route path="/idealmatch" element={<Home />} />
         <Route path="/idealmatch-result" element={<Idealmatch />} />
-        <Route path="/not-found" element={<NotFound />} />
         <Route path="/friend" element={<Friend />} />
         <Route path="/users/:id" element={<Profile />} />
+        <Route path="/chat" element={<Chat />} />
+
         <Route path="/" element={<Homepage />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>
   );

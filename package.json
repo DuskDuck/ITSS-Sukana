@@ -32,7 +32,8 @@
     "redaxios": "^0.5.1",
     "redux": "^5.0.0",
     "vite-express": "*",
-    "webfontloader": "^1.6.28"
+    "webfontloader": "^1.6.28",
+    "ws": "^8.15.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

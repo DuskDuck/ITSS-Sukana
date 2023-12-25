@@ -1,0 +1,80 @@
+.conversation-conversation {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+}
+.conversation-user-img {
+  width: 80px;
+  height: 80px;
+  padding: 5px;
+  object-fit: cover;
+  border-radius: var(--dl-radius-radius-round);
+}
+.conversation-mess-info-container {
+  flex: 0 0 auto;
+  width: 50%;
+  height: 80px;
+  display: flex;
+  align-self: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+}
+.conversation-user-name-text {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+}
+.conversation-new-message {
+  color: rgba(0, 0, 0, 0.63);
+  font-style: normal;
+  margin-top: var(--dl-space-space-halfunit);
+  font-weight: 500;
+}
+.conversation-end-content-container {
+  flex: 0 0 auto;
+  width: 15%;
+  height: 80px;
+  padding: 5px;
+  display: flex;
+  position: relative;
+  align-items: flex-end;
+  flex-direction: column;
+}
+.conversation-time-elapsed-text {
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.conversation-notify {
+  flex: 0 0 auto;
+  right: 5px;
+  width: 40px;
+  bottom: 10px;
+  height: 40px;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+}
+.conversation-notify-bg {
+  top: 0px;
+  left: 0px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  object-fit: cover;
+  border-radius: var(--dl-radius-radius-round);
+}
+.conversation-notify-num {
+  color: #ffffff;
+  z-index: 5;
+  font-size: 20px;
+  font-style: normal;
+  text-align: center;
+  font-weight: 700;
+}
+
+
+
