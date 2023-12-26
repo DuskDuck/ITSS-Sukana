@@ -12,7 +12,7 @@ import API_ENDPOINT from "./apiConfig";
 const Filter = ({ setIsFilterVisible }) => {
   const defaultDistantValue = 0;
   const defaultAgeRange = [0, 20];
-  const defaultLocation = "Hanoi";
+  const defaultLocation = "All";
 
   const [locationValue, setLocationValue] = useState(defaultLocation);
   const [selectedGender, setSelectedGender] = useState([]);
@@ -71,12 +71,15 @@ const Filter = ({ setIsFilterVisible }) => {
       const selectedHobbiesIds = selectedHobbies.map((hobbyId) =>
         parseInt(hobbyId)
       );
+
+      const cityParam = locationValue === "All" ? "" : locationValue;
+
       const apiUrl =
         API_ENDPOINT +
         `/api/filter?gender=${selectedGender.join(
           ","
         )}&hobbies=${selectedHobbiesIds.join(",")}&city=${encodeURIComponent(
-          locationValue
+          cityParam
         )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=6`;
 
       const response = await axios.get(apiUrl);
@@ -107,7 +110,8 @@ const Filter = ({ setIsFilterVisible }) => {
       try {
         const citiesApiUrl = API_ENDPOINT + "/api/cities";
         const citiesResponse = await axios.get(citiesApiUrl);
-        setCities(citiesResponse.data);
+        const allLocationsOption = { city: "All" };
+        setCities([allLocationsOption, ...citiesResponse.data]);
       } catch (error) {
         console.error("Error fetching cities:", error);
       }

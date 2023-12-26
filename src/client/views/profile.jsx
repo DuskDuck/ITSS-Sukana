@@ -15,6 +15,14 @@ const Profile = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
+  const [expandedImage, setExpandedImage] = useState(null);
+
+  const expandImage = (image) => {
+    setExpandedImage(image);
+  };
+  const closeExpandedImage = () => {
+    setExpandedImage(null);
+  };
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -113,7 +121,6 @@ const Profile = () => {
               <h1>
                 {userData.first_name} {userData.last_name}, {userData.age}
               </h1>
-              {/* <p>{userData.occupation}</p> */}
               <h2>Address</h2>
               <p>{userData.address}</p>
             </div>
@@ -152,9 +159,19 @@ const Profile = () => {
                     key={index}
                     src={image}
                     alt={`Gallery Image ${index + 1}`}
+                    onClick={() => expandImage(image)}
                   />
                 ))}
               </div>
+              {expandedImage && (
+                <div className="image-overlay" onClick={closeExpandedImage}>
+                  <img
+                    className="expanded-image"
+                    src={expandedImage}
+                    alt="Expanded Image"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
