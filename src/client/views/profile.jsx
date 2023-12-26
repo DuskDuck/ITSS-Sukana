@@ -139,11 +139,11 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="profile-interests">
+            <div className="profile-hobby">
               <h2>Hobbies</h2>
-              <div className="interests-container">
+              <div className="hobby-container">
                 {parseHobbies(userData.hobbies).map((hobby, index) => (
-                  <p className="interest-item" key={index}>
+                  <p className="hobby-item" key={index}>
                     {hobby}
                   </p>
                 ))}

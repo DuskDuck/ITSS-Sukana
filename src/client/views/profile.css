@@ -58,13 +58,13 @@
   cursor: pointer;
 }
 
-.interests-container {
+.hobby-container {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.interest-item {
+.hobby-item {
   display: flex;
   border: 1px solid #ddd;
   padding: 8px;
