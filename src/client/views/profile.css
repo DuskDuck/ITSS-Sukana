@@ -41,7 +41,7 @@
 }
 
 .avatar {
-  width: 500px;
+  width: 400px;
   height: auto;
   border-radius: 15px;
 }
@@ -49,13 +49,13 @@
   gap: 20px;
   display: flex;
   flex-wrap: wrap;
-  /* object-fit: cover; */
 }
 .gallery-images {
   object-fit: cover;
   width: 150px;
   height: 150px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .interests-container {
