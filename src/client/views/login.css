@@ -1,4 +1,4 @@
-body {
+.login-container {
   background-image: url("src/client/assets/image/Sign-in.png");
   background-size: cover;
   background-position: center;
