@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API_ENDPOINT from "./apiConfig";
+import "./login.css";
 
 const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
@@ -34,25 +35,34 @@ const Login = ({ setIsLoggedIn }) => {
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
+      <h2>Sign In</h2>
       <div>
-        <label>Email:</label>
+        <p className="email">Email</p>
         <input
+          className="email-input"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div>
-        <label>Password:</label>
+        <p className="password">Password</p>
         <input
+          className="password-input"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       {error && <p className="error">{error}</p>}
-      <button onClick={handleLogin}>Login</button>
+      <button className="login-button" onClick={handleLogin}>
+        Login
+      </button>
+      <div className="sign-up">
+        Don't have account yet?<p className="link">Sign up</p>
+      </div>
+      <button className="fb"></button>
+      <button className="gg"></button>
     </div>
   );
 };
