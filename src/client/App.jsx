@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 
 import "./style.css";
 import Home from "./views/home";
@@ -16,6 +21,10 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        <Route
+          path="/login"
+          element={<Login setIsLoggedIn={setIsLoggedIn} />}
+        />
         <Route path="/idealmatch" element={<Home />} />
         <Route path="/idealmatch-result" element={<Idealmatch />} />
         <Route path="/friend" element={<Friend />} />
@@ -30,7 +39,7 @@ const App = () => {
             isLoggedIn ? (
               <Homepage setIsLoggedIn={setIsLoggedIn} />
             ) : (
-              <Login setIsLoggedIn={setIsLoggedIn} />
+              <Navigate to="/login" />
             )
           }
         />
