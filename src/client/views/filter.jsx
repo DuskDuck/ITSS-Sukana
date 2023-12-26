@@ -10,9 +10,10 @@ import { setFilteredData } from "../../redux/action";
 import API_ENDPOINT from "./apiConfig";
 
 const Filter = ({ setIsFilterVisible }) => {
-  const defaultAgeRange = [0, 20];
+  const defaultAgeRange = [0, 40];
   const defaultLocation = "All";
 
+  const userId = localStorage.getItem("id");
   const [locationValue, setLocationValue] = useState(defaultLocation);
   const [selectedGender, setSelectedGender] = useState([]);
   const [hobbies, setHobbies] = useState([]);
@@ -73,7 +74,7 @@ const Filter = ({ setIsFilterVisible }) => {
           ","
         )}&hobbies=${selectedHobbiesIds.join(",")}&city=${encodeURIComponent(
           cityParam
-        )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=6`;
+        )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=${userId}`;
 
       const response = await axios.get(apiUrl);
 
@@ -122,7 +123,7 @@ const Filter = ({ setIsFilterVisible }) => {
             ","
           )}&hobbies=${selectedHobbies.join(",")}&city=${encodeURIComponent(
             locationValue
-          )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=6`;
+          )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=${userId}`;
 
         console.log("API URL:", apiUrl);
 

@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
+  const userId = localStorage.getItem("id");
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
@@ -42,7 +43,7 @@ const Profile = () => {
   }, [id]);
   const handleSendFriendRequest = async () => {
     const requestData = {
-      requester_id: 1,
+      requester_id: userId,
       receiver_id: userData.id,
     };
     console.log(requestData);

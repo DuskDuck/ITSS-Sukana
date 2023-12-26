@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "./style.css";
@@ -9,8 +9,10 @@ import Homepage from "./views/homepage";
 import Idealmatch from "./views/idealmatch";
 import Friend from "./views/friend";
 import Chat from "./views/chat";
+import Login from "./views/login";
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <Router>
       <Routes>
@@ -19,9 +21,19 @@ const App = () => {
         <Route path="/friend" element={<Friend />} />
         <Route path="/users/:id" element={<Profile />} />
         <Route path="/chat" element={<Chat />} />
-
-        <Route path="/" element={<Homepage />} />
+        {/* <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Homepage />} /> */}
         <Route path="/*" element={<NotFound />} />
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? (
+              <Homepage setIsLoggedIn={setIsLoggedIn} />
+            ) : (
+              <Login setIsLoggedIn={setIsLoggedIn} />
+            )
+          }
+        />
       </Routes>
     </Router>
   );

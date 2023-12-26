@@ -26,6 +26,7 @@ import bg1 from "../assets/image/sect-gate-view.png";
 import bg2 from "../assets/image/somewhere.png";
 
 const Homepage = (props) => {
+  const userId = localStorage.getItem("id");
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [matchData, setUserData] = useState([]);
@@ -76,51 +77,50 @@ const Homepage = (props) => {
       setResponseMessage("Failed to send friend request.");
     }
   };
-  
+
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:3010');
+    const socket = new WebSocket("ws://localhost:3010");
 
-    socket.addEventListener('open', () => {
-      console.log('WebSocket connection established');
+    socket.addEventListener("open", () => {
+      console.log("WebSocket connection established");
     });
 
-    socket.addEventListener('message', (event) => {
-      console.log('Received message:', event.data);
-      // Handle the received message from the WebSocket server
+    socket.addEventListener("message", (event) => {
+      console.log("Received message:", event.data);
     });
 
-    socket.addEventListener('close', () => {
-      console.log('WebSocket connection closed');
+    socket.addEventListener("close", () => {
+      console.log("WebSocket connection closed");
     });
 
     return () => {
-      // Cleanup when the component unmounts
       socket.close();
     };
   }, []);
-  
 
   useEffect(() => {
-
     const fetchUserData = async () => {
       try {
-        const response = await fetch(API_ENDPOINT + "/api/filter?userId=6");
+        const response = await fetch(
+          API_ENDPOINT + `/api/filter?userId=${userId}`
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
         const data = await response.json();
         setUserData(data);
+        console.log(userId);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
-    if (filteredData.length === 0) {
+    if (filteredData.length === 0 && userId) {
       fetchUserData();
     } else {
       setUserData(filteredData);
     }
-  }, [filteredData]);
+  }, [filteredData, userId]);
 
   console.log(filteredData);
   return (

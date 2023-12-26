@@ -11,6 +11,7 @@ import { faXmark, faHeart } from "@fortawesome/free-solid-svg-icons";
 import API_ENDPOINT from "./apiConfig";
 
 const Friend = () => {
+  const userId = localStorage.getItem("id");
   const [friendRequests, setFriendRequests] = useState([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [notification, setNotification] = useState("");
@@ -25,7 +26,9 @@ const Friend = () => {
 
     const fetchFriendRequests = async () => {
       try {
-        const response = await fetch(API_ENDPOINT + "/api/friends/recieved/6");
+        const response = await fetch(
+          API_ENDPOINT + `/api/friends/recieved/${userId}`
+        );
 
         if (!response.ok) {
           throw new Error("Network response was not ok.");
@@ -39,7 +42,7 @@ const Friend = () => {
     };
 
     fetchFriendRequests();
-  }, []);
+  }, [userId]);
 
   const handleAccept = async (friendRequestId) => {
     try {
@@ -52,7 +55,7 @@ const Friend = () => {
           requester_id: friendRequests.find(
             (friend) => friend.id === friendRequestId
           ).requester_id,
-          receiver_id: 6,
+          receiver_id: userId,
           status: "ACCEPTED",
         }),
       });
@@ -81,7 +84,7 @@ const Friend = () => {
           requester_id: friendRequests.find(
             (friend) => friend.id === friendRequestId
           ).requester_id,
-          receiver_id: 6,
+          receiver_id: userId,
           status: "CANCELED",
         }),
       });
