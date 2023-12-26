@@ -76,8 +76,32 @@ const Homepage = (props) => {
       setResponseMessage("Failed to send friend request.");
     }
   };
+  
+  useEffect(() => {
+    const socket = new WebSocket('ws://localhost:3010');
+
+    socket.addEventListener('open', () => {
+      console.log('WebSocket connection established');
+    });
+
+    socket.addEventListener('message', (event) => {
+      console.log('Received message:', event.data);
+      // Handle the received message from the WebSocket server
+    });
+
+    socket.addEventListener('close', () => {
+      console.log('WebSocket connection closed');
+    });
+
+    return () => {
+      // Cleanup when the component unmounts
+      socket.close();
+    };
+  }, []);
+  
 
   useEffect(() => {
+
     const fetchUserData = async () => {
       try {
         const response = await fetch(API_ENDPOINT + "/api/filter?userId=6");

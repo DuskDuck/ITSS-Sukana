@@ -1,0 +1,37 @@
+.user-item-user-item {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 120px;
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.user-item-user-img-container {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+}
+.user-item-user-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--dl-radius-radius-round);
+}
+.user-item-status-img {
+  right: 5px;
+  width: 18px;
+  bottom: 5px;
+  height: 18px;
+  position: absolute;
+  object-fit: cover;
+  border-radius: var(--dl-radius-radius-round);
+}
+.user-item-user-name {
+  align-self: center;
+  margin-top: var(--dl-space-space-halfunit);
+}
+

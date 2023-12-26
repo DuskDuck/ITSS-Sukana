@@ -42,11 +42,10 @@ const NavbarContainer = (props) => {
         >
           <FontAwesomeIcon icon={faCompass} />
         </button>
-        <button
+        <button 
+          onClick={() => handleClick("/chat")} 
           type="button"
-          className={`navbar-container-message button ${
-            location.pathname === "/message" ? "active" : ""
-          }`}
+          className="navbar-container-message button"
         >
           <FontAwesomeIcon icon={faMessage} />
         </button>

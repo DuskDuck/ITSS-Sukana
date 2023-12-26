@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Helmet } from 'react-helmet'
 
@@ -20,10 +21,15 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 const Idealmatch = (props) => {
   const [matchData, setUserData] = useState([]);
+  const navigate = useNavigate();
 
   const handleReloadClick = () => {
     // Reloads the page when the button is clicked
     window.location.reload();
+  };
+
+  const handleAvatarClick = () => {
+    navigate(`/users/${matchData.id}`);
   };
 
   useEffect(() => {
@@ -60,6 +66,7 @@ const Idealmatch = (props) => {
         <div className="idealmatch-main-area">
           <div className="idealmatch-container1">
             <img
+              onClick={handleAvatarClick}
               alt="image"
               src={matchData.default_image_url}
               className="idealmatch-image"
