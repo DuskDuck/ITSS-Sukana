@@ -143,19 +143,19 @@ const Profile = () => {
               </div>
             </div>
 
-            {/*// <div className="profile-gallery">
-            //   <h2>Gallery</h2>
-            //   <div className="gallery">
-            //     {userData.gallery.map((image, index) => (
-            //       <img
-            //         className="gallery-images"
-            //         key={index}
-            //         src={image}
-            //         alt={`Gallery Image ${index + 1}`}
-            //       />
-            //     ))}
-            //   </div>
-            // </div> */}
+            <div className="profile-gallery">
+              <h2>Gallery</h2>
+              <div className="gallery">
+                {userData.image_urls.map((image, index) => (
+                  <img
+                    className="gallery-images"
+                    key={index}
+                    src={image}
+                    alt={`Gallery Image ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -46,14 +46,15 @@
   border-radius: 15px;
 }
 .gallery {
-  display: flex;
-  gap: 10px;
+  gap: 20px;
   display: flex;
   flex-wrap: wrap;
+  /* object-fit: cover; */
 }
 .gallery-images {
-  width: 100px;
-  height: auto;
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
   border-radius: 2px;
 }
 
