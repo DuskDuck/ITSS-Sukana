@@ -50,10 +50,10 @@ class Chat {
         }
       });
       const insert_record_into_messeges_table = `
-            INSERT INTO messeges ('${user1_id}',
+            INSERT INTO messages ('${user1_id}',
               (SELECT id FROM conversations
                WHERE user1_id = '${user1_id}' AND user2_id = '${user2_id}';  
-              ),?,?,'${content}',(SELECT updated_at FROM conversations WHERE user1_id = '${user1_id}' AND  user2_id = '${user2_id}'))
+              ),'TEXT','SENDING','${content}',(SELECT updated_at FROM conversations WHERE user1_id = '${user1_id}' AND  user2_id = '${user2_id}'))
           `
     } catch (error) {
       throw error;
