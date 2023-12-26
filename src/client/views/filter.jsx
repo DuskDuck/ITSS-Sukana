@@ -3,7 +3,7 @@ import axios from "redaxios";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setFilteredData } from "../../redux/action";
 
@@ -25,10 +25,10 @@ const Filter = ({ setIsFilterVisible }) => {
   const [filterKey, setFilterKey] = useState(0);
 
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
   const handleClose = () => {
-    navigate(0);
+    setIsFilterVisible(false);
+    navigate("/");
   };
 
   const handleGenderClick = (gender) => {
