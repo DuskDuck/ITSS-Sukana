@@ -15,4 +15,28 @@ router.post('/api/chat', async (req, res) => {
   }
 });
 
+router.get('/api/chat/conversations/:userId', async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const conversations = await Chat.getConversationsWithLastMessages(userId);
+    res.status(200).json(conversations);
+  } catch (error) {
+    console.error('Internal server error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.get('/api/chat/messages', async (req, res) => {
+  const { user1_id, user2_id } = req.query;
+
+  try {
+    const messages = await Chat.getMessagesByConversation({ user1_id, user2_id });
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error('Internal server error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default router;
