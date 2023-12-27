@@ -7,6 +7,7 @@ import AppComponent from '../components/component'
 import NavbarContainer from '../components/navbar-container'
 import './idealmatch.css'
 import sukana from '../assets/image/download.png'
+import Filter from "../views/filter";
 
 
 //API Endpoint Import
@@ -20,6 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 const Idealmatch = (props) => {
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [matchData, setUserData] = useState([]);
   const navigate = useNavigate();
 
@@ -27,7 +29,9 @@ const Idealmatch = (props) => {
     // Reloads the page when the button is clicked
     window.location.reload();
   };
-
+  const showFilter = () => {
+    setIsFilterVisible(true);
+  };
   const handleAvatarClick = () => {
     navigate(`/users/${matchData.id}`);
   };
@@ -60,7 +64,13 @@ const Idealmatch = (props) => {
         <title>Teender - Ideal Match</title>
         <meta property="og:title" content="Teender - Ideal Match" />
       </Helmet>
-      <AppComponent></AppComponent>
+      {isFilterVisible && (
+        <div className="overlay">
+          <Filter setIsFilterVisible={setIsFilterVisible} />
+        </div>
+      )}
+
+      <AppComponent onFilterClick={showFilter}></AppComponent>
       <div className="idealmatch-main">
         <NavbarContainer></NavbarContainer>
         <div className="idealmatch-main-area">

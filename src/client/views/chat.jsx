@@ -19,20 +19,46 @@ import WebFont from "webfontloader";
 const socket = io('http://localhost:3010');
 
 const Chat = (props) => {
+  const userId = localStorage.getItem("id");
   const [FriendList, setFriendListData] = useState([]);
+  const [ToID, setToID] = useState([]);
   const [ConvoList, setConvoListData] = useState([]);
+  const [Chat, setChatData] = useState([]);
 
   //Socket Section
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    socket.on('messageRespone', (msg, time, id) => setMessages([...messages, { message: msg, time, id}]));
+    socket.on('messageRespone', (content, created_at, from_user_id) => setMessages([...messages, {content, created_at, from_user_id}]));
   }, [messages]);
 
   const sendMessage = () => {
-    socket.emit('your chat message', message, new Date().toLocaleTimeString());
+    socket.emit('your chat message', message, new Date().toLocaleTimeString(), userId);
     setMessage('');
+    SendMessageToDB( message );
+  };
+
+  const SendMessageToDB = async (content) => {
+    try {
+        const Response = await fetch(API_ENDPOINT + "/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from_user: userId,
+            to_user: ToID,
+            content: content,
+          }),
+        });
+    
+        if (!Response.ok) {
+          throw new Error("API request failed.");
+        }
+      } catch (error) {
+        console.error("Error accepting friend request:", error);
+      }
   };
   //
   //
@@ -57,8 +83,6 @@ const Chat = (props) => {
         }
         const data = await response.json();
         setFriendListData(data.friendListWithImages);
-        console.log(data.friendListWithImages
-          );
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -82,9 +106,23 @@ const Chat = (props) => {
         console.error("Error fetching user data:", error);
       }
     };
-
     fetchUserData();
   }, []);
+
+  //FETCH chatbox content
+  const getChatbox = async ( user2_id ) => {
+    try {
+      const response = await fetch(API_ENDPOINT + '/api/chat/messages?user1_id=' + 1 + '&user2_id=' + user2_id );
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      setToID(user2_id);
+      const data = await response.json();
+      setMessages(data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   return (
     <div className="chat-container">
@@ -111,7 +149,6 @@ const Chat = (props) => {
               <br></br>
             </span>
             <div className="chat-friendlist">
-              
               {FriendList.map((FriendListOBJ, index) => {
                   return (
                     <UserItem
@@ -129,13 +166,14 @@ const Chat = (props) => {
             <div className="chat-conversation-container">
             {ConvoList.map((ConvoListOBJ, index) => {
                   return (
-                    <Conversation
+                    <Conversation 
                       key={index}
                       id={ConvoListOBJ.user2_id}
                       user_img_src={ConvoListOBJ.friend_image_url}
                       time_elapsed_text={ConvoListOBJ.last_message_created_at}
                       status={ConvoListOBJ.status}
                       user_new_mess={ConvoListOBJ.content}
+                      handleClick={getChatbox}
                     ></Conversation>
                   );
                 })}
@@ -184,20 +222,20 @@ const Chat = (props) => {
                 />
               </div>
               {messages.map((messageObj, index) => {
-                if (messageObj.id === socket.id) {
+                if (messageObj.from_user_id == userId) {
                   return (
                     <YourMessage
                       key={index}
-                      message={messageObj.message}
-                      time={messageObj.time}
+                      message={messageObj.content}
+                      time={messageObj.from_user_id}
                     />
                   );
                 } else {
                   return (
                     <OtherMessage
                       key={index}
-                      message={messageObj.message}
-                      time={messageObj.time}
+                      message={messageObj.content}
+                      time={messageObj.from_user_id}
                     />
                   );
                 }

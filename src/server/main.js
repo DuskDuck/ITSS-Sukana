@@ -1,6 +1,7 @@
 import express from 'express';
 import ViteExpress from 'vite-express';
 import http from 'http';
+
 import db from './db/db.js';
 import friendRoutes from './routes/friendRequests.js';
 import userRoutes from './routes/users.js';
@@ -47,9 +48,9 @@ io.on('connection', (socket) => {
   });
 
   // Other event listeners and handlers for real-time communication
-  socket.on('your chat message', (msg, time) => {
-    console.log(socket.id + ' message: ' + msg + ' ' + time);
-    io.emit('messageRespone', msg, time, socket.id);
+  socket.on('your chat message', (msg, time, id) => {
+    console.log(id + ' message: ' + msg + ' ' + time);
+    io.emit('messageRespone', msg, time, id);
   });
 
 });

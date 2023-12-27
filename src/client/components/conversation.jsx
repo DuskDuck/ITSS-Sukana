@@ -60,7 +60,7 @@ const Conversation = (props) => {
         alt={props.user_img_alt}
         className="conversation-user-img"
       />
-      <div className="conversation-mess-info-container">
+      <div onClick={() => props.handleClick(Friend.id)} className="conversation-mess-info-container">
         <span className="conversation-user-name-text">
           <span className="">{Friend.first_name +' '+ Friend.last_name}</span>
           <br className=""></br>
@@ -114,6 +114,7 @@ Conversation.propTypes = {
   rootClassName: PropTypes.string,
   id: PropTypes.number,
   status: PropTypes.string,
+  handleClick: PropTypes.func,
 }
 
 export default Conversation
