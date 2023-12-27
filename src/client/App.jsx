@@ -14,7 +14,6 @@ import Homepage from "./views/homepage";
 import Idealmatch from "./views/idealmatch";
 import Friend from "./views/friend";
 import Chat from "./views/chat";
-import { io } from "socket.io-client";
 import Login from "./views/login";
 
 const App = () => {
@@ -23,7 +22,6 @@ const App = () => {
     const userIsLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(userIsLoggedIn);
   }, []);
-
 
   return (
     <Router>
@@ -38,23 +36,19 @@ const App = () => {
         <Route path="/users/:id" element={<Profile />} />
         <Route path="/chat" element={<Chat />} />
         <Route
-          path="/*"
+          path="/"
           element={
             isLoggedIn ? (
-              <Navigate to="/" replace />
+              <Homepage setIsLoggedIn={setIsLoggedIn} />
             ) : (
               <Navigate to="/login" replace />
             )
           }
         />
-        <Route path="/" element={<Homepage />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>
   );
 };
 
-// const container = document.getElementById("app");
-// const root = createRoot(container);
-// root.render(<App />);
 export default App;

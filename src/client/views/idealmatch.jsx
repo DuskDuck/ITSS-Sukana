@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Helmet } from 'react-helmet'
+import { Helmet } from "react-helmet";
 
-import AppComponent from '../components/component'
-import NavbarContainer from '../components/navbar-container'
-import './idealmatch.css'
-import sukana from '../assets/image/download.png'
-
+import AppComponent from "../components/component";
+import NavbarContainer from "../components/navbar-container";
+import "./idealmatch.css";
+import sukana from "../assets/image/download.png";
 
 //API Endpoint Import
-import API_ENDPOINT from './apiConfig';
+import API_ENDPOINT from "./apiConfig";
 
 //import font
 import WebFont from "webfontloader";
 
 //Icon Import Section
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const Idealmatch = (props) => {
   const [matchData, setUserData] = useState([]);
@@ -26,6 +25,10 @@ const Idealmatch = (props) => {
   const handleReloadClick = () => {
     // Reloads the page when the button is clicked
     window.location.reload();
+  };
+  const handleLogoutClick = () => {
+    localStorage.clear();
+    navigate("/login");
   };
 
   const handleAvatarClick = () => {
@@ -42,14 +45,14 @@ const Idealmatch = (props) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch( API_ENDPOINT + '/api/match/1');
+        const response = await fetch(API_ENDPOINT + "/api/match/1");
         if (!response.ok) {
-          throw new Error('Network response was not ok.');
+          throw new Error("Network response was not ok.");
         }
         const data = await response.json();
         setUserData(data);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
     fetchUserData();
@@ -60,7 +63,10 @@ const Idealmatch = (props) => {
         <title>Teender - Ideal Match</title>
         <meta property="og:title" content="Teender - Ideal Match" />
       </Helmet>
-      <AppComponent></AppComponent>
+      <AppComponent
+        onFilterClick={showFilter}
+        onLogoutClick={handleLogoutClick}
+      ></AppComponent>
       <div className="idealmatch-main">
         <NavbarContainer></NavbarContainer>
         <div className="idealmatch-main-area">
@@ -71,11 +77,7 @@ const Idealmatch = (props) => {
               src={matchData.default_image_url}
               className="idealmatch-image"
             />
-            <img
-              alt="image"
-              src={sukana}
-              className="idealmatch-image1"
-            />
+            <img alt="image" src={sukana} className="idealmatch-image1" />
             <button type="button" className="idealmatch-button button">
               <FontAwesomeIcon icon={faHeart} />
             </button>
@@ -102,7 +104,11 @@ const Idealmatch = (props) => {
                 <br></br>
               </span>
             </button>
-            <button onClick={handleReloadClick} type="button" className="idealmatch-button3 button">
+            <button
+              onClick={handleReloadClick}
+              type="button"
+              className="idealmatch-button3 button"
+            >
               <span className="idealmatch-text12">
                 <span>Keep Swiping</span>
                 <br></br>
@@ -112,7 +118,7 @@ const Idealmatch = (props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Idealmatch
+export default Idealmatch;

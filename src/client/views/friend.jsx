@@ -16,7 +16,10 @@ const Friend = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [notification, setNotification] = useState("");
   const navigate = useNavigate();
-
+  const handleLogoutClick = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
   useEffect(() => {
     WebFont.load({
       google: {
@@ -77,7 +80,13 @@ const Friend = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestData),
+        body: JSON.stringify({
+          from_user: friendRequests.find(
+            (friend) => friend.id === friendRequestId
+          ).requester_id,
+          to_user: userId,
+          content: "Hey!",
+        }),
       });
 
       if (!response.ok) {
@@ -137,7 +146,10 @@ const Friend = () => {
         </div>
       )}
 
-      <AppComponent onFilterClick={showFilter}></AppComponent>
+      <AppComponent
+        onFilterClick={showFilter}
+        onLogoutClick={handleLogoutClick}
+      ></AppComponent>
       <div className="friend-main">
         <NavbarContainer></NavbarContainer>
         <div className="friend-main-area">
