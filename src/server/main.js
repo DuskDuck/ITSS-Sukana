@@ -1,7 +1,6 @@
 import express from "express";
 import ViteExpress from "vite-express";
 import http from "http";
-import { WebSocketServer } from "ws";
 import db from "./db/db.js";
 import friendRoutes from "./routes/friendRequests.js";
 import userRoutes from "./routes/users.js";
@@ -31,6 +30,8 @@ db.getConnection((err, connection) => {
 
 app.use(express.json());
 app.use(friendRoutes);
+app.use(loginRoutes);
+app.use(chatRoutes);
 app.use(userRoutes);
 app.use(loginRoutes);
 app.use(cors());
@@ -58,7 +59,6 @@ io.on("connection", (socket) => {
 });
 
 io.listen(3010);
-app.use(chatRoutes);
 
 ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000...")

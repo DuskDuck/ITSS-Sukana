@@ -49,6 +49,7 @@ const Friend = () => {
 
   const handleAccept = async (friendRequestId) => {
     try {
+      // First API call to respond to the friend request
       const response = await fetch(API_ENDPOINT + "/api/friends/respond", {
         method: "PUT",
         headers: {
@@ -66,16 +67,9 @@ const Friend = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }
-      setFriendRequests((prevFriendRequests) =>
-        prevFriendRequests.filter((friend) => friend.id !== friendRequestId)
-      );
 
-      setNotification("ACCEPTED");
-    } catch (error) {
-      console.error("Error accepting friend request:", error);
-    }
-    try {
-      const response = await fetch(API_ENDPOINT + "/api/chat", {
+      // Second API call after successfully accepting the friend request
+      const secondResponse = await fetch(API_ENDPOINT + "/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,15 +83,20 @@ const Friend = () => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok.");
+      if (!secondResponse.ok) {
+        throw new Error("Second API request failed.");
       }
 
-      const responseData = await response.json();
-      setResponseMessage("Successfully!");
+      // Update state or perform other actions based on the second API response
+
+      // Update friendRequests state to remove the accepted friend request
+      setFriendRequests((prevFriendRequests) =>
+        prevFriendRequests.filter((friend) => friend.id !== friendRequestId)
+      );
+
+      setNotification("ACCEPTED");
     } catch (error) {
-      console.error("Error", error);
-      setResponseMessage("Failed");
+      console.error("Error accepting friend request:", error);
     }
   };
 
