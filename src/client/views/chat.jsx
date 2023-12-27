@@ -8,15 +8,35 @@ import Conversation from '../components/conversation'
 import OtherMessage from '../components/other-message'
 import YourMessage from '../components/your-message'
 import './chat.css'
+import io from 'socket.io-client';
+import API_ENDPOINT from "./apiConfig";
 
 import greenimg from '../assets/image/green.PNG'
 
 //Import Font
 import WebFont from "webfontloader";
 
+const socket = io('http://localhost:3010');
+
 const Chat = (props) => {
   const [FriendList, setFriendListData] = useState([]);
 
+  //Socket Section
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    socket.on('messageRespone', (msg, time, id) => setMessages([...messages, { message: msg, time, id}]));
+  }, [messages]);
+
+  const sendMessage = () => {
+    socket.emit('your chat message', message, new Date().toLocaleTimeString());
+    setMessage('');
+  };
+  //
+  //
+  //
+  //
   useEffect(() => {
     WebFont.load({
       google: {
@@ -107,13 +127,16 @@ const Chat = (props) => {
               <div className="chat-chatbar-container">
                 <input
                   type="text"
-                  placeholder="placeholder"
+                  placeholder="Enter message"
                   className="chat-chatbar input"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                 />
                 <img
                   src="https://play.teleporthq.io/static/svg/default-img.svg"
                   alt="image"
                   className="chat-send-img"
+                  onClick={sendMessage}
                 />
                 <img
                   src="https://play.teleporthq.io/static/svg/default-img.svg"
@@ -121,8 +144,25 @@ const Chat = (props) => {
                   className="chat-emoji-img"
                 />
               </div>
-              <OtherMessage rootClassName="other-message-root-class-name"></OtherMessage>
-              <YourMessage rootClassName="your-message-root-class-name"></YourMessage>
+              {messages.map((messageObj, index) => {
+                if (messageObj.id === socket.id) {
+                  return (
+                    <YourMessage
+                      key={index}
+                      message={messageObj.message}
+                      time={messageObj.time}
+                    />
+                  );
+                } else {
+                  return (
+                    <OtherMessage
+                      key={index}
+                      message={messageObj.message}
+                      time={messageObj.time}
+                    />
+                  );
+                }
+              })}
             </div>
           </div>
         </div>

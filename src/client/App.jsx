@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "./style.css";
@@ -9,8 +9,10 @@ import Homepage from "./views/homepage";
 import Idealmatch from "./views/idealmatch";
 import Friend from "./views/friend";
 import Chat from "./views/chat";
+import { io } from "socket.io-client";
 
 const App = () => {
+
   return (
     <Router>
       <Routes>

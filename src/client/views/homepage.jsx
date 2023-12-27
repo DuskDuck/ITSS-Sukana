@@ -77,28 +77,6 @@ const Homepage = (props) => {
     }
   };
   
-  useEffect(() => {
-    const socket = new WebSocket('ws://localhost:3010');
-
-    socket.addEventListener('open', () => {
-      console.log('WebSocket connection established');
-    });
-
-    socket.addEventListener('message', (event) => {
-      console.log('Received message:', event.data);
-      // Handle the received message from the WebSocket server
-    });
-
-    socket.addEventListener('close', () => {
-      console.log('WebSocket connection closed');
-    });
-
-    return () => {
-      // Cleanup when the component unmounts
-      socket.close();
-    };
-  }, []);
-  
 
   useEffect(() => {
 
@@ -122,7 +100,7 @@ const Homepage = (props) => {
     }
   }, [filteredData]);
 
-  console.log(filteredData);
+  //console.log(filteredData);
   return (
     <div className="homepage-container">
       <Helmet>

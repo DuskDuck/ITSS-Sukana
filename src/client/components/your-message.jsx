@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 
 import './your-message.css'
 
-const YourMessage = (props) => {
+const YourMessage = ({ message, time }) => {
   return (
-    <div className={`your-message-container ${props.rootClassName} `}>
-      <span className="your-message-message-content">{props.text}</span>
+    <div className={`your-message-container`}>
+      <span className="your-message-message-content">{message}</span>
       <span className="your-message-date">
-        <span className="">8:44 PM</span>
+        <span className="">{time}</span>
         <br className=""></br>
       </span>
     </div>

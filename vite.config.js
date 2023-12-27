@@ -6,13 +6,6 @@ import react from "@vitejs/plugin-react";
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
-    server: {
-      hmr: {
-        port: 3010,
-        clientPort: 443,
-        path: "/vite-hmr"
-      }
-    },
     define: {
       'process.env.REACT_APP_LOCAL_API': JSON.stringify(env.REACT_APP_LOCAL_API),
       'process.env.REACT_APP_ONLINE_API': JSON.stringify(env.REACT_APP_ONLINE_API)
