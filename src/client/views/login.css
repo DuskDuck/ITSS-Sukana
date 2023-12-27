@@ -1,5 +1,5 @@
 .login-container {
-  background-image: url("src/client/assets/image/Sign-in.png");
+  background-image: url("src/client/assets/image/signin.png");
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -40,7 +40,7 @@
   left: 945px;
   top: 268px;
   font-size: 18px;
-
+  padding-left: 20px;
   border: 1px solid #e03368;
   border-radius: 10px;
 }
@@ -50,14 +50,13 @@
   height: 22px;
   left: 950px;
   top: 321px;
-
   font-size: 18px;
   line-height: 22px;
-  color: #000000;
 }
 .password-input {
   box-sizing: border-box;
 
+  padding-left: 20px;
   position: absolute;
   width: 350px;
   height: 55px;
