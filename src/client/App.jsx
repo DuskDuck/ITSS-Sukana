@@ -37,12 +37,16 @@ const App = () => {
         <Route path="/friend" element={<Friend />} />
         <Route path="/users/:id" element={<Profile />} />
         <Route path="/chat" element={<Chat />} />
-        {/* <Route path="/login" element={<Login />} /> */}
-        {isLoggedIn ? (
-          <Route path="/*" element={<Navigate to="/" replace />} />
-        ) : (
-          <Route path="/*" element={<Navigate to="/login" replace />} />
-        )}
+        <Route
+          path="/*"
+          element={
+            isLoggedIn ? (
+              <Navigate to="/" replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
         <Route path="/" element={<Homepage />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
