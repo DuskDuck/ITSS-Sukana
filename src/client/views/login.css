@@ -8,7 +8,7 @@
   justify-content: flex-end;
   align-items: center;
 }
-h2 {
+.title {
   position: absolute;
   width: 142px;
   height: 44px;

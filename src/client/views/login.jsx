@@ -35,7 +35,7 @@ const Login = ({ setIsLoggedIn }) => {
 
   return (
     <div className="login-container">
-      <h2>Sign In</h2>
+      <h2 className="title">Sign In</h2>
       <div>
         <p className="email">Email</p>
         <input
