@@ -14,6 +14,7 @@ import Homepage from "./views/homepage";
 import Idealmatch from "./views/idealmatch";
 import Friend from "./views/friend";
 import Chat from "./views/chat";
+import { io } from "socket.io-client";
 import Login from "./views/login";
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
     const userIsLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(userIsLoggedIn);
   }, []);
+
 
   return (
     <Router>

@@ -80,26 +80,7 @@ const Homepage = (props) => {
       setResponseMessage("Failed to send friend request.");
     }
   };
-
-  useEffect(() => {
-    const socket = new WebSocket("ws://localhost:3010");
-
-    socket.addEventListener("open", () => {
-      console.log("WebSocket connection established");
-    });
-
-    socket.addEventListener("message", (event) => {
-      console.log("Received message:", event.data);
-    });
-
-    socket.addEventListener("close", () => {
-      console.log("WebSocket connection closed");
-    });
-
-    return () => {
-      socket.close();
-    };
-  }, []);
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -125,7 +106,7 @@ const Homepage = (props) => {
     }
   }, [filteredData, userId]);
 
-  console.log(filteredData);
+  //console.log(filteredData);
   return (
     <div className="homepage-container">
       <Helmet>
