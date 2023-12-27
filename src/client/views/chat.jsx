@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 
-import { Helmet } from 'react-helmet'
+import { Helmet } from "react-helmet";
 
-import NavbarContainer from '../components/navbar-container'
-import UserItem from '../components/user-item'
-import Conversation from '../components/conversation'
-import OtherMessage from '../components/other-message'
-import YourMessage from '../components/your-message'
-import './chat.css'
+import NavbarContainer from "../components/navbar-container";
+import UserItem from "../components/user-item";
+import Conversation from "../components/conversation";
+import OtherMessage from "../components/other-message";
+import YourMessage from "../components/your-message";
+import "./chat.css";
 import io from 'socket.io-client';
 import API_ENDPOINT from "./apiConfig";
 
-import greenimg from '../assets/image/green.PNG'
-
+import greenimg from "../assets/image/green.PNG";
+import API_ENDPOINT from "./apiConfig";
 //Import Font
 import WebFont from "webfontloader";
 
@@ -46,7 +46,6 @@ const Chat = (props) => {
   }, []);
 
   useEffect(() => {
-
     const fetchUserData = async () => {
       try {
         const response = await fetch(API_ENDPOINT + "/api/friends/recieved/6");
@@ -111,11 +110,7 @@ const Chat = (props) => {
                   <br></br>
                 </span>
                 <div className="chat-status-container">
-                  <img
-                    src={greenimg}
-                    alt="image"
-                    className="chat-status-img"
-                  />
+                  <img src={greenimg} alt="image" className="chat-status-img" />
                   <span className="chat-user-status">
                     <span>status</span>
                     <br></br>
@@ -175,7 +170,7 @@ const Chat = (props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;

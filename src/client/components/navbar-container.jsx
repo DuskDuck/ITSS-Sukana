@@ -14,11 +14,16 @@ import {
 import locationIcon from "../assets/image/location-pin.png";
 
 const NavbarContainer = (props) => {
+  const userId = localStorage.getItem("id");
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleClick = (route) => {
     navigate(route);
+  };
+
+  const handleProfileClick = () => {
+    navigate(`/users/${userId}`);
   };
 
   return (
@@ -42,8 +47,8 @@ const NavbarContainer = (props) => {
         >
           <FontAwesomeIcon icon={faCompass} />
         </button>
-        <button 
-          onClick={() => handleClick("/chat")} 
+        <button
+          onClick={() => handleClick("/chat")}
           type="button"
           className="navbar-container-message button"
         >
@@ -59,6 +64,7 @@ const NavbarContainer = (props) => {
           <FontAwesomeIcon icon={faUserGroup} />
         </button>
         <button
+          onClick={handleProfileClick}
           type="button"
           className={`navbar-container-profile button ${
             location.pathname.startsWith("/users/") ? "active" : ""
