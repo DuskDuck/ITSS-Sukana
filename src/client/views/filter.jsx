@@ -3,22 +3,21 @@ import axios from "redaxios";
 import "./filter.css";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setFilteredData } from "../../redux/action";
 
 import API_ENDPOINT from "./apiConfig";
 
 const Filter = ({ setIsFilterVisible }) => {
-  const defaultDistantValue = 0;
-  const defaultAgeRange = [0, 20];
-  const defaultLocation = "Hanoi";
+  const defaultAgeRange = [0, 40];
+  const defaultLocation = "All";
 
+  const userId = localStorage.getItem("id");
   const [locationValue, setLocationValue] = useState(defaultLocation);
   const [selectedGender, setSelectedGender] = useState([]);
   const [hobbies, setHobbies] = useState([]);
   const [selectedHobbies, setSelectedHobbies] = useState([]);
-  const [distantValue, setDistantValue] = useState(defaultDistantValue);
   const [ageRange, setAgeRange] = useState(defaultAgeRange);
   const [users, setUsers] = useState([]);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
@@ -26,10 +25,10 @@ const Filter = ({ setIsFilterVisible }) => {
   const [filterKey, setFilterKey] = useState(0);
 
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
   const handleClose = () => {
-    navigate(0);
+    setIsFilterVisible(false);
+    navigate("/");
   };
 
   const handleGenderClick = (gender) => {
@@ -44,10 +43,6 @@ const Filter = ({ setIsFilterVisible }) => {
     );
   };
 
-  const handleDistantChange = (event) => {
-    setDistantValue(event.target.value);
-  };
-
   const handleLocationChange = (event) => {
     setLocationValue(event.target.value);
   };
@@ -59,7 +54,6 @@ const Filter = ({ setIsFilterVisible }) => {
   const handleClear = () => {
     setSelectedGender([]);
     setSelectedHobbies([]);
-    setDistantValue(defaultDistantValue);
     setAgeRange(defaultAgeRange);
     setLocationValue(defaultLocation);
   };
@@ -71,13 +65,16 @@ const Filter = ({ setIsFilterVisible }) => {
       const selectedHobbiesIds = selectedHobbies.map((hobbyId) =>
         parseInt(hobbyId)
       );
+
+      const cityParam = locationValue === "All" ? "" : locationValue;
+
       const apiUrl =
         API_ENDPOINT +
         `/api/filter?gender=${selectedGender.join(
           ","
         )}&hobbies=${selectedHobbiesIds.join(",")}&city=${encodeURIComponent(
-          locationValue
-        )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=6`;
+          cityParam
+        )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=${userId}`;
 
       const response = await axios.get(apiUrl);
 
@@ -107,7 +104,8 @@ const Filter = ({ setIsFilterVisible }) => {
       try {
         const citiesApiUrl = API_ENDPOINT + "/api/cities";
         const citiesResponse = await axios.get(citiesApiUrl);
-        setCities(citiesResponse.data);
+        const allLocationsOption = { city: "All" };
+        setCities([allLocationsOption, ...citiesResponse.data]);
       } catch (error) {
         console.error("Error fetching cities:", error);
       }
@@ -125,7 +123,7 @@ const Filter = ({ setIsFilterVisible }) => {
             ","
           )}&hobbies=${selectedHobbies.join(",")}&city=${encodeURIComponent(
             locationValue
-          )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=6`;
+          )}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&userId=${userId}`;
 
         console.log("API URL:", apiUrl);
 
@@ -177,63 +175,54 @@ const Filter = ({ setIsFilterVisible }) => {
         X
       </button>
       <div className="filter-title">Filter</div>
-      <div className="gender-section">
-        <div className="filter-subtitle">Gender</div>
-        <div className="filter-gender">
-          <button
-            style={{ borderTopLeftRadius: 4, borderBottomLeftRadius: 4 }}
-            className={`gender-button ${
-              selectedGender.includes("Male") ? "selected" : ""
-            }`}
-            onClick={() => handleGenderClick("Male")}
-          >
-            Male
-          </button>
-          <Divider orientation="vertical" variant="middle" flexItem />
-          <button
-            className={`gender-button ${
-              selectedGender.includes("Female") ? "selected" : ""
-            }`}
-            onClick={() => handleGenderClick("Female")}
-          >
-            Female
-          </button>
-          <Divider orientation="vertical" variant="middle" flexItem />
-          <button
-            style={{ borderTopRightRadius: 4, borderBottomRightRadius: 4 }}
-            className={`gender-button ${
-              selectedGender.includes("other") ? "selected" : ""
-            }`}
-            onClick={() => handleGenderClick("other")}
-          >
-            Other
-          </button>
+      <div className="row">
+        <div className="gender-section">
+          <div className="filter-subtitle">Gender</div>
+          <div className="filter-gender">
+            <button
+              style={{ borderTopLeftRadius: 4, borderBottomLeftRadius: 4 }}
+              className={`gender-button ${
+                selectedGender.includes("Male") ? "selected" : ""
+              }`}
+              onClick={() => handleGenderClick("Male")}
+            >
+              Male
+            </button>
+            <Divider orientation="vertical" variant="middle" flexItem />
+            <button
+              className={`gender-button ${
+                selectedGender.includes("Female") ? "selected" : ""
+              }`}
+              onClick={() => handleGenderClick("Female")}
+            >
+              Female
+            </button>
+            <Divider orientation="vertical" variant="middle" flexItem />
+            <button
+              style={{ borderTopRightRadius: 4, borderBottomRightRadius: 4 }}
+              className={`gender-button ${
+                selectedGender.includes("other") ? "selected" : ""
+              }`}
+              onClick={() => handleGenderClick("other")}
+            >
+              Other
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="location-section">
-        <div className="filter-subtitle">Location</div>
-        <select
-          value={locationValue}
-          onChange={handleLocationChange}
-          className="filter-dropdown"
-        >
-          {cities.map((city) => (
-            <option key={city.city} value={city.city}>
-              {city.city}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="filter-section">
-        <div className="filter-subtitle">Distant</div>
-        <Slider
-          style={{ color: "#e03368" }}
-          type="range"
-          className="filter-slider"
-          value={distantValue}
-          onChange={handleDistantChange}
-        />
-        <div className="distant-value">{`${distantValue} Km`}</div>
+        <div className="location-section">
+          <div className="filter-subtitle">Location</div>
+          <select
+            value={locationValue}
+            onChange={handleLocationChange}
+            className="filter-dropdown"
+          >
+            {cities.map((city) => (
+              <option key={city.city} value={city.city}>
+                {city.city}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="filter-section">
         <div className="filter-subtitle">Age</div>
@@ -244,7 +233,7 @@ const Filter = ({ setIsFilterVisible }) => {
           onChange={handleAgeChange}
           valueLabelDisplay="auto"
         />
-        <div className="distant-value">{`${ageRange[0]} - ${ageRange[1]} tuổi`}</div>
+        <div className="age-value">{`${ageRange[0]} - ${ageRange[1]} tuổi`}</div>
       </div>
       <div className="filter-section">
         <div className="filter-subtitle">Hobbies</div>

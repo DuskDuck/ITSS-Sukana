@@ -12,9 +12,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
+  const userId = localStorage.getItem("id");
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
+  const [expandedImage, setExpandedImage] = useState(null);
+
+  const expandImage = (image) => {
+    setExpandedImage(image);
+  };
+  const closeExpandedImage = () => {
+    setExpandedImage(null);
+  };
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -34,7 +43,7 @@ const Profile = () => {
   }, [id]);
   const handleSendFriendRequest = async () => {
     const requestData = {
-      requester_id: 1,
+      requester_id: userId,
       receiver_id: userData.id,
     };
     console.log(requestData);
@@ -113,7 +122,6 @@ const Profile = () => {
               <h1>
                 {userData.first_name} {userData.last_name}, {userData.age}
               </h1>
-              {/* <p>{userData.occupation}</p> */}
               <h2>Address</h2>
               <p>{userData.address}</p>
             </div>
@@ -132,30 +140,40 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="profile-interests">
+            <div className="profile-hobby">
               <h2>Hobbies</h2>
-              <div className="interests-container">
+              <div className="hobby-container">
                 {parseHobbies(userData.hobbies).map((hobby, index) => (
-                  <p className="interest-item" key={index}>
+                  <p className="hobby-item" key={index}>
                     {hobby}
                   </p>
                 ))}
               </div>
             </div>
 
-            {/*// <div className="profile-gallery">
-            //   <h2>Gallery</h2>
-            //   <div className="gallery">
-            //     {userData.gallery.map((image, index) => (
-            //       <img
-            //         className="gallery-images"
-            //         key={index}
-            //         src={image}
-            //         alt={`Gallery Image ${index + 1}`}
-            //       />
-            //     ))}
-            //   </div>
-            // </div> */}
+            <div className="profile-gallery">
+              <h2>Gallery</h2>
+              <div className="gallery">
+                {userData.image_urls.map((image, index) => (
+                  <img
+                    className="gallery-images"
+                    key={index}
+                    src={image}
+                    alt={`Gallery Image ${index + 1}`}
+                    onClick={() => expandImage(image)}
+                  />
+                ))}
+              </div>
+              {expandedImage && (
+                <div className="image-overlay" onClick={closeExpandedImage}>
+                  <img
+                    className="expanded-image"
+                    src={expandedImage}
+                    alt="Expanded Image"
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

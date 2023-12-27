@@ -1,0 +1,126 @@
+.login-container {
+  background-image: url("src/client/assets/image/signin.png");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.title {
+  position: absolute;
+  width: 142px;
+  height: 44px;
+  left: 1030px;
+  top: 83px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 44px;
+  text-align: center;
+}
+.email {
+  position: absolute;
+  width: 52px;
+  height: 22px;
+  left: 950px;
+  top: 220px;
+
+  font-size: 18px;
+  line-height: 22px;
+  color: #000000;
+}
+.email-input {
+  box-sizing: border-box;
+
+  position: absolute;
+  width: 350px;
+  height: 55px;
+  left: 945px;
+  top: 268px;
+  font-size: 18px;
+  padding-left: 20px;
+  border: 1px solid #e03368;
+  border-radius: 10px;
+}
+.password {
+  position: absolute;
+  width: 52px;
+  height: 22px;
+  left: 950px;
+  top: 321px;
+  font-size: 18px;
+  line-height: 22px;
+}
+.password-input {
+  box-sizing: border-box;
+
+  padding-left: 20px;
+  position: absolute;
+  width: 350px;
+  height: 55px;
+  left: 945px;
+  top: 368px;
+  font-size: 18px;
+  border: 1px solid #e03368;
+  border-radius: 10px;
+}
+.login-button {
+  box-sizing: border-box;
+
+  position: absolute;
+  width: 350px;
+  height: 55px;
+  left: 945px;
+  top: 464px;
+  font-size: 18px;
+  border: 1px solid #e03368;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #e03368;
+}
+.error {
+  font-size: 18px;
+  position: absolute;
+  width: 350px;
+  height: 55px;
+  left: 945px;
+  top: 408px;
+}
+.sign-up {
+  position: absolute;
+  width: 350px;
+  height: 55px;
+  left: 1010px;
+  top: 537px;
+}
+.link {
+  display: inline;
+  margin-left: 5px;
+  cursor: pointer;
+  color: #e03368;
+}
+
+.gg {
+  position: absolute;
+  width: 167px;
+  height: 40px;
+  left: 935px;
+  top: 602px;
+  background: rgba(204, 76, 76, 0.1);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.fb {
+  position: absolute;
+  width: 167px;
+  height: 40px;
+  left: 1120px;
+  top: 602px;
+  background: rgba(76, 142, 204, 0.09);
+  border-radius: 5px;
+  cursor: pointer;
+}
