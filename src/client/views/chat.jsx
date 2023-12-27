@@ -30,13 +30,19 @@ const Chat = (props) => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    socket.on('messageRespone', (content, created_at, from_user_id) => setMessages([...messages, {content, created_at, from_user_id}]));
+    socket.on('messageRespone', (content, created_at, from_user_id) => {
+      setMessages([{ content, created_at, from_user_id }, ...messages]);
+    });
   }, [messages]);
 
   const sendMessage = () => {
-    socket.emit('your chat message', message, new Date().toLocaleTimeString(), userId);
-    setMessage('');
-    SendMessageToDB( message );
+    if(message.length <= 0){
+
+    }else {
+      socket.emit('your chat message', message, new Date().toLocaleTimeString(), userId);
+      setMessage('');
+      SendMessageToDB( message );
+    }
   };
 
   const SendMessageToDB = async (content) => {
@@ -77,7 +83,7 @@ const Chat = (props) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(API_ENDPOINT + "/api/friends/user/1");
+        const response = await fetch(API_ENDPOINT + "/api/friends/user/" + userId);
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
@@ -95,7 +101,7 @@ const Chat = (props) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(API_ENDPOINT + "/api/chat/conversations/1");
+        const response = await fetch(API_ENDPOINT + "/api/chat/conversations/" + userId);
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
@@ -112,7 +118,7 @@ const Chat = (props) => {
   //FETCH chatbox content
   const getChatbox = async ( user2_id ) => {
     try {
-      const response = await fetch(API_ENDPOINT + '/api/chat/messages?user1_id=' + 1 + '&user2_id=' + user2_id );
+      const response = await fetch(API_ENDPOINT + '/api/chat/messages?user1_id=' + userId + '&user2_id=' + user2_id );
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }
@@ -155,6 +161,7 @@ const Chat = (props) => {
                       key={index}
                       name={FriendListOBJ.friend_first_name+FriendListOBJ.friend_last_name}
                       img={FriendListOBJ.friend_image_url}
+                      id={FriendListOBJ.friend_id}
                     ></UserItem>
                   );
                 })}
@@ -168,7 +175,9 @@ const Chat = (props) => {
                   return (
                     <Conversation 
                       key={index}
-                      id={ConvoListOBJ.user2_id}
+                      id2={ConvoListOBJ.user2_id}
+                      id1={ConvoListOBJ.user1_id}
+                      current_u_id={userId}
                       user_img_src={ConvoListOBJ.friend_image_url}
                       time_elapsed_text={ConvoListOBJ.last_message_created_at}
                       status={ConvoListOBJ.status}
@@ -221,7 +230,7 @@ const Chat = (props) => {
                   className="chat-emoji-img"
                 />
               </div>
-              {messages.map((messageObj, index) => {
+              {messages.slice().reverse().map((messageObj, index) => {
                 if (messageObj.from_user_id == userId) {
                   return (
                     <YourMessage

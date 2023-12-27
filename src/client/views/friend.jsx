@@ -16,7 +16,7 @@ const Friend = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [notification, setNotification] = useState("");
   const navigate = useNavigate();
-  const handleLogoutClick = () => {
+const handleLogoutClick = () => {
     localStorage.clear();
     navigate("/login");
   };
@@ -49,55 +49,51 @@ const Friend = () => {
 
   const handleAccept = async (friendRequestId) => {
     try {
-      // First API call to respond to the friend request
-      const response = await fetch(API_ENDPOINT + "/api/friends/respond", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          requester_id: friendRequests.find(
-            (friend) => friend.id === friendRequestId
-          ).requester_id,
-          receiver_id: userId,
-          status: "ACCEPTED",
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok.");
+        // First API call to respond to the friend request
+        const response = await fetch(API_ENDPOINT + "/api/friends/respond", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            requester_id: friendRequests.find(
+              (friend) => friend.id === friendRequestId
+            ).requester_id,
+            receiver_id: userId,
+            status: "ACCEPTED",
+          }),
+        });
+    
+        if (!response.ok) {
+          throw new Error("Network response was not ok.");
+        }
+    
+        // Second API call after successfully accepting the friend request
+        const secondResponse = await fetch(API_ENDPOINT + "/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from_user: friendRequests.find(
+              (friend) => friend.id === friendRequestId
+            ).requester_id,
+            to_user: userId,
+            content: "Hey!",
+          }),
+        });
+    
+        if (!secondResponse.ok) {
+          throw new Error("Second API request failed.");
+        }
+        setFriendRequests((prevFriendRequests) =>
+          prevFriendRequests.filter((friend) => friend.id !== friendRequestId)
+        );
+    
+        setNotification("ACCEPTED");
+      } catch (error) {
+        console.error("Error accepting friend request:", error);
       }
-
-      // Second API call after successfully accepting the friend request
-      const secondResponse = await fetch(API_ENDPOINT + "/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from_user: friendRequests.find(
-            (friend) => friend.id === friendRequestId
-          ).requester_id,
-          to_user: userId,
-          content: "Hey!",
-        }),
-      });
-
-      if (!secondResponse.ok) {
-        throw new Error("Second API request failed.");
-      }
-
-      // Update state or perform other actions based on the second API response
-
-      // Update friendRequests state to remove the accepted friend request
-      setFriendRequests((prevFriendRequests) =>
-        prevFriendRequests.filter((friend) => friend.id !== friendRequestId)
-      );
-
-      setNotification("ACCEPTED");
-    } catch (error) {
-      console.error("Error accepting friend request:", error);
-    }
   };
 
   const handleCancel = async (friendRequestId) => {
@@ -145,10 +141,7 @@ const Friend = () => {
         </div>
       )}
 
-      <AppComponent
-        onFilterClick={showFilter}
-        onLogoutClick={handleLogoutClick}
-      ></AppComponent>
+      <AppComponent onFilterClick={showFilter}></AppComponent>
       <div className="friend-main">
         <NavbarContainer></NavbarContainer>
         <div className="friend-main-area">

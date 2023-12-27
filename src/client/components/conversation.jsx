@@ -36,9 +36,17 @@ const Conversation = (props) => {
   const timestamp = props.time_elapsed_text; 
   const elapsed = calculateTimeElapsed(timestamp);
   useEffect(() => {
+    
     const fetchUserData = async () => {
       try {
-        const response = await fetch(API_ENDPOINT + "/api/users/" + props.id);
+        let id;
+
+        if(props.current_u_id == props.id1){
+          id = props.id2;
+        }else if(props.current_u_id == props.id2){
+          id = props.id1;
+        }
+        const response = await fetch(API_ENDPOINT + "/api/users/" + id);
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
@@ -112,7 +120,9 @@ Conversation.propTypes = {
   notify_bg_src: PropTypes.string,
   notify_bg_alt: PropTypes.string,
   rootClassName: PropTypes.string,
-  id: PropTypes.number,
+  current_u_id: PropTypes.number,
+  id1: PropTypes.number,
+  id2: PropTypes.number,
   status: PropTypes.string,
   handleClick: PropTypes.func,
 }

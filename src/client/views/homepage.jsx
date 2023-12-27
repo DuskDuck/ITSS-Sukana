@@ -6,6 +6,8 @@ import AppComponent from "../components/component";
 import NavbarContainer from "../components/navbar-container";
 import "./homepage.css";
 import Filter from "../views/filter";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //API Endpoint Import
 import API_ENDPOINT from "./apiConfig";
@@ -26,6 +28,7 @@ import bg1 from "../assets/image/sect-gate-view.png";
 import bg2 from "../assets/image/somewhere.png";
 
 const Homepage = (props) => {
+
   const userId = localStorage.getItem("id");
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -54,11 +57,21 @@ const Homepage = (props) => {
   };
 
   const handleSendFriendRequest = async () => {
+    toast.success('Friend Request Send!', {
+      position: 'top-right',
+      autoClose: 3000, 
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     const requestData = {
       requester_id: 1,
       receiver_id: matchData[currentIndex].id,
     };
     console.log(requestData);
+    setUserData([...matchData.slice(0, currentIndex), ...oldArray.slice(currentIndex + 1)]);
     try {
       const response = await fetch(API_ENDPOINT + "/api/friends/send", {
         method: "POST",
@@ -112,6 +125,17 @@ const Homepage = (props) => {
         <title>Teender - Homepage</title>
         <meta property="og:title" content="Teender - Homepage" />
       </Helmet>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {isFilterVisible && (
         <div className="overlay">
           <Filter setIsFilterVisible={setIsFilterVisible} />
