@@ -126,9 +126,9 @@ router.get("/api/friends/recieved/:user_id", async (req, res) => {
 
     const friendRequestsWithImages = await Promise.all(
       friendRequests.map(async (friend) => {
-        if (friend.friend_filename) {
-          friend.friend_image_url = await getImageURL(
-            friend.friend_filename
+        if (friend.requester_filename) {
+          friend.requester_image_url = await getImageURL(
+            friend.requester_filename
           );
         }
         return friend;
