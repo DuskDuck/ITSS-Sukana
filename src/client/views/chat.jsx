@@ -17,10 +17,8 @@ import greenimg from "../assets/image/green.PNG";
 import WebFont from "webfontloader";
 
 const socket = io('http://localhost:3010');
-const userId = localStorage.getItem("id");
 
 const Chat = (props) => {
-  console.log(userId);
   const [FriendList, setFriendListData] = useState([]);
 
   //Socket Section
@@ -50,12 +48,14 @@ const Chat = (props) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(API_ENDPOINT + "/api/friends/recieved/6");
+        const response = await fetch(API_ENDPOINT + "/api/friends/user/1");
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
         const data = await response.json();
-        setFriendListData(data);
+        setFriendListData(data.friendListWithImages);
+        console.log(data.friendListWithImages
+          );
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -89,7 +89,16 @@ const Chat = (props) => {
               <br></br>
             </span>
             <div className="chat-friendlist">
-              <UserItem rootClassName="user-item-root-class-name"></UserItem>
+              
+              {FriendList.map((FriendListOBJ, index) => {
+                  return (
+                    <UserItem
+                      key={index}
+                      name={FriendListOBJ.friend_first_name+FriendListOBJ.friend_last_name}
+                      img={FriendListOBJ.friend_image_url}
+                    ></UserItem>
+                  );
+                })}
             </div>
             <span className="chat-text03">
               <span>Messages</span>
