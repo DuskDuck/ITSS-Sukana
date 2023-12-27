@@ -71,6 +71,25 @@ const Friend = () => {
     } catch (error) {
       console.error("Error accepting friend request:", error);
     }
+    try {
+      const response = await fetch(API_ENDPOINT + "/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+
+      const responseData = await response.json();
+      setResponseMessage("Successfully!");
+    } catch (error) {
+      console.error("Error", error);
+      setResponseMessage("Failed");
+    }
   };
 
   const handleCancel = async (friendRequestId) => {
