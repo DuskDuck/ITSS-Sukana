@@ -7,7 +7,6 @@ import friendRoutes from './routes/friendRequests.js';
 import userRoutes from './routes/users.js';
 import chatRoutes from './routes/chat.js'
 import loginRoutes from './routes/login.js';
-import http from 'http';
 import { Server } from 'socket.io'; // Import Socket.io
 import cors from 'cors';
 const app = express();

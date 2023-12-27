@@ -11,14 +11,16 @@ import "./chat.css";
 import io from 'socket.io-client';
 import API_ENDPOINT from "./apiConfig";
 
+//import Images
 import greenimg from "../assets/image/green.PNG";
-import API_ENDPOINT from "./apiConfig";
 //Import Font
 import WebFont from "webfontloader";
 
 const socket = io('http://localhost:3010');
+const userId = localStorage.getItem("id");
 
 const Chat = (props) => {
+  console.log(userId);
   const [FriendList, setFriendListData] = useState([]);
 
   //Socket Section

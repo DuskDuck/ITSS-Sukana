@@ -11,7 +11,7 @@ const Login = ({ setIsLoggedIn }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(API_ENDPOINT + "/api/login", {
+      const response = await fetch(API_ENDPOINT + "/api/friends/user/1", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
