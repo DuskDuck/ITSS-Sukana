@@ -27,6 +27,7 @@
   padding: 20px;
 }
 .friend-avatar {
+  object-fit: cover;
   width: 200px;
   height: 200px;
   display: block;

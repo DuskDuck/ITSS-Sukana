@@ -4,9 +4,10 @@ import "./component.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //ICON import Section
-import locationIcon from '../assets/image/location-pin.png'
+import locationIcon from "../assets/image/location-pin.png";
 import { faSliders } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 //Import Font
 import "../assets/font/Roboto/Roboto-Medium.ttf";
 import WebFont from "webfontloader";
@@ -29,7 +30,7 @@ const AppComponent = (props) => {
         </span>
       </div>
       <div className="app-component-topbar">
-      <div className="app-component-container2">
+        <div className="app-component-container2">
           <img
             src={locationIcon}
             alt={props.image_alt}
@@ -55,6 +56,13 @@ const AppComponent = (props) => {
         <button type="button" className="app-component-notification button">
           <FontAwesomeIcon icon={faBell} />
         </button>
+        <button
+          type="button"
+          className="log-out-button button"
+          onClick={props.onLogoutClick}
+        >
+          <FontAwesomeIcon icon={faRightFromBracket} />
+        </button>
       </div>
     </div>
   );
@@ -62,14 +70,15 @@ const AppComponent = (props) => {
 
 AppComponent.defaultProps = {
   searchbar_placeholder: "Search",
-  text: 'Location',
-  text1: 'Hanoi, Vietnam',
+  text: "Location",
+  text1: "Hanoi, Vietnam",
 };
 
 AppComponent.propTypes = {
   searchbar_placeholder: PropTypes.string,
   text: PropTypes.string,
   text1: PropTypes.string,
+  onLogoutClick: PropTypes.func.isRequired,
 };
 
 export default AppComponent;
