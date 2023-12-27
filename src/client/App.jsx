@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,6 +18,11 @@ import Login from "./views/login";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const userIsLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(userIsLoggedIn);
+  }, []);
+
   return (
     <Router>
       <Routes>
@@ -31,6 +36,11 @@ const App = () => {
         <Route path="/users/:id" element={<Profile />} />
         <Route path="/chat" element={<Chat />} />
         {/* <Route path="/login" element={<Login />} /> */}
+        {isLoggedIn ? (
+          <Route path="/*" element={<Navigate to="/" replace />} />
+        ) : (
+          <Route path="/*" element={<Navigate to="/login" replace />} />
+        )}
         <Route path="/" element={<Homepage />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
