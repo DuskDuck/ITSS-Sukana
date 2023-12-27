@@ -51,7 +51,7 @@
   object-fit: cover;
   margin-left: var(--dl-space-space-oneandhalfunits);
   border-radius: 12px;
-  filter: drop-shadow( 0 0 4px rgba(40, 40, 40, 0.611) );
+  filter: drop-shadow(0 0 4px rgba(40, 40, 40, 0.611));
 }
 .app-component-container3 {
   flex: 0 0 auto;
@@ -101,4 +101,14 @@
 }
 .button {
   cursor: pointer;
+}
+
+.log-out-button {
+  height: 50%;
+  align-self: center;
+  margin-left: var(--dl-space-space-halfunit);
+  background-color: #eaeaea;
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
 }

@@ -35,7 +35,10 @@ const Homepage = (props) => {
   const showFilter = () => {
     setIsFilterVisible(true);
   };
-
+  const handleLogoutClick = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
   const handleListButtonClickAsc = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex + 1 < matchData.length ? prevIndex + 1 : 0
@@ -115,7 +118,10 @@ const Homepage = (props) => {
           <Filter setIsFilterVisible={setIsFilterVisible} />
         </div>
       )}
-      <AppComponent onFilterClick={showFilter}></AppComponent>
+      <AppComponent
+        onFilterClick={showFilter}
+        onLogoutClick={handleLogoutClick}
+      ></AppComponent>
       <div className="homepage-main">
         <NavbarContainer></NavbarContainer>
         <div className="homepage-main-area">
