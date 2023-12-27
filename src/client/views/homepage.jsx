@@ -80,7 +80,6 @@ const Homepage = (props) => {
       setResponseMessage("Failed to send friend request.");
     }
   };
-  
 
   useEffect(() => {
     const fetchUserData = async () => {
