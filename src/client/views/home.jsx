@@ -18,6 +18,10 @@ const Home = (props) => {
   const showFilter = () => {
     setIsFilterVisible(true);
   };
+  const handleLogoutClick = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
   const navigate = useNavigate();
 
   const handleClick = (route) => {
@@ -43,7 +47,10 @@ const Home = (props) => {
         </div>
       )}
 
-      <AppComponent onFilterClick={showFilter}></AppComponent>
+      <AppComponent
+        onFilterClick={showFilter}
+        onLogoutClick={handleLogoutClick}
+      ></AppComponent>
       <div className="home-main">
         <NavbarContainer></NavbarContainer>
         <div className="home-main-area">

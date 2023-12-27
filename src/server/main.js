@@ -15,8 +15,8 @@ const server = http.createServer(app);
 //Integrate Socket.io with the server
 const io = new Server({
   cors: {
-    origin: "http://localhost:3000"
-  }
+    origin: "http://localhost:3000",
+  },
 });
 
 // db connection
@@ -34,25 +34,29 @@ app.use(friendRoutes);
 app.use(loginRoutes);
 app.use(chatRoutes);
 app.use(userRoutes);
+app.use(loginRoutes);
 app.use(cors());
 
 // socket connection
 let connectedClients = 0;
 
-io.on('connection', (socket) => {
-  connectedClients++; 
-  console.log(  '[+] a user connected (' + connectedClients +')   - UserID:' + socket.id);
-  socket.on('disconnect', () => {
+io.on("connection", (socket) => {
+  connectedClients++;
+  console.log(
+    "[+] a user connected (" + connectedClients + ")   - UserID:" + socket.id
+  );
+  socket.on("disconnect", () => {
     connectedClients--;
-    console.log('[X] a user disconnected (' + connectedClients +')- UserID:' + socket.id);
+    console.log(
+      "[X] a user disconnected (" + connectedClients + ")- UserID:" + socket.id
+    );
   });
 
   // Other event listeners and handlers for real-time communication
-  socket.on('your chat message', (msg, time, id) => {
-    console.log(id + ' message: ' + msg + ' ' + time);
-    io.emit('messageRespone', msg, time, id);
+  socket.on('your chat message', (msg, time) => {
+    console.log(socket.id + ' message: ' + msg + ' ' + time);
+    io.emit('messageRespone', msg, time, socket.id);
   });
-
 });
 
 io.listen(3010);
