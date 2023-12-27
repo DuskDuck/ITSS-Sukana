@@ -20,6 +20,7 @@ const socket = io('http://localhost:3010');
 
 const Chat = (props) => {
   const [FriendList, setFriendListData] = useState([]);
+  const [ConvoList, setConvoListData] = useState([]);
 
   //Socket Section
   const [messages, setMessages] = useState([]);
@@ -45,6 +46,8 @@ const Chat = (props) => {
     });
   }, []);
 
+
+  //FETCH friend list
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -56,6 +59,25 @@ const Chat = (props) => {
         setFriendListData(data.friendListWithImages);
         console.log(data.friendListWithImages
           );
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  //FETCH Conversation list
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(API_ENDPOINT + "/api/chat/conversations/1");
+        if (!response.ok) {
+          throw new Error("Network response was not ok.");
+        }
+        const data = await response.json();
+        setConvoListData(data);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -105,7 +127,18 @@ const Chat = (props) => {
               <br></br>
             </span>
             <div className="chat-conversation-container">
-              <Conversation></Conversation>
+            {ConvoList.map((ConvoListOBJ, index) => {
+                  return (
+                    <Conversation
+                      key={index}
+                      id={ConvoListOBJ.user2_id}
+                      user_img_src={ConvoListOBJ.friend_image_url}
+                      time_elapsed_text={ConvoListOBJ.last_message_created_at}
+                      status={ConvoListOBJ.status}
+                      user_new_mess={ConvoListOBJ.content}
+                    ></Conversation>
+                  );
+                })}
             </div>
           </div>
           <div className="chat-chat-container">

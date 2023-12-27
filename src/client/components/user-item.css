@@ -6,6 +6,7 @@
   position: relative;
   align-items: flex-start;
   flex-direction: column;
+  margin-left: 10px;
 }
 .user-item-user-img-container {
   flex: 0 0 auto;
