@@ -30,19 +30,9 @@ const App = () => {
         <Route path="/friend" element={<Friend />} />
         <Route path="/users/:id" element={<Profile />} />
         <Route path="/chat" element={<Chat />} />
-        {/* <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Homepage />} /> */}
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/" element={<Homepage />} />
         <Route path="/*" element={<NotFound />} />
-        <Route
-          path="/"
-          element={
-            isLoggedIn ? (
-              <Homepage setIsLoggedIn={setIsLoggedIn} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
       </Routes>
     </Router>
   );
