@@ -51,26 +51,24 @@ class Chat {
   static async getConversationsWithLastMessages(user_id) {
     try {
       const getConversationsQuery = `
-        SELECT c.id AS conversation_id,
-          c.user1_id,
-          c.user2_id,
-          m.id AS message_id,
-          m.from_user_id,
-          m.message_type,
-          m.status,
-          m.content,
-          m.created_at AS last_message_created_at
-        FROM conversations c
-        LEFT JOIN messages m ON c.id = m.conversation_id
-        WHERE c.user1_id = ? OR c.user2_id = ?
-        AND m.id = (
-          SELECT id
-          FROM messages
-          WHERE conversation_id = c.id
-          ORDER BY created_at DESC
-          LIMIT 1
-        )
-        ORDER BY last_message_created_at DESC;
+      SELECT c.id AS conversation_id,
+        c.user1_id,
+        c.user2_id,
+        m.id AS message_id,
+        m.from_user_id,
+        m.message_type,
+        m.status,
+        m.content,
+        m.created_at AS last_message_created_at
+      FROM conversations c
+      LEFT JOIN (
+      SELECT conversation_id, MAX(created_at) AS created_at
+      FROM messages
+      GROUP BY conversation_id
+      ) m1 ON c.id = m1.conversation_id
+      LEFT JOIN messages m ON m1.conversation_id = m.conversation_id AND m1.created_at = m.created_at
+      WHERE c.user1_id = ? OR c.user2_id = ?
+      ORDER BY last_message_created_at DESC;
       `;
 
       const [conversations] = await db.query(getConversationsQuery, [user_id, user_id]);
