@@ -96,7 +96,7 @@ const Profile = () => {
 
     return trimmedHobbies;
   };
-
+  const hasImages = userData.image_urls && userData.image_urls.length > 0;
   return (
     <div className="profile-container">
       <Helmet>
@@ -161,17 +161,21 @@ const Profile = () => {
 
             <div className="profile-gallery">
               <h2>Gallery</h2>
-              <div className="gallery">
-                {userData.image_urls.map((image, index) => (
-                  <img
-                    className="gallery-images"
-                    key={index}
-                    src={image}
-                    alt={`Gallery Image ${index + 1}`}
-                    onClick={() => expandImage(image)}
-                  />
-                ))}
-              </div>
+              {hasImages ? (
+                <div className="gallery">
+                  {userData.image_urls.map((image, index) => (
+                    <img
+                      className="gallery-images"
+                      key={index}
+                      src={image}
+                      alt={`Gallery Image ${index + 1}`}
+                      onClick={() => expandImage(image)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <p>Gallery không có ảnh</p>
+              )}
               {expandedImage && (
                 <div className="image-overlay" onClick={closeExpandedImage}>
                   <img
