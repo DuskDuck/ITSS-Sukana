@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //import Images
 import greenimg from "../assets/image/green.PNG";
 import noti from "../assets/image/noti.PNG";
-import emoji from "../assets/image/happy.PNG";
+import emoji from "../assets/image/happy.png";
 import sendicon from "../assets/image/send-message.PNG";
 //Import Font
 import WebFont from "webfontloader";
