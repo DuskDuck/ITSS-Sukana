@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API_ENDPOINT from "./apiConfig";
+import signin from "../assets/image/signin.png";
 import "./login.css";
 
 const Login = ({ setIsLoggedIn }) => {
@@ -34,7 +35,10 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <div className="login-container">
+    <div
+      className="login-container"
+      style={{ backgroundImage: `url(${signin})` }}
+    >
       <h2 className="title">Sign In</h2>
       <div>
         <p className="email">Email</p>
