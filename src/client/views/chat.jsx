@@ -21,7 +21,7 @@ import sendicon from "../assets/image/send-message.PNG";
 //Import Font
 import WebFont from "webfontloader";
 
-const socket = io('http://localhost:3010');
+const socket = io(process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3010');
 
 const Chat = (props) => {
   const navigate = useNavigate();

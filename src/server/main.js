@@ -8,16 +8,22 @@ import userRoutes from './routes/users.js';
 import chatRoutes from './routes/chat.js'
 import loginRoutes from './routes/login.js';
 import { Server } from 'socket.io'; // Import Socket.io
+import { io } from 'socket.io-client';
 import cors from 'cors';
 const app = express();
 const server = http.createServer(app);
 
 //Integrate Socket.io with the server
-const io = new Server({
-  cors: {
-    origin: "http://localhost:3000",
-  },
-});
+
+const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3010';
+
+export const socket = io(URL);
+
+// const io = new Server({
+//   cors: {
+//     origin: "http://localhost:3000",
+//   },
+// });
 
 // db connection
 db.getConnection((err, connection) => {
@@ -40,7 +46,7 @@ app.use(cors());
 // socket connection
 let connectedClients = 0;
 
-io.on("connection", (socket) => {
+socket.on("connection", (socket) => {
   connectedClients++;
   console.log(
     "[+] a user connected (" + connectedClients + ")   - UserID:" + socket.id
@@ -59,7 +65,7 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(3010);
+// io.listen(3010);
 
 ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000...")
