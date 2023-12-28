@@ -18,6 +18,7 @@ const server = http.createServer(app);
 const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3010';
 
 export const socket = io(URL);
+console.log(URL);
 
 // const io = new Server({
 //   cors: {

@@ -21,7 +21,7 @@ import sendicon from "../assets/image/send-message.png";
 //Import Font
 import WebFont from "webfontloader";
 
-const socket = io(process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3010');
+const socket = io('https://dating-app-lehe.onrender.com');
 
 const Chat = (props) => {
   const navigate = useNavigate();
