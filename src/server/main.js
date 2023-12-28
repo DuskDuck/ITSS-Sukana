@@ -15,7 +15,7 @@ const server = http.createServer(app);
 
 //Integrate Socket.io with the server
 
-const URL = process.env.NODE_ENV === 'production' ? undefined : 'http://localhost:3010';
+const URL = 'https://dating-app-lehe.onrender.com';
 
 export const socket = io(URL);
 console.log(URL);
