@@ -61,8 +61,6 @@ const Login = ({ setIsLoggedIn }) => {
       <div className="sign-up">
         Don't have account yet?<p className="link">Sign up</p>
       </div>
-      <button className="fb"></button>
-      <button className="gg"></button>
     </div>
   );
 };
