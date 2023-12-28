@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { Helmet } from "react-helmet";
-
+import { useNavigate } from "react-router-dom";
 import NavbarContainer from "../components/navbar-container";
 import UserItem from "../components/user-item";
 import Conversation from "../components/conversation";
@@ -11,19 +11,26 @@ import "./chat.css";
 import io from 'socket.io-client';
 import API_ENDPOINT from "./apiConfig";
 
+//ICON Import Section
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //import Images
 import greenimg from "../assets/image/green.PNG";
+import noti from "../assets/image/noti.PNG";
+import emoji from "../assets/image/happy.PNG";
+import sendicon from "../assets/image/send-message.PNG";
 //Import Font
 import WebFont from "webfontloader";
 
 const socket = io('http://localhost:3010');
 
 const Chat = (props) => {
+  const navigate = useNavigate();
   const userId = localStorage.getItem("id");
   const [FriendList, setFriendListData] = useState([]);
   const [ToID, setToID] = useState([]);
   const [ConvoList, setConvoListData] = useState([]);
   const [Chat, setChatData] = useState([]);
+  const containerRef = useRef(null);
 
   //Socket Section
   const [messages, setMessages] = useState([]);
@@ -78,6 +85,16 @@ const Chat = (props) => {
     });
   }, []);
 
+  const handleAvatarClick = () => {
+    navigate(`/users/` + ToID);
+  };
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+    console.log(ConvoList)
+  };
 
   //FETCH friend list
   useEffect(() => {
@@ -123,6 +140,7 @@ const Chat = (props) => {
         throw new Error("Network response was not ok.");
       }
       setToID(user2_id);
+      console.log(FriendList.find(friend => friend.friend_id == user2_id).friend_image_url);
       const data = await response.json();
       setMessages(data);
     } catch (error) {
@@ -133,15 +151,15 @@ const Chat = (props) => {
   return (
     <div className="chat-container">
       <Helmet>
-        <title>chat - Prime Third Mule</title>
-        <meta property="og:title" content="chat - Prime Third Mule" />
+        <title>Teender - Chat</title>
+        <meta property="og:title" content="Teender - Chat" />
       </Helmet>
       <div className="chat-main">
         <NavbarContainer></NavbarContainer>
         <div className="chat-main-area">
           <div className="chat-user-list">
             <img
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
+              src={noti}
               alt="image"
               className="chat-image"
             />
@@ -149,6 +167,7 @@ const Chat = (props) => {
               type="text"
               placeholder="Search"
               className="chat-textinput input"
+              onChange={(e) => handleSearchChange(e.target.value)}
             />
             <span className="chat-text">
               <span>Activites</span>
@@ -171,7 +190,7 @@ const Chat = (props) => {
               <br></br>
             </span>
             <div className="chat-conversation-container">
-            {ConvoList.map((ConvoListOBJ, index) => {
+              {ConvoList.map((ConvoListOBJ, index) => {
                   return (
                     <Conversation 
                       key={index}
@@ -185,25 +204,29 @@ const Chat = (props) => {
                       handleClick={getChatbox}
                     ></Conversation>
                   );
-                })}
+              })}
             </div>
           </div>
+          {ToID && FriendList.find(friend => friend.friend_id == ToID) && (
           <div className="chat-chat-container">
             <div className="chat-user-info">
               <img
-                src="https://play.teleporthq.io/static/svg/default-img.svg"
+                src={FriendList.find(friend => friend.friend_id == ToID).friend_image_url}
                 alt="image"
                 className="chat-user-img"
+                onClick={handleAvatarClick}
               />
               <div className="chat-mess-info-container">
                 <span className="chat-user-name-text">
-                  <span>user-name</span>
+                  <span>{FriendList.find(friend => friend.friend_id == ToID).friend_first_name + ' ' +
+                        FriendList.find(friend => friend.friend_id == ToID).friend_last_name}
+                  </span>
                   <br></br>
                 </span>
                 <div className="chat-status-container">
                   <img src={greenimg} alt="image" className="chat-status-img" />
                   <span className="chat-user-status">
-                    <span>status</span>
+                    <span>online</span>
                     <br></br>
                   </span>
                 </div>
@@ -219,13 +242,13 @@ const Chat = (props) => {
                   onChange={(e) => setMessage(e.target.value)}
                 />
                 <img
-                  src="https://play.teleporthq.io/static/svg/default-img.svg"
+                  src={sendicon}
                   alt="image"
                   className="chat-send-img"
                   onClick={sendMessage}
                 />
                 <img
-                  src="https://play.teleporthq.io/static/svg/default-img.svg"
+                  src={emoji}
                   alt="image"
                   className="chat-emoji-img"
                 />
@@ -236,7 +259,7 @@ const Chat = (props) => {
                     <YourMessage
                       key={index}
                       message={messageObj.content}
-                      time={messageObj.from_user_id}
+                      time={messageObj.created_at}
                     />
                   );
                 } else {
@@ -244,13 +267,14 @@ const Chat = (props) => {
                     <OtherMessage
                       key={index}
                       message={messageObj.content}
-                      time={messageObj.from_user_id}
+                      time={messageObj.created_at}
                     />
                   );
                 }
               })}
             </div>
           </div>
+           )}
         </div>
         <div className="chat-container1">
           <span className="chat-text10">

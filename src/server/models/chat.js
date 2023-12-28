@@ -11,7 +11,7 @@ class Chat {
 
       const [result] = await db.query(checkExistenceQuery, [user1_id, user2_id, user2_id, user1_id]);
       if (result.length > 0) {
-        console.log('Record exists in the conversations table.');
+        //console.log('Record exists in the conversations table.');
 
         // Update the updated_at field
         const updateQuery = `
@@ -21,9 +21,9 @@ class Chat {
         `;
 
         await db.query(updateQuery, [result[0].id]);
-        console.log('The updated_at field has been successfully updated.');
+        //console.log('The updated_at field has been successfully updated.');
       } else {
-        console.log('Record does not exist in the conversations table. Creating a new record...');
+        //console.log('Record does not exist in the conversations table. Creating a new record...');
 
         // Create a new record
         const insertQuery = `
@@ -32,7 +32,7 @@ class Chat {
         `;
 
         await db.query(insertQuery, [user1_id, user2_id]);
-        console.log('A new record has been successfully created.');
+        //console.log('A new record has been successfully created.');
       }
 
       const insertMessageQuery = `
@@ -41,7 +41,7 @@ class Chat {
       `;
 
       await db.query(insertMessageQuery, [user1_id, user1_id, user2_id, user2_id, user1_id, content]);
-      console.log('Message has been successfully sent.');
+      //console.log('Message has been successfully sent.');
     } catch (error) {
       console.error('An error occurred:', error);
       throw error;

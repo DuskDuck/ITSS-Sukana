@@ -82,7 +82,7 @@ const Conversation = (props) => {
         <span className="conversation-time-elapsed-text">
           {elapsed.hours + ':' + elapsed.minutes + ' ago'}
         </span>
-        {props.status !== "SEEN" && (
+        {props.status !== "SENDING" && (
           <div className="conversation-notify">
             <img
               src={redimg}
