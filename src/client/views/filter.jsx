@@ -28,7 +28,6 @@ const Filter = ({ setIsFilterVisible }) => {
   const dispatch = useDispatch();
   const handleClose = () => {
     setIsFilterVisible(false);
-    navigate("/");
   };
 
   const handleGenderClick = (gender) => {

@@ -19,7 +19,9 @@ const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [expandedImage, setExpandedImage] = useState(null);
   const navigate = useNavigate();
-
+  const showFilter = () => {
+    setIsFilterVisible(true);
+  };
   const expandImage = (image) => {
     setExpandedImage(image);
   };
@@ -72,9 +74,6 @@ const Profile = () => {
       setResponseMessage("Failed to send friend request.");
     }
   };
-  const showFilter = () => {
-    setIsFilterVisible(true);
-  };
 
   useEffect(() => {
     WebFont.load({
@@ -108,7 +107,7 @@ const Profile = () => {
       </Helmet>
       {isFilterVisible && (
         <div className="overlay">
-          <Filter />
+          <Filter setIsFilterVisible={setIsFilterVisible} />
         </div>
       )}
       <AppComponent
