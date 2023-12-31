@@ -47,7 +47,7 @@ app.use(cors());
 // socket connection
 let connectedClients = 0;
 
-socket.on("connection", (socket) => {
+socket.on("connect", (socket) => {
   connectedClients++;
   console.log(
     "[+] a user connected (" + connectedClients + ")   - UserID:" + socket.id
@@ -62,7 +62,7 @@ socket.on("connection", (socket) => {
   // Other event listeners and handlers for real-time communication
   socket.on('your chat message', (msg, time, id) => {
     console.log(id + ' message: ' + msg + ' ' + time);
-    io.emit('messageRespone', msg, time, id);
+    socket.timeout(5000).emit('messageRespone', msg, time, id);
   });
 });
 
