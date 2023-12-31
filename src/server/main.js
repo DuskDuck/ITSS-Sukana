@@ -66,6 +66,7 @@ socket.on("connect", (socket) => {
   });
 });
 
+socket.listen(URL);
 // io.listen(3010);
 
 ViteExpress.listen(app, 3000, () =>

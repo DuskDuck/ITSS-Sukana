@@ -10,7 +10,7 @@ router.post('/api/login', async (req, res) => {
     // Kiểm tra xem người dùng tồn tại trong CSDL hay không
     const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
 
-    console.log(rows);
+    //console.log(rows);
     if (rows.length === 0) {
       return res.status(400).json({ error: 'No matched user' });
     }
