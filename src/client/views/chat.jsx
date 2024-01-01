@@ -15,14 +15,13 @@ import API_ENDPOINT from "./apiConfig";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //import Images
 import greenimg from "../assets/image/green.PNG";
-import noti from "../assets/image/noti.PNG";
+import noti from "../assets/image/noti.png";
 import emoji from "../assets/image/happy.png";
 import sendicon from "../assets/image/send-message.png";
 //Import Font
 import WebFont from "webfontloader";
 
-// const socket = io('https://dating-app-lehe.onrender.com:3010');
-// console.log('socket connection:' + socket.connected);
+const socket = io('http://localhost:3010');
 
 const Chat = (props) => {
   const navigate = useNavigate();
@@ -37,21 +36,21 @@ const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
 
-  // useEffect(() => {
-  //   socket.on('messageRespone', (content, created_at, from_user_id) => {
-  //     setMessages([{ content, created_at, from_user_id }, ...messages]);
-  //   });
-  // }, [messages]);
+  useEffect(() => {
+    socket.on('messageRespone', (content, created_at, from_user_id) => {
+      setMessages([{ content, created_at, from_user_id }, ...messages]);
+    });
+  }, [messages]);
 
-  // const sendMessage = () => {
-  //   if(message.length <= 0){
+  const sendMessage = () => {
+    if(message.length <= 0){
 
-  //   }else {
-  //     socket.emit('your chat message', message, new Date().toLocaleTimeString(), userId);
-  //     setMessage('');
-  //     SendMessageToDB( message );
-  //   }
-  // };
+    }else {
+      socket.emit('your chat message', message, new Date().toLocaleTimeString(), userId);
+      setMessage('');
+      SendMessageToDB( message );
+    }
+  };
 
   const SendMessageToDB = async (content) => {
     try {
