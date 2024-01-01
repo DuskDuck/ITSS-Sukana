@@ -19,6 +19,10 @@ import { io } from 'socket.io-client';
 
 //const host = process.env.REACT_APP_ONLINE_API;
 
+
+const socket = io('https://dating-app-lehe.onrender.com:3010');
+console.log('socket connection:' + socket.connected);
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
