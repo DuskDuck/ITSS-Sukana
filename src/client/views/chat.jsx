@@ -21,8 +21,8 @@ import sendicon from "../assets/image/send-message.png";
 //Import Font
 import WebFont from "webfontloader";
 
-const socket = io('https://dating-app-lehe.onrender.com:3010');
-console.log('socket connection:' + socket.connected);
+// const socket = io('https://dating-app-lehe.onrender.com:3010');
+// console.log('socket connection:' + socket.connected);
 
 const Chat = (props) => {
   const navigate = useNavigate();
@@ -37,21 +37,21 @@ const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    socket.on('messageRespone', (content, created_at, from_user_id) => {
-      setMessages([{ content, created_at, from_user_id }, ...messages]);
-    });
-  }, [messages]);
+  // useEffect(() => {
+  //   socket.on('messageRespone', (content, created_at, from_user_id) => {
+  //     setMessages([{ content, created_at, from_user_id }, ...messages]);
+  //   });
+  // }, [messages]);
 
-  const sendMessage = () => {
-    if(message.length <= 0){
+  // const sendMessage = () => {
+  //   if(message.length <= 0){
 
-    }else {
-      socket.emit('your chat message', message, new Date().toLocaleTimeString(), userId);
-      setMessage('');
-      SendMessageToDB( message );
-    }
-  };
+  //   }else {
+  //     socket.emit('your chat message', message, new Date().toLocaleTimeString(), userId);
+  //     setMessage('');
+  //     SendMessageToDB( message );
+  //   }
+  // };
 
   const SendMessageToDB = async (content) => {
     try {

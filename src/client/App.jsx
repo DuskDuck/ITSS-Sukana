@@ -15,15 +15,10 @@ import Idealmatch from "./views/idealmatch";
 import Friend from "./views/friend";
 import Chat from "./views/chat";
 import Login from "./views/login";
-import { io } from 'socket.io-client';
-
-//const host = process.env.REACT_APP_ONLINE_API;
-
-
-const socket = io('https://dating-app-lehe.onrender.com:3010');
-console.log('socket connection:' + socket.connected);
+import socket from "./socket";
 
 const App = () => {
+  const [isConnected, setIsConnected] = useState(socket.connected);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -31,12 +26,29 @@ const App = () => {
     setIsLoggedIn(userIsLoggedIn);
   }, []);
 
-  // const socketRef = useRef();
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+      console.log(
+        "[+] a user connected (" + connectedClients + ")   - UserID:" + socket.id
+      );
+    }
 
-  // useEffect(() => {
-  //   socketRef.current = io.connect(host);
-  // }, []);
+    function onDisconnect() {
+      setIsConnected(false);
+      console.log(
+        "[X] a user disconnected (" + connectedClients + ")- UserID:" + socket.id
+      );
+    }
 
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
+  }, []);
 
   return (
     <Router>
