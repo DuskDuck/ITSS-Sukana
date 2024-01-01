@@ -15,7 +15,7 @@ import Idealmatch from "./views/idealmatch";
 import Friend from "./views/friend";
 import Chat from "./views/chat";
 import Login from "./views/login";
-import socket from "./socket";
+// import socket from "./socket";
 
 const App = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -26,29 +26,29 @@ const App = () => {
     setIsLoggedIn(userIsLoggedIn);
   }, []);
 
-  useEffect(() => {
-    function onConnect() {
-      setIsConnected(true);
-      console.log(
-        "[+] a user connected (" + connectedClients + ")   - UserID:" + socket.id
-      );
-    }
+  // useEffect(() => {
+  //   function onConnect() {
+  //     setIsConnected(true);
+  //     console.log(
+  //       "[+] a user connected (" + connectedClients + ")   - UserID:" + socket.id
+  //     );
+  //   }
 
-    function onDisconnect() {
-      setIsConnected(false);
-      console.log(
-        "[X] a user disconnected (" + connectedClients + ")- UserID:" + socket.id
-      );
-    }
+  //   function onDisconnect() {
+  //     setIsConnected(false);
+  //     console.log(
+  //       "[X] a user disconnected (" + connectedClients + ")- UserID:" + socket.id
+  //     );
+  //   }
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
+  //   socket.on('connect', onConnect);
+  //   socket.on('disconnect', onDisconnect);
 
-    return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-    };
-  }, []);
+  //   return () => {
+  //     socket.off('connect', onConnect);
+  //     socket.off('disconnect', onDisconnect);
+  //   };
+  // }, []);
 
   return (
     <Router>
