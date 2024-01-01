@@ -17,7 +17,7 @@ import Chat from "./views/chat";
 import Login from "./views/login";
 import { io } from 'socket.io-client';
 
-const host = process.env.REACT_APP_ONLINE_API;
+//const host = process.env.REACT_APP_ONLINE_API;
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,11 +27,11 @@ const App = () => {
     setIsLoggedIn(userIsLoggedIn);
   }, []);
 
-  const socketRef = useRef();
+  // const socketRef = useRef();
 
-  useEffect(() => {
-    socketRef.current = io.connect(host);
-  }, []);
+  // useEffect(() => {
+  //   socketRef.current = io.connect(host);
+  // }, []);
 
 
   return (
