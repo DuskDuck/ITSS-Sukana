@@ -59,7 +59,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// io.listen(3010);
+io.listen(process.env.REACT_APP_ONLINE_API);
 const isLocal = process.env.NODE_ENV === 'development'; 
 const PORT = isLocal ? process.env.REACT_APP_LOCAL_API : process.env.REACT_APP_ONLINE_API;
 ViteExpress.listen(app, 3000, () =>
