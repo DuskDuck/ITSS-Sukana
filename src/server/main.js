@@ -8,23 +8,16 @@ import userRoutes from './routes/users.js';
 import chatRoutes from './routes/chat.js'
 import loginRoutes from './routes/login.js';
 import { Server } from 'socket.io'; // Import Socket.io
-import { io } from 'socket.io-client';
 import cors from 'cors';
 const app = express();
 const server = http.createServer(app);
 
 //Integrate Socket.io with the server
-
-const URL = 'https://dating-app-lehe.onrender.com';
-
-const socket = io(URL);
-console.log(socket.connected);
-
-// const io = new Server({
-//   cors: {
-//     origin: "http://localhost:3000",
-//   },
-// });
+const io = new Server({
+  cors: {
+    origin: process.env.REACT_APP_ONLINE_API,
+  },
+});
 
 // db connection
 db.getConnection((err, connection) => {
@@ -47,7 +40,7 @@ app.use(cors());
 // socket connection
 let connectedClients = 0;
 
-socket.on("connect", (socket) => {
+io.on("connection", (socket) => {
   connectedClients++;
   console.log(
     "[+] a user connected (" + connectedClients + ")   - UserID:" + socket.id
@@ -62,12 +55,13 @@ socket.on("connect", (socket) => {
   // Other event listeners and handlers for real-time communication
   socket.on('your chat message', (msg, time, id) => {
     console.log(id + ' message: ' + msg + ' ' + time);
-    socket.timeout(5000).emit('messageRespone', msg, time, id);
+    io.emit('messageRespone', msg, time, id);
   });
 });
 
 // io.listen(3010);
-
-ViteExpress.listen(app, 3000, () =>
+const isLocal = process.env.NODE_ENV === 'development'; 
+const PORT = isLocal ? process.env.REACT_APP_LOCAL_API : process.env.REACT_APP_ONLINE_API;
+ViteExpress.listen(app, PORT, () =>
   console.log("Server is listening on port 3000...")
 );

@@ -21,7 +21,7 @@ import sendicon from "../assets/image/send-message.png";
 //Import Font
 import WebFont from "webfontloader";
 
-const socket = io('https://dating-app-lehe.onrender.com');
+const socket = io(process.env.REACT_APP_ONLINE_API);
 
 const Chat = (props) => {
   const navigate = useNavigate();
@@ -78,7 +78,6 @@ const Chat = (props) => {
   //
   //
   useEffect(() => {
-    socket.connect();
     WebFont.load({
       google: {
         families: ["Roboto", "Inria Sans"],
