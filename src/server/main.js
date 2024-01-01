@@ -17,8 +17,8 @@ const server = http.createServer(app);
 
 const URL = 'https://dating-app-lehe.onrender.com';
 
-export const socket = io(URL);
-console.log(URL);
+const socket = io(URL);
+console.log(socket.connected);
 
 // const io = new Server({
 //   cors: {
@@ -66,7 +66,6 @@ socket.on("connect", (socket) => {
   });
 });
 
-socket.listen(URL);
 // io.listen(3010);
 
 ViteExpress.listen(app, 3000, () =>
