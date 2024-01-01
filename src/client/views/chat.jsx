@@ -78,6 +78,7 @@ const Chat = (props) => {
   //
   //
   useEffect(() => {
+    socket.connect();
     WebFont.load({
       google: {
         families: ["Roboto", "Inria Sans"],
