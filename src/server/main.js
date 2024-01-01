@@ -13,11 +13,12 @@ const app = express();
 const server = http.createServer(app);
 
 //Integrate Socket.io with the server
-const io = new Server({
+const io = new Server(server, {
   cors: {
-    origin: process.env.REACT_APP_ONLINE_API,
+    origin: "*",
   },
-});
+}); 
+
 
 // db connection
 db.getConnection((err, connection) => {
@@ -58,8 +59,7 @@ io.on("connection", (socket) => {
     io.emit('messageRespone', msg, time, id);
   });
 });
-
-io.listen(process.env.REACT_APP_ONLINE_API);
+//io.listen(3010);
 const isLocal = process.env.NODE_ENV === 'development'; 
 const PORT = isLocal ? process.env.REACT_APP_LOCAL_API : process.env.REACT_APP_ONLINE_API;
 ViteExpress.listen(app, 3000, () =>

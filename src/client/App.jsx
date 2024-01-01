@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -15,13 +15,24 @@ import Idealmatch from "./views/idealmatch";
 import Friend from "./views/friend";
 import Chat from "./views/chat";
 import Login from "./views/login";
+import { io } from 'socket.io-client';
+
+const host = process.env.REACT_APP_ONLINE_API;
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     const userIsLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(userIsLoggedIn);
   }, []);
+
+  const socketRef = useRef();
+
+  useEffect(() => {
+    socketRef.current = io.connect(host);
+  }, []);
+
 
   return (
     <Router>
